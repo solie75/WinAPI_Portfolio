@@ -8,11 +8,17 @@
 CBackgroundTexture::CBackgroundTexture()
 	: m_pTexture(nullptr)
 {
-	m_pTexture = CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
+}
+
+CBackgroundTexture::CBackgroundTexture(wstring _pstring)
+	: m_pTexture(nullptr)
+{
+	SetName(_pstring);
 }
 
 CBackgroundTexture::~CBackgroundTexture()
 {
+
 }
 
 
@@ -21,13 +27,14 @@ void CBackgroundTexture::ObjectTick()
 	CObject::ObjectTick();
 }
 
-void CBackgroundTexture::ObjectRender(HDC _dc)
+void CBackgroundTexture::ObjectRender(HDC _dc, wstring _pstring)
 {
 	Vec vPos = CCameraMgr::GetInst()->GetRenderPos(GetPos());
 	Vec vScale = GetScale();
 
 	//Vec vLeftTop = Vec(vPos.x - vScale.x / 2.f, vPos.y - vScale.y / 2.f);
 
+	m_pTexture = CResourceMgr::GetInst()->FindTexture(_pstring);
 
 	BitBlt(_dc
 		, (int)(vPos.x - m_pTexture->Width() / 2.f)
@@ -39,6 +46,6 @@ void CBackgroundTexture::ObjectRender(HDC _dc)
 		, 0
 		, SRCCOPY);
 
-	CObject::ObjectRender(_dc);
+	CObject::ObjectRender(_dc, _pstring);
 }
 

@@ -29,7 +29,7 @@ void CObject::Final_Tick()
 {
 }
 
-void CObject::ObjectRender(HDC _hdc)
+void CObject::ObjectRender(HDC _hdc, wstring _pstring)
 {
 }
 

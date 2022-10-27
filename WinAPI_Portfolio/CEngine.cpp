@@ -43,7 +43,7 @@ void CEngine::CEngineInit(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	m_hDC = GetDC(m_hMainWnd);
 
 	// create bitmap for back buffer
-	m_pMemTex = CResourceMgr::GetInst()->CreateTexture(L"BeckBuffer", m_ptResolution.x, m_ptResolution.y);
+	m_pMemTex = CResourceMgr::GetInst()->CreateTexture(L"BackBuffer", m_ptResolution.x, m_ptResolution.y);
 
 	// create common Pen and brush
 	CreatePenBrush();

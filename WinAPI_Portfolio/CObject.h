@@ -7,6 +7,7 @@ private:
 	Vec m_vPos;
 	Vec m_vScale;
 	bool m_bDead;
+	wstring strName;
 
 public:
 	void SetPos(Vec _v) { m_vPos = _v; }
@@ -17,7 +18,7 @@ public:
 
 	virtual void ObjectTick();
 	virtual void Final_Tick() final;
-	virtual void ObjectRender(HDC _hdc);
+	virtual void ObjectRender(HDC _hdc, wstring);
 
 public:
 	bool IsDead() { return m_bDead; }

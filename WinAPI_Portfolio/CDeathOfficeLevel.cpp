@@ -19,11 +19,16 @@ CDeathOfficeLevel::~CDeathOfficeLevel()
 void CDeathOfficeLevel::LevelInit()
 {
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"OfficeChair", L"texture\\OfficeChair.bmp");
 
 	// Create BackGround
-	CBackgroundTexture* pBackground = new CBackgroundTexture;
+	CBackgroundTexture* pBackground = new CBackgroundTexture(L"DeathOffice");
 	pBackground->SetScale(Vec(2048.f, 1024.f));
-	Instantiate(pBackground, Vec(0.f, 0.f), LAYER::BACKGROUND);
+	Instantiate(pBackground, Vec(800.f, 450.f), LAYER::BACKGROUND);
+
+	CBackgroundTexture* pOfficeChair = new CBackgroundTexture(L"OfficeChair");
+	pOfficeChair->SetScale(Vec(256.f, 512.f));
+	Instantiate(pOfficeChair, Vec(800.f, 400.f), LAYER::BACKGROUND);
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 	CCameraMgr::GetInst()->SetLook(vResolution / 2.f);

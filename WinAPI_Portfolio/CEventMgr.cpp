@@ -30,6 +30,7 @@ void CEventMgr::EventMgrTick()
 			LAYER eLayer = (LAYER)m_vecEvent[i].lPARAM;
 
 			pCurLevel->AddObject(pNewObject, eLayer);
+			
 		}
 		break;
 		case EVENT_TYPE::DELETE_OBJECT:

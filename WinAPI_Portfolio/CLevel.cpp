@@ -51,10 +51,11 @@ void CLevel::LevelRender(HDC _dc)
 			if ((*iter)->IsDead())
 			{
 				iter = m_arrLayer[i].erase(iter);
+				
 			}
 			else
 			{
-				(*iter)->ObjectRender(_dc);
+				(*iter)->ObjectRender(_dc, (*iter)->GetName());
 				++iter;
 			}
 		}
