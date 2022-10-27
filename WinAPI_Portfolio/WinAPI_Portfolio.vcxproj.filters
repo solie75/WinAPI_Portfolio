@@ -175,7 +175,7 @@
       <Filter>Game\00.Header</Filter>
     </ClInclude>
     <ClInclude Include="CBackgroundTexture.h">
-      <Filter>Default</Filter>
+      <Filter>Game\04.Object\01.BackgroundTexture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -260,7 +260,7 @@
       <Filter>Game\00.Header</Filter>
     </ClCompile>
     <ClCompile Include="CBackgroundTexture.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\04.Object\01.BackgroundTexture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

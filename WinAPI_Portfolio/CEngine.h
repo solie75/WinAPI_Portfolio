@@ -1,5 +1,7 @@
 #pragma once
 
+class CTexture;
+
 class CEngine
 {
 	SINGLE(CEngine)
@@ -9,9 +11,7 @@ private:
 	HDC m_hDC;
 	POINT m_ptResolution;
 	HPEN m_arrPen[(UINT)PEN_TYPE::END];
-
-private:
-	void CreatePenBrush();
+	CTexture* m_pMemTex;
 
 public:
 	HWND GetMainWnd() { return m_hMainWnd; }
@@ -21,7 +21,11 @@ public:
 
 public:
 	void CEngineInit(HWND _hWnd, UINT _iWidth, UINT _iHeight);
-	
-	void progress();
+	void EngineProgress();
+
+private:
+	void CEngineTick();
+	void CEngineRender();
+	void CreatePenBrush();
 };
 
