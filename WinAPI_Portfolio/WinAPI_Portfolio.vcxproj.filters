@@ -1,37 +1,182 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Default">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Game\00.Header">
+      <UniqueIdentifier>{35233efe-40bd-4bcb-bbdf-a486c7d9675d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\01.Engine">
+      <UniqueIdentifier>{38adc669-b6e9-485c-853d-9ffe417c2968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager">
+      <UniqueIdentifier>{ffd19d44-68c8-4785-9fd7-8417d8dceddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\01.KeyMgr">
+      <UniqueIdentifier>{efb59848-8d8e-46bf-90bf-815bb9f81bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\02.TimeMgr">
+      <UniqueIdentifier>{cc602bfb-83e1-4252-8c9c-45baaf5449b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\03.LevelMgr">
+      <UniqueIdentifier>{3cead8fd-63c9-4270-9df8-7fd9babb9fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\04.CollisionMgr">
+      <UniqueIdentifier>{52150009-6211-4828-ac70-5b2a2e7f865d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\05.EventMgr">
+      <UniqueIdentifier>{e0e208e0-9b1e-41d5-83d3-4c01fa678845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\06.PathMgr">
+      <UniqueIdentifier>{5b76790a-1dae-476a-869f-f2603f6d1467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\07.ResourceMgr">
+      <UniqueIdentifier>{ecd404b1-1276-4797-9bd5-38cd9b223804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\08.CameraMgr">
+      <UniqueIdentifier>{869f5736-81d0-4e2f-8505-585ff933df0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level">
+      <UniqueIdentifier>{061b0548-976c-4fc0-b48d-2d2c73be7ba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object">
+      <UniqueIdentifier>{1b6fa6ec-9e03-4a92-a651-6bf95909e4d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component">
+      <UniqueIdentifier>{d7cd7782-11a0-47e8-8ecc-2a2b7a07d8d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\06.Resource">
+      <UniqueIdentifier>{dd12bd59-d6aa-4dce-8a5a-f356fa2ccadd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\06.Resource\Sound">
+      <UniqueIdentifier>{6334ed3c-c80c-4ee3-9e36-6bc534a6fd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\06.Resource\Texture">
+      <UniqueIdentifier>{55a7e84a-5c37-4975-ad5c-225676fe307d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\01.StartLevel">
+      <UniqueIdentifier>{2bea4617-4ffe-4a3a-a7a1-7e34e8007016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\07.EndLevel">
+      <UniqueIdentifier>{9cad6a53-7e9c-4531-b2ed-f44174138011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\02.DeathOfficeLevel">
+      <UniqueIdentifier>{c976a445-3e6d-4f55-ba35-6e48ca7f57f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\03.GhostStageLevel">
+      <UniqueIdentifier>{0e591055-2fac-4e66-a97c-cbd172402f27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\04.Boss_MrGordonGrimesLevel">
+      <UniqueIdentifier>{226ade2d-e9c4-4984-b819-0cb2c7c49de1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\05.SoldierStageLevel">
+      <UniqueIdentifier>{ef7910ab-655c-4b18-9a80-129851b074fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\03.Level\06.Boss_MajorWarrenPliskhanLevel">
+      <UniqueIdentifier>{b80d17c4-b534-4675-be21-f5a0b5bde5e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\01.BackgroundTexture">
+      <UniqueIdentifier>{fc83aaa8-c588-45f6-b795-cdc9a9570bc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="WinAPI_Portfolio.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Default</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="WinAPI_Portfolio.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
+    <ClInclude Include="pch.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CEngine.h">
+      <Filter>Game\01.Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="def.h">
+      <Filter>Game\00.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>Game\02.Manager\01.KeyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>Game\00.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>Game\02.Manager\02.TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelMgr.h">
+      <Filter>Game\02.Manager\03.LevelMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel.h">
+      <Filter>Game\03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntity.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>Game\04.Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventMgr.h">
+      <Filter>Game\02.Manager\05.EventMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraMgr.h">
+      <Filter>Game\02.Manager\08.CameraMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceMgr.h">
+      <Filter>Game\02.Manager\07.ResourceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CPathMgr.h">
+      <Filter>Game\02.Manager\06.PathMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CResource.h">
+      <Filter>Game\06.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>Game\06.Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="CStartLevel.h">
+      <Filter>Game\03.Level\01.StartLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeathOfficeLevel.h">
+      <Filter>Game\03.Level\02.DeathOfficeLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CGhostStageLevel.h">
+      <Filter>Game\03.Level\03.GhostStageLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss1Level.h">
+      <Filter>Game\03.Level\04.Boss_MrGordonGrimesLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoldierStageLevel.h">
+      <Filter>Game\03.Level\05.SoldierStageLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss2Level.h">
+      <Filter>Game\03.Level\06.Boss_MajorWarrenPliskhanLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CEndLevel.h">
+      <Filter>Game\03.Level\07.EndLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="func.h">
+      <Filter>Game\00.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackgroundTexture.h">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -45,5 +190,77 @@
     <Image Include="WinAPI_Portfolio.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinAPI_Portfolio.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CEngine.cpp">
+      <Filter>Game\01.Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>Game\02.Manager\01.KeyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>Game\02.Manager\02.TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelMgr.cpp">
+      <Filter>Game\02.Manager\03.LevelMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel.cpp">
+      <Filter>Game\03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntity.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>Game\04.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventMgr.cpp">
+      <Filter>Game\02.Manager\05.EventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMgr.cpp">
+      <Filter>Game\02.Manager\08.CameraMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceMgr.cpp">
+      <Filter>Game\02.Manager\07.ResourceMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPathMgr.cpp">
+      <Filter>Game\02.Manager\06.PathMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CResource.cpp">
+      <Filter>Game\06.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>Game\06.Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="CStartLevel.cpp">
+      <Filter>Game\03.Level\01.StartLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeathOfficeLevel.cpp">
+      <Filter>Game\03.Level\02.DeathOfficeLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhostStageLevel.cpp">
+      <Filter>Game\03.Level\03.GhostStageLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss1Level.cpp">
+      <Filter>Game\03.Level\04.Boss_MrGordonGrimesLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoldierStageLevel.cpp">
+      <Filter>Game\03.Level\05.SoldierStageLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss2Level.cpp">
+      <Filter>Game\03.Level\06.Boss_MajorWarrenPliskhanLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CEndLevel.cpp">
+      <Filter>Game\03.Level\07.EndLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="func.cpp">
+      <Filter>Game\00.Header</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackgroundTexture.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
