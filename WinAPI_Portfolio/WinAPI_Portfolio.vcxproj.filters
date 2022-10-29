@@ -19,33 +19,6 @@
     <Filter Include="Game\01.Engine">
       <UniqueIdentifier>{38adc669-b6e9-485c-853d-9ffe417c2968}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\02.Manager">
-      <UniqueIdentifier>{ffd19d44-68c8-4785-9fd7-8417d8dceddd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\01.KeyMgr">
-      <UniqueIdentifier>{efb59848-8d8e-46bf-90bf-815bb9f81bbc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\02.TimeMgr">
-      <UniqueIdentifier>{cc602bfb-83e1-4252-8c9c-45baaf5449b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\03.LevelMgr">
-      <UniqueIdentifier>{3cead8fd-63c9-4270-9df8-7fd9babb9fb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\04.CollisionMgr">
-      <UniqueIdentifier>{52150009-6211-4828-ac70-5b2a2e7f865d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\05.EventMgr">
-      <UniqueIdentifier>{e0e208e0-9b1e-41d5-83d3-4c01fa678845}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\06.PathMgr">
-      <UniqueIdentifier>{5b76790a-1dae-476a-869f-f2603f6d1467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\07.ResourceMgr">
-      <UniqueIdentifier>{ecd404b1-1276-4797-9bd5-38cd9b223804}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\02.Manager\08.CameraMgr">
-      <UniqueIdentifier>{869f5736-81d0-4e2f-8505-585ff933df0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\03.Level">
       <UniqueIdentifier>{061b0548-976c-4fc0-b48d-2d2c73be7ba2}</UniqueIdentifier>
     </Filter>
@@ -85,8 +58,47 @@
     <Filter Include="Game\03.Level\06.Boss_MajorWarrenPliskhanLevel">
       <UniqueIdentifier>{b80d17c4-b534-4675-be21-f5a0b5bde5e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\04.Object\01.BackgroundTexture">
+    <Filter Include="Game\04.Object\02.BackgroundObject">
+      <UniqueIdentifier>{7b4093b2-3508-4db4-95ed-11f9912a4324}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\01.Background">
       <UniqueIdentifier>{fc83aaa8-c588-45f6-b795-cdc9a9570bc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\03.Player">
+      <UniqueIdentifier>{e689a296-1427-40e5-b275-19b2c6ae64d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component\Animator">
+      <UniqueIdentifier>{df4c7d40-6917-4ee4-ba07-e17f03a7d8c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component\Animator\CAnimation">
+      <UniqueIdentifier>{15343393-fa9f-4729-9fcd-4b396c44f8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager">
+      <UniqueIdentifier>{ffd19d44-68c8-4785-9fd7-8417d8dceddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\01.KeyMgr">
+      <UniqueIdentifier>{efb59848-8d8e-46bf-90bf-815bb9f81bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\02.TimeMgr">
+      <UniqueIdentifier>{cc602bfb-83e1-4252-8c9c-45baaf5449b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\03.LevelMgr">
+      <UniqueIdentifier>{3cead8fd-63c9-4270-9df8-7fd9babb9fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\04.CollisionMgr">
+      <UniqueIdentifier>{52150009-6211-4828-ac70-5b2a2e7f865d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\05.EventMgr">
+      <UniqueIdentifier>{e0e208e0-9b1e-41d5-83d3-4c01fa678845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\06.PathMgr">
+      <UniqueIdentifier>{5b76790a-1dae-476a-869f-f2603f6d1467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\07.ResourceMgr">
+      <UniqueIdentifier>{ecd404b1-1276-4797-9bd5-38cd9b223804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\02.Manager\08.CameraMgr">
+      <UniqueIdentifier>{869f5736-81d0-4e2f-8505-585ff933df0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -174,8 +186,23 @@
     <ClInclude Include="func.h">
       <Filter>Game\00.Header</Filter>
     </ClInclude>
-    <ClInclude Include="CBackgroundTexture.h">
-      <Filter>Game\04.Object\01.BackgroundTexture</Filter>
+    <ClInclude Include="CBackground.h">
+      <Filter>Game\04.Object\01.Background</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackgroundObject.h">
+      <Filter>Game\04.Object\02.BackgroundObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>Game\04.Object\03.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimator.h">
+      <Filter>Game\05.Component\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>Game\05.Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>Game\05.Component\Animator\CAnimation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,8 +286,23 @@
     <ClCompile Include="func.cpp">
       <Filter>Game\00.Header</Filter>
     </ClCompile>
-    <ClCompile Include="CBackgroundTexture.cpp">
-      <Filter>Game\04.Object\01.BackgroundTexture</Filter>
+    <ClCompile Include="CBackground.cpp">
+      <Filter>Game\04.Object\01.Background</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackgroundObject.cpp">
+      <Filter>Game\04.Object\02.BackgroundObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>Game\04.Object\03.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator.cpp">
+      <Filter>Game\05.Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponent.cpp">
+      <Filter>Game\05.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Game\05.Component\Animator\CAnimation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

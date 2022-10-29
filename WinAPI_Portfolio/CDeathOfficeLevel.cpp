@@ -3,10 +3,14 @@
 
 #include "CLevel.h"
 #include "CEngine.h"
-#include "CBackgroundTexture.h"
+#include "CBackground.h"
+#include "CBackgroundObject.h"
+#include "CPlayer.h"
 
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
+
+#include "CAnimator.h"
 
 CDeathOfficeLevel::CDeathOfficeLevel()
 {
@@ -18,17 +22,27 @@ CDeathOfficeLevel::~CDeathOfficeLevel()
 
 void CDeathOfficeLevel::LevelInit()
 {
+	// Image Loading
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
 	CResourceMgr::GetInst()->LoadTexture(L"OfficeChair", L"texture\\OfficeChair.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"DeathSpawn", L"texture\\DeathSpawn.bmp");
 
 	// Create BackGround
-	CBackgroundTexture* pBackground = new CBackgroundTexture(L"DeathOffice");
+	CBackground* pBackground = new CBackground(L"DeathOffice");
 	pBackground->SetScale(Vec(2048.f, 1024.f));
-	Instantiate(pBackground, Vec(800.f, 450.f), LAYER::BACKGROUND);
+	Instantiate(pBackground, Vec(900.f, 450.f), LAYER::BACKGROUND);
 
-	CBackgroundTexture* pOfficeChair = new CBackgroundTexture(L"OfficeChair");
+	CBackgroundObject* pOfficeChair = new CBackgroundObject(L"OfficeChair");
 	pOfficeChair->SetScale(Vec(256.f, 512.f));
-	Instantiate(pOfficeChair, Vec(800.f, 400.f), LAYER::BACKGROUND);
+	Instantiate(pOfficeChair, Vec(750.f, 245.f), LAYER::BACKGROUNDOBJECT);
+
+	// Create Player
+	CPlayer* pPlayer = new CPlayer(L"Player");
+	pPlayer->SetScale(Vec(154.f, 158.f));
+	Instantiate(pPlayer, Vec(765.f, 500.f), LAYER::PLAYER);
+
+	// Play Animation of Death's Spawn
+	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 	CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
@@ -36,6 +50,7 @@ void CDeathOfficeLevel::LevelInit()
 
 void CDeathOfficeLevel::LevelTick()
 {
+	CLevel::LevelTick();
 }
 
 void CDeathOfficeLevel::LevelEnter()

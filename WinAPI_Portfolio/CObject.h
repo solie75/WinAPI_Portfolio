@@ -1,5 +1,8 @@
 #pragma once
 #include "CEntity.h"
+
+class CAnimator;
+
 class CObject :
     public CEntity
 {
@@ -8,6 +11,8 @@ private:
 	Vec m_vScale;
 	bool m_bDead;
 	wstring strName;
+
+	CAnimator* m_pAnimator;
 
 public:
 	void SetPos(Vec _v) { m_vPos = _v; }
@@ -18,7 +23,13 @@ public:
 
 	virtual void ObjectTick();
 	virtual void Final_Tick() final;
-	virtual void ObjectRender(HDC _hdc, wstring);
+	virtual void ObjectRender(HDC _dc, wstring);
+
+	void CreateAnimator();
+
+	CAnimator* GetAnimator() {
+		return m_pAnimator;
+	}
 
 public:
 	bool IsDead() { return m_bDead; }

@@ -135,10 +135,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CBackgroundTexture.h" />
+    <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CAnimator.h" />
+    <ClInclude Include="CBackground.h" />
+    <ClInclude Include="CBackgroundObject.h" />
     <ClInclude Include="CBoss1Level.h" />
     <ClInclude Include="CBoss2Level.h" />
     <ClInclude Include="CCameraMgr.h" />
+    <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDeathOfficeLevel.h" />
     <ClInclude Include="CEndLevel.h" />
     <ClInclude Include="CEngine.h" />
@@ -150,6 +154,7 @@
     <ClInclude Include="CLevelMgr.h" />
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CResource.h" />
     <ClInclude Include="CResourceMgr.h" />
     <ClInclude Include="CSoldierStageLevel.h" />
@@ -166,10 +171,14 @@
     <ClInclude Include="WinAPI_Portfolio.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CBackgroundTexture.cpp" />
+    <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CAnimator.cpp" />
+    <ClCompile Include="CBackground.cpp" />
+    <ClCompile Include="CBackgroundObject.cpp" />
     <ClCompile Include="CBoss1Level.cpp" />
     <ClCompile Include="CBoss2Level.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
+    <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CDeathOfficeLevel.cpp" />
     <ClCompile Include="CEndLevel.cpp" />
     <ClCompile Include="CEngine.cpp" />
@@ -181,6 +190,7 @@
     <ClCompile Include="CLevelMgr.cpp" />
     <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CResource.cpp" />
     <ClCompile Include="CResourceMgr.cpp" />
     <ClCompile Include="CSoldierStageLevel.cpp" />

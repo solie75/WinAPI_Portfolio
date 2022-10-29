@@ -120,3 +120,11 @@ struct tEvent
 	DWORD_PTR wPARAM;
 	DWORD_PTR lPARAM;
 };
+
+struct tAnimFrame
+{
+	Vec vLeftTop; // bring animation frame's lefttop in atlas
+	Vec vSize; // frame size
+	Vec vOffset;
+	float fDuration; // perframe duration time
+};
