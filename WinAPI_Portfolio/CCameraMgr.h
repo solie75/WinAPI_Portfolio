@@ -14,8 +14,8 @@ class CCameraMgr
 	SINGLE(CCameraMgr);
 
 private:
-	Vec m_vLook;
-	Vec m_vDiff;
+	Vec m_vLook; // Camera position
+	Vec m_vDiff; // difference of Vec within RealPos and renderPos
 
 	list<tCamEffect> m_CamEffectList;
 	float m_fRatio;

@@ -24,13 +24,13 @@ void CCameraMgr::CameraMgrTick()
 {
 	// CameraMove
 	//if (IsPressed(KEY::W))
-	//	m_vLook.y -= 300.f * DT;
+	//	m_vLook.y -= 10.f * DT;
 	//if (IsPressed(KEY::S))
-	//	m_vLook.y += 300.f * DT;
+	//	m_vLook.y += 10.f * DT;
 	//if (IsPressed(KEY::A))
-	//	m_vLook.x -= 300.f * DT;
+	//	m_vLook.x -= 10.f * DT;
 	//if (IsPressed(KEY::D))
-	//	m_vLook.x += 300.f * DT;
+	//	m_vLook.x += 10.f * DT;
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 	vResolution /= 2.f;

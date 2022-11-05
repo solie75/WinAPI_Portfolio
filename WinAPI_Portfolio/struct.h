@@ -88,6 +88,24 @@ public:
 		x *= _f, y *= _f;
 	}
 
+	bool operator == (Vec _vOther)
+	{
+		if (x == _vOther.x && y == _vOther.y)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool operator != (Vec _vOther)
+	{
+		if (x != _vOther.x || y != _vOther.y)
+		{
+			return true;
+		}
+		return false;
+	}
+
 public:
 	Vec()
 		: x(0.f)

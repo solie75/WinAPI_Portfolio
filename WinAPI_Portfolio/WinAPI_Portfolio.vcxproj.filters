@@ -64,9 +64,6 @@
     <Filter Include="Game\04.Object\01.Background">
       <UniqueIdentifier>{fc83aaa8-c588-45f6-b795-cdc9a9570bc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\04.Object\03.Player">
-      <UniqueIdentifier>{e689a296-1427-40e5-b275-19b2c6ae64d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\05.Component\Animator">
       <UniqueIdentifier>{df4c7d40-6917-4ee4-ba07-e17f03a7d8c8}</UniqueIdentifier>
     </Filter>
@@ -99,6 +96,24 @@
     </Filter>
     <Filter Include="Game\02.Manager\08.CameraMgr">
       <UniqueIdentifier>{869f5736-81d0-4e2f-8505-585ff933df0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component\RigidBody">
+      <UniqueIdentifier>{31f62b3d-5819-4000-8608-4d3ea93a43da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component\Collider">
+      <UniqueIdentifier>{948ee0c3-a3b1-4826-97f5-d9a25354b1c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\03.Ground">
+      <UniqueIdentifier>{72e0a5a7-e10d-464b-8c5e-0de675d3c4fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\04.Player">
+      <UniqueIdentifier>{e689a296-1427-40e5-b275-19b2c6ae64d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component\Collider\LineCollider">
+      <UniqueIdentifier>{35bc6f04-977b-450c-bb50-7f75330aaca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\05.Component\Collider\SquareCollider">
+      <UniqueIdentifier>{bd24280d-4f32-428b-834c-2ac05d4393fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,14 +201,11 @@
     <ClInclude Include="func.h">
       <Filter>Game\00.Header</Filter>
     </ClInclude>
-    <ClInclude Include="CBackground.h">
-      <Filter>Game\04.Object\01.Background</Filter>
-    </ClInclude>
     <ClInclude Include="CBackgroundObject.h">
       <Filter>Game\04.Object\02.BackgroundObject</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
-      <Filter>Game\04.Object\03.Player</Filter>
+      <Filter>Game\04.Object\04.Player</Filter>
     </ClInclude>
     <ClInclude Include="CAnimator.h">
       <Filter>Game\05.Component\Animator</Filter>
@@ -203,6 +215,27 @@
     </ClInclude>
     <ClInclude Include="CAnimation.h">
       <Filter>Game\05.Component\Animator\CAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollider.h">
+      <Filter>Game\05.Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>Game\05.Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>Game\02.Manager\04.CollisionMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CLineCollider.h">
+      <Filter>Game\05.Component\Collider\LineCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CGround.h">
+      <Filter>Game\04.Object\03.Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CSquareCollider.h">
+      <Filter>Game\05.Component\Collider\SquareCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackground.h">
+      <Filter>Game\04.Object\01.Background</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,7 +326,7 @@
       <Filter>Game\04.Object\02.BackgroundObject</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
-      <Filter>Game\04.Object\03.Player</Filter>
+      <Filter>Game\04.Object\04.Player</Filter>
     </ClCompile>
     <ClCompile Include="CAnimator.cpp">
       <Filter>Game\05.Component\Animator</Filter>
@@ -303,6 +336,24 @@
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>Game\05.Component\Animator\CAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider.cpp">
+      <Filter>Game\05.Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>Game\05.Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>Game\02.Manager\04.CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLineCollider.cpp">
+      <Filter>Game\05.Component\Collider\LineCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CGround.cpp">
+      <Filter>Game\04.Object\03.Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CSquareCollider.cpp">
+      <Filter>Game\05.Component\Collider\SquareCollider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

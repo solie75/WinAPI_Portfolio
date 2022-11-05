@@ -8,6 +8,8 @@
 #include "CKeyMgr.h"
 #include "CLevelMgr.h"
 #include "CEventMgr.h"
+#include "CCameraMgr.h"
+#include "CCollisionMgr.h"
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)
@@ -72,11 +74,14 @@ void CEngine::CEngineTick()
 	// Check Key Event
 	CKeyMgr::GetInst()->KeyMgrTick();
 
+	// Camera
+	CCameraMgr::GetInst()->CameraMgrTick();
+
 	// callback all Object in CurLevel
 	CLevelMgr::GetInst()->LevelMgrTick();
 
 	// Callback all Collision
-	//CollisionMgr::GetInst()->CollisionMgrTick();
+	CCollisionMgr::GetInst()->CollisionMgrTick();
 }
 
 void CEngine::CEngineRender()

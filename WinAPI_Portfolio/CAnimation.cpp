@@ -31,7 +31,6 @@ void CAnimation::AnimationInit(const wstring& _strName, CTexture* _pAtlas, Vec _
 
 	for (int i = 0; i < _iMaxFrameCount; ++i)
 	{
-
 		tAnimFrame frm = {};
 
 		frm.vLeftTop = Vec(_vLeftTop.x + (float)(i%10) * _vSize.x, _vLeftTop.y + (float)(i/10) * _vSize.y);

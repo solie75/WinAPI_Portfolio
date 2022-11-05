@@ -2,6 +2,8 @@
 #include "CEntity.h"
 
 class CAnimator;
+class CRigidBody;
+class CCollider;
 
 class CObject :
     public CEntity
@@ -13,6 +15,9 @@ private:
 	wstring strName;
 
 	CAnimator* m_pAnimator;
+	map<int, CCollider*> m_mapCollider;
+	//CCollider* m_pCollider;
+	CRigidBody* m_pRigidBody;
 
 public:
 	void SetPos(Vec _v) { m_vPos = _v; }
@@ -23,13 +28,37 @@ public:
 
 	virtual void ObjectTick();
 	virtual void Final_Tick() final;
-	virtual void ObjectRender(HDC _dc, wstring);
+	virtual void ObjectRender(HDC _dc, wstring _pstring);
 
 	void CreateAnimator();
+	void CreateSquareCollider(int _colliderIdx);
+	void CreateLineCollider(Vec _pStart, Vec _pEnd, int _colliderIdx); // for GroundCollider
+	void CreateRigidBody();
+	
+	virtual void CollisionBegin(CCollider* _pOther){}
+	virtual void Colliding(CCollider* _pOther){}
+	virtual void CollisionEnd(CCollider* _pOther){}
+
+
 
 	CAnimator* GetAnimator() {
 		return m_pAnimator;
 	}
+
+	CCollider* GetCollider(int _ColliderIdx) {
+		map<int, CCollider*>::iterator iter = m_mapCollider.find(_ColliderIdx);
+		return iter->second;
+	}
+
+	map<int, CCollider*> GetColliderMap() {
+		return m_mapCollider;
+	}
+
+	CRigidBody* GetRigidBody() {
+		return m_pRigidBody;
+	}
+
+
 
 public:
 	bool IsDead() { return m_bDead; }
