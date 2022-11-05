@@ -56,6 +56,13 @@ void CCollisionMgr::CollisionBtwLayer(LAYER _layer1, LAYER _layer2)
 	const vector<CObject*>& vecFirst = pCurLevel->GetLayer(_layer1);
 	const vector<CObject*>& vecSecond = pCurLevel->GetLayer(_layer2);
 
+	
+
+	if (vecFirst.empty() || vecSecond.empty())
+	{
+		return;
+	}
+
 	for (size_t i = 0; i < vecFirst.size(); ++i)
 	{
 		if (true == vecFirst[i]->GetColliderMap().empty())
@@ -86,12 +93,18 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 	// check the state of Object's dead
 	bool bDead = _Object1->IsDead() || _Object2->IsDead();
 
-	map<int, CCollider*>::iterator Iter1 = _Object1->GetColliderMap().begin();
-	map<int, CCollider*>::iterator Iter2 = _Object2->GetColliderMap().begin();
+	//map<int, CCollider*>::iterator Iter1 = _Object1->GetColliderMap().begin();
+	//map<int, CCollider*>::iterator Iter2 = _Object2->GetColliderMap().begin();
 
-	for (; Iter1 != _Object1->GetColliderMap().end(); ++Iter1)
+	map<int, CCollider*> ColliderMap1 = _Object1->GetColliderMap();
+	map<int, CCollider*> ColliderMap2 = _Object2->GetColliderMap();
+
+	map<int, CCollider*>::iterator Iter1 = ColliderMap1.begin();
+	map<int, CCollider*>::iterator Iter2 = ColliderMap2.begin();
+
+	for (; Iter1 != ColliderMap1.end(); ++Iter1)
 	{ 
-		for (; Iter2 != _Object2->GetColliderMap().end(); ++Iter2)
+		for (; Iter2 != ColliderMap2.end(); ++Iter2)
 		{
 			// combine for creating ID of Collision 
 			CollisionID ID = {};
@@ -127,7 +140,7 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 				{
 					if (!bDead)
 					{
-						Iter1->second->BeginOverlap(Iter2->second);
+ 						Iter1->second->BeginOverlap(Iter2->second);
 						Iter2->second->BeginOverlap(Iter1->second);
 						iter->second = true;
 					}
@@ -151,21 +164,38 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 
 bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Collider2)
 {
-	if (Vec(0.f, 0.f) == _Collider1->GetColliderScale()) // Collider1 ÀÌ ¼±
+	if (Vec(0.f, 0.f) == _Collider1->GetColliderScale())
 	{
 		Vec vCollider2Pos = _Collider2->GetColliderFinalPos();
 		Vec vCollider2Scale = _Collider2->GetColliderScale();
 
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider1);
 
-		(vCollider2Pos.y - vCollider2Scale.y /2.f) > Get
+		// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
+		float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
+		double distance = fabs((double)inclination* vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
 
-		if (true)
+		if (distance < 1.f)
 		{
-			fabsf(_pLineCollider->GetStartPoint().x - vCollider2Pos.x)
-		};
+			return true;
+		}
 	}
+	if (Vec(0.f, 0.f) == _Collider2->GetColliderScale()) // case of LineCollider
+	{
+		Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
+		Vec vCollider1Scale = _Collider1->GetColliderScale();
 
+		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider2);
+
+		// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
+		float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
+		double distance = fabs((double)inclination * vCollider1Pos.x - (vCollider1Pos.y + vCollider1Scale.y) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
+
+		if (distance == 0.f)
+		{
+			return true;
+		}
+	}
 
 	Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
 	Vec vCollider1Scale = _Collider1->GetColliderScale();
