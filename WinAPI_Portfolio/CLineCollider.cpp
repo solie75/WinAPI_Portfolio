@@ -43,10 +43,12 @@ void CLineCollider::ComponentRender(HDC _dc)
 
 	//Vec vRenderPos = CCameraMgr::GetInst()->GetRenderPos(GetColliderFinalPos());
 	
-	// 그냥 정수로 Rectangle이나 선을 그리는 함수는 작동하는데 아래것만 작동 안함 시발
 	// drawing the Line
-	MoveToEx(_dc, (int)(StartPoint.x), (int)(StartPoint.y), NULL);
-	LineTo(_dc, (int)(EndPoint.x), (int)(EndPoint.y));
+	Vec vStartPoint = CCameraMgr::GetInst()->GetRenderPos(StartPoint);
+	Vec vEndPoint = CCameraMgr::GetInst()->GetRenderPos(EndPoint);
+
+	MoveToEx(_dc, (int)(vStartPoint.x), (int)(vStartPoint.y), NULL);
+	LineTo(_dc, (int)(vEndPoint.x), (int)(vEndPoint.y));
 
 	SelectObject(_dc, hOriginPen);
 	SelectObject(_dc, hOriginBrush);

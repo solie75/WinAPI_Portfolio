@@ -171,13 +171,16 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider1);
 
-		// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
-		float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
-		double distance = fabs((double)inclination* vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
-
-		if (distance < 1.f)
+		if (vCollider2Pos.x < _pLineCollider->GetEndPoint().x && vCollider2Pos.x > _pLineCollider->GetStartPoint().x)
 		{
-			return true;
+			// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
+			float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
+			double distance = fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y / 2.f) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
+
+			if (distance < 1.f)
+			{
+				return true;
+			}
 		}
 	}
 	if (Vec(0.f, 0.f) == _Collider2->GetColliderScale()) // case of LineCollider
@@ -187,14 +190,18 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider2);
 
-		// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
-		float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
-		double distance = fabs((double)inclination * vCollider1Pos.x - (vCollider1Pos.y + vCollider1Scale.y) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
-
-		if (distance == 0.f)
+		if (vCollider1Pos.x < _pLineCollider->GetEndPoint().x && vCollider1Pos.x > _pLineCollider->GetStartPoint().x)
 		{
-			return true;
+			// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
+			float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
+			double distance = fabs((double)inclination * vCollider1Pos.x - (vCollider1Pos.y + vCollider1Scale.y) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
+
+			if (distance == 0.f)
+			{
+				return true;
+			}
 		}
+
 	}
 
 	Vec vCollider1Pos = _Collider1->GetColliderFinalPos();

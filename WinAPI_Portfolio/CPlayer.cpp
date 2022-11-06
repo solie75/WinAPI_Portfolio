@@ -15,14 +15,14 @@
 CPlayer::CPlayer()
 	: m_pTexture(nullptr)
 	, m_pDeathSpawn(nullptr)
-	, m_fSpeed(100.f)
+	, m_fSpeed(300.f)
 {
 }
 
 CPlayer::CPlayer(wstring _pstring)
 	: m_pTexture(nullptr)
 	, m_pDeathSpawn(nullptr)
-	, m_fSpeed(100.f)
+	, m_fSpeed(300.f)
 {
 	CreateAnimator();
 	CreateSquareCollider(0);
@@ -54,7 +54,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::ObjectTick()
 {
-	Vec vPos = CCameraMgr::GetInst()->GetRenderPos(GetPos());
+	Vec vPos = GetPos();
 
 	if (IsPressed(KEY::RIGHT))
 	{
