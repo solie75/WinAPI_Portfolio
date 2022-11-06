@@ -10,6 +10,7 @@ CCollider::CCollider(CObject* _pOwner)
 	: CComponent(_pOwner)
 	, m_iOverlapCount(0)
 	, m_vColliderScale(Vec(0.f,0.f))
+	, m_ColliderType(0)
 {
 }
 
@@ -19,6 +20,7 @@ CCollider::CCollider(const CCollider& _other)
 	, m_vColliderFinalPos(_other.m_vColliderFinalPos)
 	, m_vColliderScale(_other.m_vColliderScale)
 	, m_iOverlapCount(0)
+	, m_ColliderType(0)
 {
 }
 

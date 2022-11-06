@@ -11,6 +11,7 @@ CLineCollider::CLineCollider(CObject* _pOwner, Vec _pStart, Vec _End)
 	, EndPoint(_End)
 {
 	SetOverlapCount(0);
+	SetColliderType((UINT)COLLIDER_TYPE::LINE);
 }
 
 CLineCollider::~CLineCollider()

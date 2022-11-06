@@ -77,3 +77,12 @@ enum class CAMERA_EFFECT
 	FADE_OUT,
 	NONE
 };
+
+enum class COLLIDER_TYPE
+{
+	LINE,
+	SQUARE,
+
+
+	END = 6
+};

@@ -131,12 +131,14 @@ void CObject::CreateSquareCollider(int _colliderIdx)
 	//m_pCollider = new CSquareCollider(this);
 
 	m_mapCollider.insert(make_pair( (_colliderIdx), (CCollider*)(new CSquareCollider(this))));
+	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
 }
 
 void CObject::CreateLineCollider(Vec _pStart, Vec _pEnd, int _colliderIdx)
 {
 	//m_pCollider = new CLineCollider(this, _pStart, _pEnd);
 	m_mapCollider.insert(make_pair(_colliderIdx, (CCollider*)(new CLineCollider(this, _pStart, _pEnd))));
+	m_vecCollider.push_back((CCollider*)(new CLineCollider(this, _pStart, _pEnd)));
 }
 
 void CObject::CreateRigidBody()

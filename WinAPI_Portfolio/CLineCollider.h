@@ -11,6 +11,8 @@ public:
     Vec GetStartPoint() { return StartPoint; }
     Vec GetEndPoint() { return EndPoint; }
 
+    bool IsLineCollider() { return true; }
+
 public:
     virtual void ComponentTick() override;
     virtual void ComponentRender(HDC _dc) override;

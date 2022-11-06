@@ -8,6 +8,7 @@ CSquareCollider::CSquareCollider(CObject* _pOwner)
 	:	CCollider(_pOwner)
 {
 	SetOverlapCount(0);
+	SetColliderType((UINT)COLLIDER_TYPE::SQUARE);
 }
 
 CSquareCollider::~CSquareCollider()

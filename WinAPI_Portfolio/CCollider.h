@@ -9,6 +9,8 @@ private:
     Vec m_vColliderFinalPos;
     Vec m_vColliderScale;
 
+    UINT m_ColliderType;
+
     int m_iOverlapCount;
 
 public:
@@ -18,6 +20,8 @@ public:
     void AddOverlapCount() { ++m_iOverlapCount; }
     void SubtractOvelapCount() { --m_iOverlapCount; }
     int GetOverlapCount() { return m_iOverlapCount; }
+    void SetColliderType(UINT _ColliderType) { m_ColliderType = _ColliderType; }
+    UINT GetColliderType() { return m_ColliderType; }
 
 
     Vec GetColliderSetOffSetPos() { return m_vColliderOffsetPos; }

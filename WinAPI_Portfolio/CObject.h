@@ -16,6 +16,7 @@ private:
 
 	CAnimator* m_pAnimator;
 	map<int, CCollider*> m_mapCollider;
+	vector<CCollider*> m_vecCollider;
 	//CCollider* m_pCollider;
 	CRigidBody* m_pRigidBody;
 
@@ -52,6 +53,10 @@ public:
 
 	map<int, CCollider*> GetColliderMap() {
 		return m_mapCollider;
+	}
+
+	vector<CCollider*> GetColliderVector() {
+		return m_vecCollider;
 	}
 
 	CRigidBody* GetRigidBody() {

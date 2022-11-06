@@ -7,6 +7,8 @@ public:
     virtual void ComponentTick() override;
     virtual void ComponentRender(HDC _dc) override;
 
+    bool IsSquareCollider() { return true; }
+
 public:
     virtual void BeginOverlap(CCollider* _other);
     virtual void EndOverlap(CCollider* _other);
