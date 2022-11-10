@@ -16,11 +16,17 @@ CBackground::CBackground(wstring _pstring)
 	SetName(_pstring);
 
 	// 여기에서 _pstring 으로 LineCollider FILE 을 검색하여 로드해 CreateLineCollider 를 반복 재생한다.
-	CreateLineCollider(Vec(-740.f,800.f), Vec(100.f, 800.f), 0);
-	CreateLineCollider(Vec(100.f, 800.f), Vec(250.f, 625.f), 1);
-	CreateLineCollider(Vec(250.f, 625.f), Vec(1550.f, 625.f), 2);
-	CreateLineCollider(Vec(1550.f, 625.f), Vec(1700.f, 800.f), 3);
-	CreateLineCollider(Vec(1700.f, 800.f), Vec(2335.f, 800.f), 4);
+	CreateLineCollider(Vec(-740.f,800.f), Vec(100.f, 800.f));
+	CreateLineCollider(Vec(100.f, 800.f), Vec(250.f, 625.f));
+	CreateLineCollider(Vec(250.f, 625.f), Vec(1550.f, 625.f));
+	CreateLineCollider(Vec(1550.f, 625.f), Vec(1700.f, 800.f));
+	CreateLineCollider(Vec(1700.f, 800.f), Vec(2335.f, 800.f));
+
+	//CreateLineCollider(Vec(-741.f, 801.f), Vec(101.f, 801.f));
+	//CreateLineCollider(Vec(101.f, 801.f), Vec(251.f, 621.f));
+	//CreateLineCollider(Vec(249.f, 626.f), Vec(1551.f, 626.f));
+	//CreateLineCollider(Vec(1549.f, 624.f), Vec(1701.f, 801.f));
+	//CreateLineCollider(Vec(1699.f, 799.f), Vec(2336.f, 801.f));
 }
 
 CBackground::~CBackground()

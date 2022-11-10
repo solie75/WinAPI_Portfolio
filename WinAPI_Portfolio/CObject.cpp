@@ -13,8 +13,7 @@ CObject::CObject()
 	, m_vScale{}
 	, m_bDead(false)
 	, m_pAnimator(nullptr)
-	//, m_pCollider(nullptr)
-	, m_mapCollider{}
+	, m_vecCollider{}
 	, m_pRigidBody(nullptr)
 { 
 }
@@ -25,8 +24,7 @@ CObject::CObject(const CObject& _other)
 	, m_vScale{}
 	, m_bDead(false)
 	, m_pAnimator(nullptr)
-	//, m_pCollider(nullptr)
-	, m_mapCollider{}
+	, m_vecCollider{}
 	, m_pRigidBody(nullptr)
 {
 	if (nullptr != _other.m_pAnimator)
@@ -34,18 +32,25 @@ CObject::CObject(const CObject& _other)
 		m_pAnimator = _other.m_pAnimator->Clone();
 		m_pAnimator->SetOwner(this);
 	}
+
+	if (0 != _other.m_vecCollider.size())
+	{
+		for (size_t i = 0; i < m_vecCollider.size(); ++i)
+		{
+			m_vecCollider[i] = _other.m_vecCollider[i]->Clone();
+			m_vecCollider[i]->SetOwner(this);
+		}
+	}
 }
 
 CObject::~CObject()
 {
 	DEL(m_pAnimator);
-	//DEL(m_pCollider);
 	DEL(m_pRigidBody);
 	
-	map<int, CCollider*>::iterator iter = m_mapCollider.begin();
-	for (; iter != m_mapCollider.end(); ++iter)
+	for (size_t i = 0; i < m_vecCollider.size(); ++i)
 	{
-		delete iter->second;
+		DEL(m_vecCollider[i]);
 	}
 }
 
@@ -55,21 +60,16 @@ void CObject::ObjectTick()
 	{
 		m_pAnimator->ComponentTick();
 	}
+	if (0 != m_vecCollider.size())
+	{
+		for (size_t i = 0; i < m_vecCollider.size(); ++i)
+		{
+			m_vecCollider[i]->ComponentTick();
+		}
+	}
 	if (nullptr != m_pRigidBody)
 	{
 		m_pRigidBody->ComponentTick();
-	}
-	//if (nullptr != m_pCollider)
-	//{
-	//	m_pCollider->ComponentTick();
-	//}
-	if (true != m_mapCollider.empty())
-	{
-		map<int, CCollider*>::iterator iter = m_mapCollider.begin();
-		for (; iter != m_mapCollider.end(); ++iter)
-		{
-			iter->second->ComponentTick();
-		}
 	}
 }
 
@@ -79,21 +79,16 @@ void CObject::Final_Tick()
 	{
 		m_pAnimator->Final_Tick();
 	}
+	if (0 != m_vecCollider.size())
+	{
+		for (size_t i = 0; i < m_vecCollider.size(); ++i)
+		{
+			m_vecCollider[i]->Final_Tick();
+		}
+	}
 	if (nullptr != m_pRigidBody)
 	{
 		m_pRigidBody->Final_Tick();
-	}
-	//if (nullptr != m_pCollider)
-	//{
-	//	m_pCollider->Final_Tick();
-	//}
-	if (true != m_mapCollider.empty())
-	{
-		map<int, CCollider*>::iterator iter = m_mapCollider.begin();
-		for (; iter != m_mapCollider.end(); ++iter)
-		{
-			iter->second->Final_Tick();
-		}
 	}
 }
 
@@ -103,21 +98,16 @@ void CObject::ObjectRender(HDC _dc, wstring _pstring)
 	{
 		m_pAnimator->ComponentRender(_dc);
 	}
-	//if (nullptr != m_pCollider)
-	//{
-	//	m_pCollider->ComponentRender(_dc);
-	//}
+	if (0 != m_vecCollider.size())
+	{
+		for (size_t i = 0; i < m_vecCollider.size(); ++i)
+		{
+			m_vecCollider[i]->ComponentRender(_dc);
+		}
+	}
 	if (nullptr != m_pRigidBody)
 	{
 		m_pRigidBody->ComponentRender(_dc);
-	}
-	if (true != m_mapCollider.empty())
-	{
-		map<int, CCollider*>::iterator iter = m_mapCollider.begin();
-		for (; iter != m_mapCollider.end(); ++iter)
-		{
-			iter->second->ComponentRender(_dc);
-		}
 	}
 }
 
@@ -126,18 +116,18 @@ void CObject::CreateAnimator()
 	m_pAnimator = new CAnimator(this);
 }
 
-void CObject::CreateSquareCollider(int _colliderIdx)
+void CObject::CreateSquareCollider()
 {
 	//m_pCollider = new CSquareCollider(this);
 
-	m_mapCollider.insert(make_pair( (_colliderIdx), (CCollider*)(new CSquareCollider(this))));
+	//m_mapCollider.insert(make_pair( (_colliderIdx), (CCollider*)(new CSquareCollider(this))));
 	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
 }
 
-void CObject::CreateLineCollider(Vec _pStart, Vec _pEnd, int _colliderIdx)
+void CObject::CreateLineCollider(Vec _pStart, Vec _pEnd)
 {
 	//m_pCollider = new CLineCollider(this, _pStart, _pEnd);
-	m_mapCollider.insert(make_pair(_colliderIdx, (CCollider*)(new CLineCollider(this, _pStart, _pEnd))));
+	//m_mapCollider.insert(make_pair(_colliderIdx, (CCollider*)(new CLineCollider(this, _pStart, _pEnd))));
 	m_vecCollider.push_back((CCollider*)(new CLineCollider(this, _pStart, _pEnd)));
 }
 

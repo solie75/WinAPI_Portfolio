@@ -81,7 +81,7 @@ void CAnimation::AnimationRender(HDC _dc)
 		int(frm.vLeftTop.y),
 		int(frm.vSize.x),
 		int(frm.vSize.y),
-		RGB(255, 255, 255)
+		RGB(253, 253, 254)
 	);
 }
 

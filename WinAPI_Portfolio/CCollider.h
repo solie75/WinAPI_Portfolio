@@ -24,7 +24,7 @@ public:
     UINT GetColliderType() { return m_ColliderType; }
 
 
-    Vec GetColliderSetOffSetPos() { return m_vColliderOffsetPos; }
+    Vec GetColliderOffSetPos() { return m_vColliderOffsetPos; }
     Vec GetColliderFinalPos() { return m_vColliderFinalPos; }
     Vec GetColliderScale() { return m_vColliderScale; }
 
@@ -33,12 +33,12 @@ public:
     virtual void ComponentRender(HDC _dc);
 
 public:
-    virtual void BeginOverlap(CCollider* _other) = 0;
-    virtual void EndOverlap(CCollider* _other) = 0;
-    virtual void OnOverlap(CCollider* _other) = 0;
+    virtual void BeginOverlap(CCollider* _other);
+    virtual void EndOverlap(CCollider* _other);
+    virtual void OnOverlap(CCollider* _other);
 
 public:
-    //CLONE(CCollider);
+    CLONE(CCollider);
 
 public:
     CCollider(CObject* _pOwner);

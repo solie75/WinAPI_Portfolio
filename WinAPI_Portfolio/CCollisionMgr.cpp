@@ -65,7 +65,7 @@ void CCollisionMgr::CollisionBtwLayer(LAYER _layer1, LAYER _layer2)
 
 	for (size_t i = 0; i < vecFirst.size(); ++i)
 	{
-		if (true == vecFirst[i]->GetColliderMap().empty())
+		if (0 == vecFirst[i]->GetColliderVector().size())
 		{
 			continue;
 		}
@@ -106,168 +106,139 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 	{
 		for (size_t j = 0 ; j < ColliderVector2.size(); ++j) // Collier map 에 Collder가 하나만 존재하는 경우 Iter는 첫 번째에 ColliderMap의 End() 가 된다.'
 		{
+			/*if (nullptr == ColliderVector1[j].GetCollider() || ColliderVector2[i] == vecRight[j])
+				continue;*/
 			// combine for creating ID of Collision 
 			CollisionID ID = {};
 			ID.FirstID = ColliderVector1[i]->GetID();
 			ID.SecondID = ColliderVector2[j]->GetID();
+			ID.id = (ID.FirstID + ID.SecondID);
 
 			// check Collision in previous Flame
 			map<UINT_PTR, bool>::iterator iter = m_mapPrevInfo.find(ID.id);
-			if (iter == m_mapPrevInfo.end())
+			if (iter == m_mapPrevInfo.end()) // 조합한 충돌 아이디가 이전 충돌 map 에 존재 하지 않으면 충돌 상태 false로 map 에 저장
 			{
 				m_mapPrevInfo.insert(make_pair(ID.id, false));
-				iter = m_mapPrevInfo.find(ID.id);
+				iter = m_mapPrevInfo.find(ID.id); // 저장한 뒤 해당 id 를 iter 에 대입하도록 다시 찾음
 			}
+			// -> 모든 충돌의 경우의 수는 다 저장이 된다.
 
 			// case of during Colliding
 			if (CollisionBtwCollider(ColliderVector1[i], ColliderVector2[j]))
 			{
 				// Case of Colliding in PrevFrame
-				if (iter->second)
+				if (iter->second) // 현재 비교중인 두 충돌체가 실제 충돌했고 또한 이전 프레임에도 충돌중인 경우
 				{
-					if (bDead)
+					if (bDead) // 두 충돌체 중 하나라도 죽은 상태라면
 					{
 						ColliderVector1[i]->EndOverlap(ColliderVector2[j]);
 						ColliderVector2[j]->EndOverlap(ColliderVector1[i]);
+						iter->second = false;
 					}
-					else
+					else // 두 충돌체 모두 살아있는 상태라면
 					{
 						ColliderVector1[i]->OnOverlap(ColliderVector2[j]);
 						ColliderVector2[j]->OnOverlap(ColliderVector1[i]);
 					}
 				}
-				else
+				else // 이전프레임에서 충돌이 없었고 현재 프레임에 충돌이 있는 경우
 				{
-					if (!bDead)
+					if (!bDead) // 두 충돌체가 모두 살아있다면
 					{
 						ColliderVector1[i]->BeginOverlap(ColliderVector2[j]);
 						ColliderVector2[j]->BeginOverlap(ColliderVector1[i]);
-						iter->second = true;
+						iter->second = true; // 충돌 상태를 true 로 바꾼다.
 					}
 				}
 			}
 			else
 			{
 				// case of Colliding in PrevFrame
-				if (iter->second)
+				if (iter->second) // 현재 충돌상태가 아니지만 이전 프레임에서 충돌이 있었던 경우
 				{
 					ColliderVector1[i]->EndOverlap(ColliderVector2[j]);
 					ColliderVector2[j]->EndOverlap(ColliderVector1[i]);
-					iter->second = false;
+					iter->second = false; // 더 이상 충돌이 아니므로 충돌상태를 false 로 바꾼다.
 				}
 			}
 
 
 		}
 	}
-
-	//for (; Iter1 != ColliderMap1.end(); ++Iter1)
-	//{ 
-	//	for (; Iter2 != ColliderMap2.end(); ++Iter2) // Collier map 에 Collder가 하나만 존재하는 경우 Iter는 첫 번째에 ColliderMap의 End() 가 된다.'
-	//	{
-	//		// combine for creating ID of Collision 
-	//		CollisionID ID = {};
-	//		ID.FirstID = Iter1->second->GetID();
-	//		ID.SecondID = Iter2->second->GetID();
-
-	//		// check Collision in previous Flame
-	//		map<UINT_PTR, bool>::iterator iter = m_mapPrevInfo.find(ID.id);
-	//		if(iter == m_mapPrevInfo.end())
-	//		{
-	//			m_mapPrevInfo.insert(make_pair(ID.id, false));
-	//			iter = m_mapPrevInfo.find(ID.id);
-	//		}
-
-	//		// case of during Colliding
-	//		if (CollisionBtwCollider(Iter1->second, Iter2->second)) // 여기에서 계속해서 첫번째 LineCollider 가 들어간다.
-	//		{
-	//			// Case of Colliding in PrevFrame
-	//			if (iter->second)
-	//			{
-	//				if (bDead)
-	//				{
-	//					Iter1->second->EndOverlap(Iter2->second);
-	//					Iter2->second->EndOverlap(Iter1->second);
-	//				}
-	//				else
-	//				{
-	//					Iter1->second->OnOverlap(Iter2->second);
-	//					Iter2->second->OnOverlap(Iter1->second);
-	//				}
-	//			}
-	//			else
-	//			{
-	//				if (!bDead)
-	//				{
- //						Iter1->second->BeginOverlap(Iter2->second);
-	//					Iter2->second->BeginOverlap(Iter1->second);
-	//					iter->second = true;
-	//				}
-	//			}
-	//		}
-	//		else
-	//		{
-	//			// case of Colliding in PrevFrame
-	//			if (iter->second)
-	//			{
-	//				Iter1->second->EndOverlap(Iter2->second);
-	//				Iter2->second->EndOverlap(Iter1->second);
-	//				iter->second = false;
-	//			}
-	//		}
-
-
-	//	}
-	//}
 }
 
 bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Collider2)
 {
+	Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
+	Vec vCollider1Scale = _Collider1->GetColliderScale();
+
+	Vec vCollider2Pos = _Collider2->GetColliderFinalPos();
+	Vec vCollider2Scale = _Collider2->GetColliderScale();
+
 	if ((UINT)COLLIDER_TYPE::LINE == _Collider1->GetColliderType())
 	{
-		Vec vCollider2Pos = _Collider2->GetColliderFinalPos();
-		Vec vCollider2Scale = _Collider2->GetColliderScale();
+		//Vec vCollider2Pos = _Collider2->GetColliderFinalPos();
+		//Vec vCollider2Scale = _Collider2->GetColliderScale();
 
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider1);
 
 		if (vCollider2Pos.x < _pLineCollider->GetEndPoint().x && vCollider2Pos.x > _pLineCollider->GetStartPoint().x)
 		{
 			// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
-			float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
-			double distance = fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y / 2.f) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
+			//float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
+			//float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
+			//double distance = fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y / 2.f) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
+			//double distance = fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y / 2.f) + y_intercept) / sqrtf(inclination * inclination + 1);
 
-			if (distance < 1.f)
+			_pLineCollider->SetInclination((_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x));
+			float inclination = _pLineCollider->GetInclination();
+			float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
+			_pLineCollider->SetDistance(fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y/2.f) + y_intercept) / (sqrtf(inclination * inclination + 1)));
+
+			if (_pLineCollider->GetDistance() <= 2.f) // distance == 0 이면 충돌이게 하고 싶지만 그렇게 하면 그냥 통과 해버린다.
 			{
 				return true;
 			}
+
+			float yOfLineCollider = (_pLineCollider->GetInclination() * vCollider2Pos.x) + y_intercept;
+			//float playerYpos = 
+			if ((vCollider2Pos.y + (vCollider2Scale.y / 2.f)) > yOfLineCollider)
+			{
+				//_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - vCollider2Scale.y / 2.f));
+				_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - 26.f)); // 왜 vCollider2Scale.y / 2.f 가 아니라 26.f 라는 값이 나오는가.
+			}
+
 		}
 	}
 	if ((UINT)COLLIDER_TYPE::LINE == _Collider2->GetColliderType()) // case of LineCollider
 	{
-		Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
-		Vec vCollider1Scale = _Collider1->GetColliderScale();
+		//Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
+		//Vec vCollider1Scale = _Collider1->GetColliderScale();
 
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider2);
 
 		if (vCollider1Pos.x < _pLineCollider->GetEndPoint().x && vCollider1Pos.x > _pLineCollider->GetStartPoint().x)
 		{
 			// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
-			float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
-			double distance = fabs((double)inclination * vCollider1Pos.x - (vCollider1Pos.y + vCollider1Scale.y) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
+			_pLineCollider->SetInclination((_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x));
+			float inclination = _pLineCollider->GetInclination();
+			float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
+			_pLineCollider->SetDistance(fabs((double)inclination * vCollider1Pos.x - (vCollider1Pos.y + vCollider1Scale.y) + y_intercept) / (sqrtf(inclination * inclination + 1)));
 
-			if (distance == 0.f)
+			if (_pLineCollider->GetDistance() <= 2.f)
 			{
 				return true;
+			}
+
+			float yOfLineCollider = (_pLineCollider->GetInclination() * vCollider1Pos.x) + y_intercept;
+			//float playerYpos = 
+			if ((vCollider1Pos.y + vCollider1Scale.y / 2.f) > yOfLineCollider)
+			{
+				_Collider1->GetOwner()->SetPos(Vec(_Collider1->GetOwner()->GetPos().x, yOfLineCollider));
 			}
 		}
 
 	}
-
-	Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
-	Vec vCollider1Scale = _Collider1->GetColliderScale();
-
-	Vec vCollider2Pos = _Collider2->GetColliderFinalPos();
-	Vec vCollider2Scale = _Collider2->GetColliderScale();
 
 	if (fabsf(vCollider1Pos.x - vCollider2Pos.x) > (vCollider1Scale.x + vCollider2Scale.x))
 	{

@@ -9,6 +9,7 @@ CSquareCollider::CSquareCollider(CObject* _pOwner)
 {
 	SetOverlapCount(0);
 	SetColliderType((UINT)COLLIDER_TYPE::SQUARE);
+	//SetColliderOffSetPos(GetOwner()->GetPos() + GetColliderOffSetPos());
 }
 
 CSquareCollider::~CSquareCollider()
@@ -59,7 +60,7 @@ void CSquareCollider::BeginOverlap(CCollider* _other)
 void CSquareCollider::EndOverlap(CCollider* _other)
 {
 	SubtractOvelapCount();
-	GetOwner()->CollisionBegin(_other);
+	GetOwner()->CollisionEnd(_other);
 }
 
 void CSquareCollider::OnOverlap(CCollider* _other)

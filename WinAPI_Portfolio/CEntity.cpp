@@ -9,7 +9,7 @@ CEntity::CEntity()
 }
 
 CEntity::CEntity(const CEntity& _Origin)
-	: m_id(g_iNextID)
+	: m_id(g_iNextID++)
 	, m_strName(_Origin.m_strName)
 {
 }

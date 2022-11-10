@@ -12,6 +12,7 @@
 #include "CCollisionMgr.h"
 
 #include "CAnimator.h"
+#include "CAnimation.h"
 
 CDeathOfficeLevel::CDeathOfficeLevel()
 {
@@ -26,7 +27,7 @@ void CDeathOfficeLevel::LevelInit()
 	// Image Loading
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
 	CResourceMgr::GetInst()->LoadTexture(L"OfficeChair", L"texture\\OfficeChair.bmp");
-	CResourceMgr::GetInst()->LoadTexture(L"DeathSpawn", L"texture\\DeathSpawn.bmp");
+
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 
@@ -46,6 +47,7 @@ void CDeathOfficeLevel::LevelInit()
 
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
+	pPlayer->SetKeyWorking(false);
 
 	
 	//CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
@@ -57,7 +59,20 @@ void CDeathOfficeLevel::LevelInit()
 
 void CDeathOfficeLevel::LevelTick()
 {
-	CLevel::LevelTick();
+	vector<CObject*> playerlayer = this->GetLayer(LAYER::PLAYER);
+	if (playerlayer.empty() == false) {
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(this->GetLayer(LAYER::PLAYER)[0]);
+		if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
+		{
+			if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+			{
+				pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
+				pPlayer->SetKeyWorking(true);
+			}
+		}
+		CLevel::LevelTick();
+	}
+	
 }
 
 void CDeathOfficeLevel::LevelEnter()

@@ -10,9 +10,9 @@ public:
     bool IsSquareCollider() { return true; }
 
 public:
-    virtual void BeginOverlap(CCollider* _other);
-    virtual void EndOverlap(CCollider* _other);
-    virtual void OnOverlap(CCollider* _other);
+    virtual void BeginOverlap(CCollider* _other) override;
+    virtual void EndOverlap(CCollider* _other) override;
+    virtual void OnOverlap(CCollider* _other) override;
 
 public:
     CLONE(CSquareCollider);

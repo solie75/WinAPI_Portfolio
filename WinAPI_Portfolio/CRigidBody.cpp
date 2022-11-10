@@ -54,7 +54,7 @@ void CRigidBody::Final_Tick()
 			vFriction *= (m_fFriction * m_fFrictionScale * m_fMass * DT);
 		}
 		
-		if (m_vVelocity.CountVectorScale() < vFriction.CountVectorScale())
+		if (m_vVelocity.CountVectorScale() <= vFriction.CountVectorScale())
 		{
 			m_vVelocity = Vec(0.f, 0.f);
 		}
@@ -67,7 +67,7 @@ void CRigidBody::Final_Tick()
 	if (m_bGravityUse && !m_bOnGround)
 	{
 		Vec vGravityAccel = Vec(0.f, m_fGravityAccel);
-		m_vVelocity += vGravityAccel * DT;
+		m_vVelocity += vGravityAccel * DT *3;
 	}
 
 	// Velocity Limit option
@@ -117,4 +117,3 @@ void CRigidBody::SetBoolOnGround(bool _bGround)
 		m_vVelocity.y = 0.f;
 	}
 }
-

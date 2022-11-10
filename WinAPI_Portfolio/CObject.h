@@ -32,8 +32,8 @@ public:
 	virtual void ObjectRender(HDC _dc, wstring _pstring);
 
 	void CreateAnimator();
-	void CreateSquareCollider(int _colliderIdx);
-	void CreateLineCollider(Vec _pStart, Vec _pEnd, int _colliderIdx); // for GroundCollider
+	void CreateSquareCollider();
+	void CreateLineCollider(Vec _pStart, Vec _pEnd); // for GroundCollider
 	void CreateRigidBody();
 	
 	virtual void CollisionBegin(CCollider* _pOther){}
@@ -47,13 +47,14 @@ public:
 	}
 
 	CCollider* GetCollider(int _ColliderIdx) {
-		map<int, CCollider*>::iterator iter = m_mapCollider.find(_ColliderIdx);
-		return iter->second;
+		//map<int, CCollider*>::iterator iter = m_mapCollider.find(_ColliderIdx);
+		//return iter->second;
+		return m_vecCollider[_ColliderIdx];
 	}
 
-	map<int, CCollider*> GetColliderMap() {
-		return m_mapCollider;
-	}
+	//map<int, CCollider*> GetColliderMap() {
+	//	return m_mapCollider;
+	//}
 
 	vector<CCollider*> GetColliderVector() {
 		return m_vecCollider;

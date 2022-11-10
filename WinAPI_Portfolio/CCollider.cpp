@@ -12,6 +12,7 @@ CCollider::CCollider(CObject* _pOwner)
 	, m_vColliderScale(Vec(0.f,0.f))
 	, m_ColliderType(0)
 {
+	//m_vColliderFinalPos = GetOwner()->GetPos() + m_vColliderOffsetPos;
 }
 
 CCollider::CCollider(const CCollider& _other)
@@ -22,6 +23,7 @@ CCollider::CCollider(const CCollider& _other)
 	, m_iOverlapCount(0)
 	, m_ColliderType(0)
 {
+	//m_vColliderFinalPos = GetOwner()->GetPos() + m_vColliderOffsetPos;
 }
 
 CCollider::~CCollider()
@@ -38,5 +40,17 @@ void CCollider::ComponentTick()
 }
 
 void CCollider::ComponentRender(HDC _dc)
+{
+}
+
+void CCollider::BeginOverlap(CCollider* _other)
+{
+}
+
+void CCollider::EndOverlap(CCollider* _other)
+{
+}
+
+void CCollider::OnOverlap(CCollider* _other)
 {
 }

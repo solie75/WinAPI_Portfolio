@@ -27,6 +27,9 @@ enum class KEY
 	D,
 	F,
 
+	K,
+	L,
+
 	_0,
 	_1,
 	_2,
