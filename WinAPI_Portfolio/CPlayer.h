@@ -16,6 +16,7 @@ class CPlayer :
 private:
     bool m_bKeyWorking;
 
+
 public:
     float m_fSpeed;
     CTexture* m_pTexture;
@@ -39,6 +40,8 @@ public:
     CTexture* m_pDeath;
 
     UINT DeathSight;
+    bool m_bToIdle;
+    bool m_bOnIdle;
 
 public:
     virtual void ObjectTick() override;
@@ -51,6 +54,9 @@ public:
 public:
     void SetKeyWorking(bool _b) { m_bKeyWorking = _b; }
     bool GetKeyWorking() { return m_bKeyWorking; }
+
+    //void SetBoolToIdle(bool _b) { m_bToIdle = _b; }
+    //bool GetBoolToIdle() { return m_bIdle; }
 
 public:
     CLONE(CPlayer);

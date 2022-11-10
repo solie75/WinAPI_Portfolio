@@ -38,6 +38,7 @@ public:
 
     void SetGravity(bool _bSet) { m_bGravityUse = _bSet; }
     void SetBoolOnGround(bool _bGround);
+    bool GetBoolOnGround() { return m_bOnGround; }
     void SetGravityAccel(float _fAccel) { m_fGravityAccel = _fAccel; }
 
 public:

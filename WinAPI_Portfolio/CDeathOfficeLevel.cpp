@@ -13,6 +13,7 @@
 
 #include "CAnimator.h"
 #include "CAnimation.h"
+#include "CRigidBody.h"
 
 CDeathOfficeLevel::CDeathOfficeLevel()
 {
@@ -66,13 +67,14 @@ void CDeathOfficeLevel::LevelTick()
 		{
 			if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
 			{
-				pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
+				pPlayer->GetRigidBody()->SetGravity(true);
+				pPlayer->m_bToIdle = true;
+				//pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
 				pPlayer->SetKeyWorking(true);
 			}
 		}
-		CLevel::LevelTick();
 	}
-	
+	CLevel::LevelTick();
 }
 
 void CDeathOfficeLevel::LevelEnter()

@@ -19,6 +19,7 @@
 #define IsTap(key) CKeyMgr::GetInst()->GetKeyState(key) == KEY_STATE::TAP
 #define IsPressed(key) CKeyMgr::GetInst()->GetKeyState(key) == KEY_STATE::PRESSED
 #define IsRelease(key) CKeyMgr::GetInst()->GetKeyState(key) == KEY_STATE::RELEASE
+#define IsNone(key) CKeyMgr::GetInst()->GetKeyState(key) == KEY_STATE::NONE
 #define MOUSE_POS CKeyMgr::GetInst()->GetMousePos()
 
 #define CLONE(type) virtual type* Clone() {return new type(*this);}

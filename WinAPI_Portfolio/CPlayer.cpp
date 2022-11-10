@@ -48,6 +48,8 @@ CPlayer::CPlayer()
 	, m_pDeathRunLeft(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
+	, m_bToIdle(false)
+	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 {
 }
@@ -67,6 +69,8 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathRunLeft(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
+	, m_bToIdle(false)
+	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 {
 	CreateAnimator();
@@ -86,20 +90,28 @@ CPlayer::CPlayer(wstring _pstring)
 	m_pDeathSpawn = CResourceMgr::GetInst()->LoadTexture(L"DeathSpawn", L"texture\\DeathSpawn.bmp");
 	m_pDeathIdleRight = CResourceMgr::GetInst()->LoadTexture(L"DeathIdleRight", L"texture\\DeathIdleRight.bmp");
 	m_pDeathIdleLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathIdleLeft", L"texture\\DeathIdleLeft.bmp");
+	m_pDeathIdleLeftToRight = CResourceMgr::GetInst()->LoadTexture(L"DeathIdleLeftToRight", L"texture\\DeathIdleLeftToRight.bmp");
+	m_pDeathIdleRightToLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathIdleRightToLeft", L"texture\\DeathIdleRightToLeft.bmp");
+	m_pDeathIdleToRunRight = CResourceMgr::GetInst()->LoadTexture(L"DeathIdleToRunRight", L"texture\\DeathIdleToRunRight.bmp");
+	m_pDeathIdleToRunLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathIdleToRunLeft", L"texture\\DeathIdleToRunLeft.bmp");
+	m_pDeathRunRightToIdle = CResourceMgr::GetInst()->LoadTexture(L"DeathRunRightToIdle", L"texture\\DeathRunRightToIdle.bmp");
+	m_pDeathRunLeftToIdle = CResourceMgr::GetInst()->LoadTexture(L"DeathRunLeftToIdle", L"texture\\DeathRunLeftToIdle.bmp");
+	m_pDeathRunRight = CResourceMgr::GetInst()->LoadTexture(L"DeathRunRight", L"texture\\DeathRunRight.bmp");
+	m_pDeathRunLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathRunLeft", L"texture\\DeathRunLeft.bmp");
 
 
 	SetName(_pstring);
 	GetAnimator()->CreateAnimation(L"DeathSpawn", m_pDeathSpawn, Vec(0.f, 0.f), Vec(150.f, 190.f), 100, 0.025f);
 	GetAnimator()->CreateAnimation(L"DeathIdleRight", m_pDeathIdleRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathIdleLeft", m_pDeathIdleLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleLeftToRight", m_pDeathIdleLeftToRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleRightToLeft", m_pDeathIdleRightToLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleToRunRight", m_pDeathIdleToRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleToRunLeft", m_pDeathIdleToRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathRunRightToIdle", m_pDeathRunRightToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathRunLeftToIdle", m_pDeathRunLeftToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathRunRight", m_pDeathRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathRunLeft", m_pDeathRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathIdleLeftToRight", m_pDeathIdleLeftToRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 7, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathIdleRightToLeft", m_pDeathIdleRightToLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 7, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathIdleToRunRight", m_pDeathIdleToRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 4, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathIdleToRunLeft", m_pDeathIdleToRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 4, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathRunRightToIdle", m_pDeathRunRightToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), 9, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathRunLeftToIdle", m_pDeathRunLeftToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), 9, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathRunRight", m_pDeathRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 5, 0.08f);
+	GetAnimator()->CreateAnimation(L"DeathRunLeft", m_pDeathRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 5, 0.08f);
 	
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
@@ -113,7 +125,7 @@ CPlayer::CPlayer(wstring _pstring)
 
 
 	// Gravity Setting
-	GetRigidBody()->SetGravity(true);
+	GetRigidBody()->SetGravity(false);
 	GetRigidBody()->SetGravityAccel(500.f);
 	GetRigidBody()->SetGravityVelocityLimit(700.f);
 }
@@ -127,34 +139,152 @@ void CPlayer::ObjectTick()
 {
 	Vec vPos = GetPos();
 
-	if (GetKeyWorking() == true)
+	// after animation
+	if (true == GetKeyWorking())
 	{
+		CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
+
+		if (CurAnim->GetCurAnimName() == L"DeathRunRightToIdle" && CurAnim->IsFinish())
+		{
+			this->m_bToIdle = true;
+		}
+
+		if (CurAnim->GetCurAnimName() == L"DeathRunLeftToIdle" && CurAnim->IsFinish())
+		{
+			this->m_bToIdle = true;
+		}
+
+		// Death Idled
+		if (this->GetRigidBody()->GetBoolOnGround())
+		{
+			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			{
+				//if (CurAnim->GetCurAnimName() == L"DeathSpawn" && CurAnim->IsFinish())
+				if(m_bToIdle)
+				{
+					this->GetAnimator()->Play(L"DeathIdleRight", true);
+					this->m_bToIdle = false;
+					this->m_bOnIdle = true;
+				}
+			}
+			else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			{
+				//if (CurAnim->GetCurAnimName() == L"DeathSpawn" && CurAnim->IsFinish())
+				if (m_bToIdle)
+				{
+					this->GetAnimator()->Play(L"DeathIdleLeft", true);
+					this->m_bToIdle =false;
+					this->m_bOnIdle = true;
+				}
+			}
+		}
+
+		// Death Sight and MoveStart
+		if (IsTap(KEY::RIGHT))
+		{
+			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			{
+				if (m_bOnIdle == true)
+				{
+					this->GetAnimator()->Play(L"DeathIdleToRunRight", false);
+					this->m_bOnIdle == false;
+				}
+			}
+			else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			{
+				if (m_bOnIdle == true)
+				{
+					this->GetAnimator()->Play(L"DeathIdleLeftToRight", false);
+					DeathSight = (UINT)DEATH_SIGHT::RIGHT;
+				}
+			}
+		}
+
+		// Death Run
 		if (IsPressed(KEY::RIGHT))
 		{
-
 			vPos.x += m_fSpeed * DT;
+			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			{
+				if (CurAnim->GetCurAnimName() == L"DeathIdleToRunRight" && CurAnim->IsFinish())
+				{
+					this->GetAnimator()->Play(L"DeathRunRight", true);
+				}
+				if (CurAnim->GetCurAnimName() == L"DeathIdleLeftToRight" && CurAnim->IsFinish())
+				{
+					this->GetAnimator()->Play(L"DeathIdleToRunRight", true);
+				}
+			}
+			this->m_bOnIdle = false;
+			this->m_bToIdle = false;
 		}
+
 		if (IsPressed(KEY::LEFT))
 		{
-
 			vPos.x -= m_fSpeed * DT;
+			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			{
+				if (CurAnim->GetCurAnimName() == L"DeathIdleToRunLeft" && CurAnim->IsFinish())
+				{
+					this->GetAnimator()->Play(L"DeathRunLeft", true);
+				}
+				if (CurAnim->GetCurAnimName() == L"DeathIdleRightToLeft" && CurAnim->IsFinish())
+				{
+					this->GetAnimator()->Play(L"DeathIdleToRunLeft", false);
+				}
+			}
+			this->m_bOnIdle = false;
+			this->m_bToIdle = false;
 		}
-		if (IsPressed(KEY::UP))
+		/*if (IsPressed(KEY::UP))
 		{
 			vPos.y -= m_fSpeed * DT;
 		}
 		if (IsPressed(KEY::DOWN))
 		{
 			vPos.y += m_fSpeed * DT;
-		}
+		}*/
 
-		if (IsTap(KEY::RIGHT))
-		{
-			this->GetAnimator()->Play(L"DeathIdleRight", true);
-		}
 		if (IsTap(KEY::LEFT))
 		{
-			this->GetAnimator()->Play(L"DeathIdleLeft", true);
+			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			{
+				if (m_bOnIdle == true)
+				{
+					this->GetAnimator()->Play(L"DeathIdleToRunLeft", false);
+					this->m_bOnIdle = false;
+				}
+			}
+			else if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			{
+				if (m_bOnIdle == true)
+				{
+					this->GetAnimator()->Play(L"DeathIdleRightToLeft", false);
+					DeathSight = (UINT)DEATH_SIGHT::LEFT;
+				}
+			}
+		}
+
+
+		if (CurAnim->GetCurAnimName() == L"DeathIdleToRunRight" && CurAnim->IsFinish())
+		{
+			this->GetAnimator()->Play(L"DeathRunRight", true);
+		}
+		// Run to Idle
+		if (IsRelease(KEY::RIGHT))
+		{
+			if (true == this->GetRigidBody()->GetBoolOnGround())
+			{
+				this->GetAnimator()->Play(L"DeathRunRightToIdle", false);
+			}
+		}
+
+		if (IsRelease(KEY::LEFT))
+		{
+			if (true == this->GetRigidBody()->GetBoolOnGround())
+			{
+				this->GetAnimator()->Play(L"DeathRunLeftToIdle", false);
+			}
 		}
 
 
@@ -181,9 +311,7 @@ void CPlayer::ObjectTick()
 			}
 		}
 	}
-
 	
-
 	SetPos(vPos);
 
 	CObject::ObjectTick();

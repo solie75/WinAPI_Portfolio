@@ -79,5 +79,16 @@ public:
 		return m_vecKey[(UINT)_key].state;
 	}
 	Vec GetMousePos() { return m_vMousePos; }
+
+	bool AllKeyNoneState() {
+		for (UINT i = 0; i < (UINT)KEY::END; ++i)
+		{
+			if (m_vecKey[i].state != KEY_STATE::NONE)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 };
 
