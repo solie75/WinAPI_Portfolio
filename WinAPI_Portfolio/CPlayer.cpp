@@ -59,6 +59,7 @@ CPlayer::CPlayer()
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
+	//, m_vecPlayerEffect{}
 {
 }
 
@@ -88,6 +89,7 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
+	//, m_vecPlayerEffect{}
 {
 	CreateAnimator();
 	CreateSquareCollider();
@@ -125,6 +127,7 @@ CPlayer::CPlayer(wstring _pstring)
 
 
 	SetName(_pstring);
+
 	GetAnimator()->CreateAnimation(L"DeathSpawn", m_pDeathSpawn, Vec(0.f, 0.f), Vec(130.f, 166.f), 99, 0.025f);
 	GetAnimator()->CreateAnimation(L"DeathIdleRight", m_pDeathIdleRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathIdleLeft", m_pDeathIdleLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
@@ -171,11 +174,11 @@ void CPlayer::ObjectTick()
 {
 	Vec vPos = GetPos();
 
+	CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
+
 	// after animation
 	if (true == GetKeyWorking())
 	{
-		CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
-
 		// Falling
 		if (false == this->GetRigidBody()->GetBoolOnGround() && this->GetRigidBody()->GetVelocity().y < 0)
 		{
@@ -402,47 +405,22 @@ void CPlayer::ObjectTick()
 		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		if (IsTap(KEY::K))
-		{
-			vPos.x -= 100.f * DT;
-		}
-		if (IsTap(KEY::L))
-		{
-			vPos.x += 100.f * DT;
-		}
-
-
 		if (IsTap(KEY::SPACE))
 		{
 			Vec V = GetRigidBody()->GetVelocity();
-			if (0.f < V.y)
+			if (0.f < V.y) // jump in falling
 			{
 				GetRigidBody()->AddVelocity(Vec(0.f, -(V.y + 1600.f)));
+
+				CEffectObject* _Effect = new CEffectObject(L"LandingDust");
+				Instantiate(_Effect, Vec(this->GetPos().x,(this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
+
 			}
-			else
+			else // jump on ground
 			{
 				GetRigidBody()->AddVelocity(Vec(0.f, -1600.f));
+				CEffectObject* _Effect = new CEffectObject(L"LandingDust");
+				Instantiate(_Effect, Vec(this->GetPos().x, (this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
 			}
 			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 			{
@@ -454,6 +432,14 @@ void CPlayer::ObjectTick()
 			}
 			
 		}
+	}
+	else
+	{
+		if (CurAnim->GetCurAnimName() == L"DeathSpawn" && CurAnim->GetAnimCurFrame() == 77)
+		{
+
+		}
+		
 	}
 
 	SetPos(vPos);

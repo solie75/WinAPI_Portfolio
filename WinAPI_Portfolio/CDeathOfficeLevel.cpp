@@ -27,7 +27,7 @@ void CDeathOfficeLevel::LevelInit()
 {
 	// Image Loading
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
-	CResourceMgr::GetInst()->LoadTexture(L"OfficeChair", L"texture\\OfficeChair.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"DeathChair", L"texture\\DeathChair.bmp");
 
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
@@ -37,14 +37,14 @@ void CDeathOfficeLevel::LevelInit()
 	pBackground->SetScale(Vec(2048.f, 1024.f));
 	Instantiate(pBackground, Vec(vResolution.x /2.f, vResolution.y / 2.f), LAYER::BACKGROUND);
 
-	CBackgroundObject* pOfficeChair = new CBackgroundObject(L"OfficeChair");
-	pOfficeChair->SetScale(Vec(256.f, 512.f));
-	Instantiate(pOfficeChair, Vec(625.f, 245.f), LAYER::BACKGROUNDOBJECT);
+	CBackgroundObject* pOfficeChair = new CBackgroundObject(L"DeathChair");
+	pOfficeChair->SetScale(Vec(200.f, 350.f));
+	Instantiate(pOfficeChair, Vec(625.f, 325.f), LAYER::BACKGROUNDOBJECT);
 
 	// Create Player
 	CPlayer* pPlayer = new CPlayer(L"Player");
 	pPlayer->SetScale(Vec(154.f, 158.f));
-	Instantiate(pPlayer, Vec(680.f, 500.f), LAYER::PLAYER);
+	Instantiate(pPlayer, Vec(650.f, 500.f), LAYER::PLAYER);
 
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
@@ -65,11 +65,14 @@ void CDeathOfficeLevel::LevelTick()
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(this->GetLayer(LAYER::PLAYER)[0]);
 		if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
 		{
-			if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+			if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
 			{
 				pPlayer->GetRigidBody()->SetGravity(true);
+				pPlayer->GetRigidBody()->AddVelocity(Vec(10.f, -(pPlayer->GetRigidBody()->GetVelocity().y + 800.f)));
+			}
+			if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+			{
 				pPlayer->m_bToIdle = true;
-				//pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
 				pPlayer->SetKeyWorking(true);
 			}
 		}

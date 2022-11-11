@@ -37,6 +37,7 @@ public:
         m_fAccTime = 0.f;
     }
     wstring GetCurAnimName() { return this->GetName(); }
+    int GetAnimCurFrame() { return m_iCurFrame; }
 
     void Save(const wstring& _strRelativePath);
     void Load(const wstring& _strRelativePath);

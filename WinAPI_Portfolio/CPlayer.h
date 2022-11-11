@@ -1,5 +1,6 @@
 #pragma once
 #include "CObject.h"
+#include "CEffectObject.h"
 
 enum class DEATH_SIGHT
 {
@@ -48,6 +49,8 @@ public:
     CTexture* m_pDeathFallingLeft;
 
     CTexture* m_pDeath;
+
+    //vector<CEffectObject*> m_vecPlayerEffect;
 
     UINT DeathSight;
     bool m_bToIdle;

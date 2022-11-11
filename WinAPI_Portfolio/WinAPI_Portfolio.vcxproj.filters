@@ -115,6 +115,9 @@
     <Filter Include="Game\05.Component\Collider\SquareCollider">
       <UniqueIdentifier>{bd24280d-4f32-428b-834c-2ac05d4393fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\05.EffectObject">
+      <UniqueIdentifier>{e60cb7d2-ba4d-4c50-bb92-c9a544053a76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -237,6 +240,9 @@
     <ClInclude Include="CBackground.h">
       <Filter>Game\04.Object\01.Background</Filter>
     </ClInclude>
+    <ClInclude Include="CEffectObject.h">
+      <Filter>Game\04.Object\05.EffectObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -354,6 +360,9 @@
     </ClCompile>
     <ClCompile Include="CSquareCollider.cpp">
       <Filter>Game\05.Component\Collider\SquareCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffectObject.cpp">
+      <Filter>Game\04.Object\05.EffectObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

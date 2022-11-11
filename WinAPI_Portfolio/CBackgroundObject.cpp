@@ -43,7 +43,7 @@ void CBackgroundObject::ObjectRender(HDC _dc, wstring _pstring)
 		, 0, 0
 		, (int)m_pTexture->Width()
 		, (int)m_pTexture->Height()
-		, RGB(255, 0, 255)
+		, RGB(253, 253, 254)
 	);
 
 	CObject::ObjectRender(_dc, _pstring);
