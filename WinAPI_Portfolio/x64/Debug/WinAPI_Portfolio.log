@@ -1,3 +1,2 @@
 ﻿  CPlayer.cpp
-D:\신중은\WinAPI_Portfolio\WinAPI_Portfolio\CPlayer.cpp(190,22): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
   WinAPI_Portfolio.vcxproj -> D:\신중은\WinAPI_Portfolio\OutputFile\bin_d\WinAPI_Portfolio.exe

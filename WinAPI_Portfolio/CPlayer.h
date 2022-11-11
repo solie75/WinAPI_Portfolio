@@ -37,6 +37,16 @@ public:
     CTexture* m_pDeathRunRight;
     CTexture* m_pDeathRunLeft;
 
+    CTexture* m_pDeathRunRightToRunLeft;
+    CTexture* m_pDeathRunLeftToRunRight;
+
+    CTexture* m_pDeathJumpRight;
+    CTexture* m_pDeathJumpLeft;
+    CTexture* m_pDeathLandingRight;
+    CTexture* m_pDeathLandingLeft;
+    CTexture* m_pDeathFallingRight;
+    CTexture* m_pDeathFallingLeft;
+
     CTexture* m_pDeath;
 
     UINT DeathSight;
