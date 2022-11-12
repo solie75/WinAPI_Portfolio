@@ -49,7 +49,14 @@ public:
     CTexture* m_pDeathFallingLeft;
 
     // attack
-    CTexture* m_pDeathAttackBasicCombo1;
+    CTexture* m_pDeathAttackBasicCombo1Right;
+    CTexture* m_pDeathAttackBasicCombo1Left;
+    CTexture* m_pDeathAttackBasicCombo2Right;
+    CTexture* m_pDeathAttackBasicCombo2Left;
+    CTexture* m_pDeathAttackBasicCombo3Right;
+    CTexture* m_pDeathAttackBasicCombo3Left;
+    CTexture* m_pDeathAttackBasicCombo4Right;
+    CTexture* m_pDeathAttackBasicCombo4Left;
 
     CTexture* m_pDeath;
 

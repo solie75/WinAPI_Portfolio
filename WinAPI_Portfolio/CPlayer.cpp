@@ -54,7 +54,14 @@ CPlayer::CPlayer()
 	, m_pDeathLandingLeft(nullptr)
 	, m_pDeathFallingRight(nullptr)
 	, m_pDeathFallingLeft(nullptr)
-	, m_pDeathAttackBasicCombo1(nullptr)
+	, m_pDeathAttackBasicCombo1Right(nullptr)
+	, m_pDeathAttackBasicCombo1Left(nullptr)
+	, m_pDeathAttackBasicCombo2Right(nullptr)
+	, m_pDeathAttackBasicCombo2Left(nullptr)
+	, m_pDeathAttackBasicCombo3Right(nullptr)
+	, m_pDeathAttackBasicCombo3Left(nullptr)
+	, m_pDeathAttackBasicCombo4Right(nullptr)
+	, m_pDeathAttackBasicCombo4Left(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
@@ -86,7 +93,14 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathLandingLeft(nullptr)
 	, m_pDeathFallingRight(nullptr)
 	, m_pDeathFallingLeft(nullptr)
-	, m_pDeathAttackBasicCombo1(nullptr)
+	, m_pDeathAttackBasicCombo1Right(nullptr)
+	, m_pDeathAttackBasicCombo1Left(nullptr)
+	, m_pDeathAttackBasicCombo2Right(nullptr)
+	, m_pDeathAttackBasicCombo2Left(nullptr)
+	, m_pDeathAttackBasicCombo3Right(nullptr)
+	, m_pDeathAttackBasicCombo3Left(nullptr)
+	, m_pDeathAttackBasicCombo4Right(nullptr)
+	, m_pDeathAttackBasicCombo4Left(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
@@ -127,7 +141,14 @@ CPlayer::CPlayer(wstring _pstring)
 	m_pDeathLandingLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathLandingLeft", L"texture\\DeathLandingLeft.bmp");
 	m_pDeathFallingRight = CResourceMgr::GetInst()->LoadTexture(L"DeathFallingRight", L"texture\\DeathFallingRight.bmp");
 	m_pDeathFallingLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathFallingLeft", L"texture\\DeathFallingLeft.bmp");
-	m_pDeathAttackBasicCombo1 = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo1", L"texture\\DeathAttackBasicCombo1.bmp");
+	m_pDeathAttackBasicCombo1Right = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo1Right", L"texture\\DeathAttackBasicCombo1Right.bmp");
+	m_pDeathAttackBasicCombo1Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo1Left", L"texture\\DeathAttackBasicCombo1Left.bmp");
+	m_pDeathAttackBasicCombo2Right = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo2Right", L"texture\\DeathAttackBasicCombo2Right.bmp");
+	m_pDeathAttackBasicCombo2Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo2Left", L"texture\\DeathAttackBasicCombo2Left.bmp");
+	m_pDeathAttackBasicCombo3Right = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo3Right", L"texture\\DeathAttackBasicCombo3Right.bmp");
+	m_pDeathAttackBasicCombo3Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo3Left", L"texture\\DeathAttackBasicCombo3Left.bmp");
+	m_pDeathAttackBasicCombo4Right = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo4Right", L"texture\\DeathAttackBasicCombo4Right.bmp");
+	m_pDeathAttackBasicCombo4Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo4Left", L"texture\\DeathAttackBasicCombo4Left.bmp");
 
 	SetName(_pstring);
 
@@ -150,7 +171,14 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"DeathLandingLeft", m_pDeathLandingLeft, Vec(0.f, 0.f), Vec(116.f, 130.f), 4, 0.02f);
 	GetAnimator()->CreateAnimation(L"DeathFallingRight", m_pDeathFallingRight, Vec(0.f, 0.f), Vec(114.f, 116.f), 6, 0.02f);
 	GetAnimator()->CreateAnimation(L"DeathFallingLeft", m_pDeathFallingLeft, Vec(0.f, 0.f), Vec(114.f, 116.f), 6, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1", m_pDeathAttackBasicCombo1, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1Right", m_pDeathAttackBasicCombo1Right, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1Left", m_pDeathAttackBasicCombo1Left, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo2Right", m_pDeathAttackBasicCombo2Right, Vec(0.f, 0.f), Vec(340.f, 280.f), 15, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo2Left", m_pDeathAttackBasicCombo2Left, Vec(0.f, 0.f), Vec(340.f, 280.f), 15, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Right", m_pDeathAttackBasicCombo3Right, Vec(0.f, 0.f), Vec(640.f, 110.f), 9, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Left", m_pDeathAttackBasicCombo3Left, Vec(0.f, 0.f), Vec(640.f, 110.f), 9, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Right", m_pDeathAttackBasicCombo4Right, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Left", m_pDeathAttackBasicCombo4Left, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
 	
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
@@ -183,26 +211,59 @@ void CPlayer::ObjectTick()
 	// 
 	
 	//if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1" && CurAnim->GetAnimCurFrame() == 14)
-	//{
+	//{   
 	//	this->GetRigidBody()->SetGravity(true);
 	//}
 
-	if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1" && CurAnim->IsFinish())
-	{
-		this->SetScale(Vec(154.f, 158.f));
-		this->GetRigidBody()->SetGravity(true);
-	}
+	
 
 	// after animation
 	if (true == GetKeyWorking())
 	{
+		if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1Right")
+		{
+			if (CurAnim->IsFinish())
+			{
+				this->SetScale(Vec(154.f, 158.f));
+				this->GetRigidBody()->SetGravity(true);
+			}
+			else
+			{
+				vPos.x += (m_fSpeed / 4.f) * DT;
+
+			}
+		}
+
+		if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1Left")
+		{
+			if (CurAnim->IsFinish())
+			{
+				this->SetScale(Vec(154.f, 158.f));
+				this->GetRigidBody()->SetGravity(true);
+			}
+			else
+			{
+				vPos.x -= (m_fSpeed / 4.f) * DT;
+			}
+		}
+
 		//Attack Basic
 		if (IsTap(KEY::Z))
 		{
 			this->SetScale(Vec(400.f, 140.f));
 			this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
 			this->GetRigidBody()->SetGravity(false);
-			this->GetAnimator()->Play(L"DeathAttackBasicCombo1", false);
+
+			if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			{
+				this->GetAnimator()->Play(L"DeathAttackBasicCombo1Right", false);
+				
+			}
+			if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			{
+				this->GetAnimator()->Play(L"DeathAttackBasicCombo1Left", false);
+			}
+			
 		}
 		// Falling
 		if (false == this->GetRigidBody()->GetBoolOnGround() && this->GetRigidBody()->GetVelocity().y < 0)
