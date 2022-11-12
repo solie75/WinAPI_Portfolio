@@ -118,6 +118,9 @@
     <Filter Include="Game\04.Object\05.EffectObject">
       <UniqueIdentifier>{e60cb7d2-ba4d-4c50-bb92-c9a544053a76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\06.Monster">
+      <UniqueIdentifier>{b17250ef-58b2-487a-ba8a-e8111d170e27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="CEffectObject.h">
       <Filter>Game\04.Object\05.EffectObject</Filter>
     </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>Game\04.Object\06.Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -363,6 +369,9 @@
     </ClCompile>
     <ClCompile Include="CEffectObject.cpp">
       <Filter>Game\04.Object\05.EffectObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>Game\04.Object\06.Monster</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

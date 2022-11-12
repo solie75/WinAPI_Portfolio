@@ -6,6 +6,7 @@
 #include "CBackground.h"
 #include "CBackgroundObject.h"
 #include "CPlayer.h"
+#include "CMonster.h"
 
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
@@ -29,6 +30,8 @@ void CDeathOfficeLevel::LevelInit()
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
 	CResourceMgr::GetInst()->LoadTexture(L"DeathChair", L"texture\\DeathChair.bmp");
 
+	// Test Image 
+	CResourceMgr::GetInst()->LoadTexture(L"TestMonster", L"texture\\Test2.bmp");
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 
@@ -49,6 +52,11 @@ void CDeathOfficeLevel::LevelInit()
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
 	pPlayer->SetKeyWorking(false);
+
+	// Create Test Monster
+	CMonster* pMonster = new CMonster(L"TestMonster");
+	pMonster->SetScale(Vec(400.f, 130.f));
+	Instantiate(pMonster, Vec(300.f, 100.f), LAYER::MONSTER);
 
 	
 	//CCameraMgr::GetInst()->SetLook(vResolution / 2.f);

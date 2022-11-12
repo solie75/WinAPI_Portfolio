@@ -48,6 +48,9 @@ public:
     CTexture* m_pDeathFallingRight;
     CTexture* m_pDeathFallingLeft;
 
+    // attack
+    CTexture* m_pDeathAttackBasicCombo1;
+
     CTexture* m_pDeath;
 
     //vector<CEffectObject*> m_vecPlayerEffect;

@@ -54,11 +54,13 @@ CPlayer::CPlayer()
 	, m_pDeathLandingLeft(nullptr)
 	, m_pDeathFallingRight(nullptr)
 	, m_pDeathFallingLeft(nullptr)
+	, m_pDeathAttackBasicCombo1(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
+
 	//, m_vecPlayerEffect{}
 {
 }
@@ -84,6 +86,7 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathLandingLeft(nullptr)
 	, m_pDeathFallingRight(nullptr)
 	, m_pDeathFallingLeft(nullptr)
+	, m_pDeathAttackBasicCombo1(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
@@ -124,7 +127,7 @@ CPlayer::CPlayer(wstring _pstring)
 	m_pDeathLandingLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathLandingLeft", L"texture\\DeathLandingLeft.bmp");
 	m_pDeathFallingRight = CResourceMgr::GetInst()->LoadTexture(L"DeathFallingRight", L"texture\\DeathFallingRight.bmp");
 	m_pDeathFallingLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathFallingLeft", L"texture\\DeathFallingLeft.bmp");
-
+	m_pDeathAttackBasicCombo1 = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo1", L"texture\\DeathAttackBasicCombo1.bmp");
 
 	SetName(_pstring);
 
@@ -147,6 +150,7 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"DeathLandingLeft", m_pDeathLandingLeft, Vec(0.f, 0.f), Vec(116.f, 130.f), 4, 0.02f);
 	GetAnimator()->CreateAnimation(L"DeathFallingRight", m_pDeathFallingRight, Vec(0.f, 0.f), Vec(114.f, 116.f), 6, 0.02f);
 	GetAnimator()->CreateAnimation(L"DeathFallingLeft", m_pDeathFallingLeft, Vec(0.f, 0.f), Vec(114.f, 116.f), 6, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1", m_pDeathAttackBasicCombo1, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
 	
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
@@ -176,9 +180,30 @@ void CPlayer::ObjectTick()
 
 	CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
 
+	// 
+	
+	//if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1" && CurAnim->GetAnimCurFrame() == 14)
+	//{
+	//	this->GetRigidBody()->SetGravity(true);
+	//}
+
+	if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1" && CurAnim->IsFinish())
+	{
+		this->SetScale(Vec(154.f, 158.f));
+		this->GetRigidBody()->SetGravity(true);
+	}
+
 	// after animation
 	if (true == GetKeyWorking())
 	{
+		//Attack Basic
+		if (IsTap(KEY::Z))
+		{
+			this->SetScale(Vec(400.f, 140.f));
+			this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
+			this->GetRigidBody()->SetGravity(false);
+			this->GetAnimator()->Play(L"DeathAttackBasicCombo1", false);
+		}
 		// Falling
 		if (false == this->GetRigidBody()->GetBoolOnGround() && this->GetRigidBody()->GetVelocity().y < 0)
 		{
