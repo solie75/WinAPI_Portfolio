@@ -31,7 +31,7 @@ void CDeathOfficeLevel::LevelInit()
 	CResourceMgr::GetInst()->LoadTexture(L"DeathChair", L"texture\\DeathChair.bmp");
 
 	// Test Image 
-	CResourceMgr::GetInst()->LoadTexture(L"TestMonster", L"texture\\Test2.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"TestMonster", L"texture\\OfficeElevator.bmp");
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 
