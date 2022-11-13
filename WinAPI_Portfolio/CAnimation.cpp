@@ -24,7 +24,7 @@ CAnimation::~CAnimation()
 {
 }
 
-void CAnimation::AnimationInit(const wstring& _strName, CTexture* _pAtlas, Vec _vLeftTop, Vec _vSize, int _iMaxFrameCount, float _fDuration)
+void CAnimation::AnimationInit(const wstring& _strName, CTexture* _pAtlas, Vec _vLeftTop, Vec _vSize, Vec _vOffset, int _iMaxFrameCount, float _fDuration)
 {
 	SetName(_strName); // Animation's name
 	m_pAtlas = _pAtlas; // Animation's Atlas Image
@@ -35,6 +35,7 @@ void CAnimation::AnimationInit(const wstring& _strName, CTexture* _pAtlas, Vec _
 
 		frm.vLeftTop = Vec(_vLeftTop.x + (float)(i%10) * _vSize.x, _vLeftTop.y + (float)(i/10) * _vSize.y);
 		frm.vSize = _vSize;
+		frm.vOffset = _vOffset;
 		frm.fDuration = _fDuration;
 
 		m_vecFrame.push_back(frm);
@@ -72,15 +73,15 @@ void CAnimation::AnimationRender(HDC _dc)
 
 	TransparentBlt(
 		_dc,
-		int(vPos.x - frm.vSize.x / 2.f),
-		int(vPos.y - frm.vSize.y / 2.f),
-		int(frm.vSize.x),
-		int(frm.vSize.y),
+		int((vPos.x - frm.vSize.x / 2.f) + frm.vOffset.x),
+		int((vPos.y - frm.vSize.y / 2.f) + frm.vOffset.y),
+		int(frm.vSize.x), // 출력 너비
+		int(frm.vSize.y), // 출력 높이
 		m_pAtlas->GetDC(),
-		int(frm.vLeftTop.x),
-		int(frm.vLeftTop.y),
-		int(frm.vSize.x),
-		int(frm.vSize.y),
+		int(frm.vLeftTop.x ), // 원본의 시작 지점 좌표
+		int(frm.vLeftTop.y ), 
+		int(frm.vSize.x), // 원본 너비
+		int(frm.vSize.y), // 원본 높이
 		RGB(253, 253, 254)
 	);
 }

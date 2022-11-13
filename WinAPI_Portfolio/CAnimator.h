@@ -19,7 +19,7 @@ public:
 public:
     void Play(const wstring& _strName, bool _bRepeat);
 
-    void CreateAnimation(const wstring& _strName, CTexture* _pAtlas, Vec _vLeftTop, Vec _vSize, int _iMaxFrameCount, float _fDuration);
+    void CreateAnimation(const wstring& _strName, CTexture* _pAtlas, Vec _vLeftTop, Vec _vSize, Vec _vOffset, int _iMaxFrameCount, float _fDuration);
     CAnimation* FindAnimation(const wstring& _strName);
     CAnimation* LoadAnimation(const wstring& _strRelativePath);
 

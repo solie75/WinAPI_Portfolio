@@ -17,7 +17,6 @@ class CPlayer :
 private:
     bool m_bKeyWorking;
 
-
 public:
     float m_fSpeed;
     CTexture* m_pTexture;
@@ -63,6 +62,8 @@ public:
     //vector<CEffectObject*> m_vecPlayerEffect;
 
     UINT DeathSight;
+    //UINT DeathAttactState; // Death Attack 이 None 이면 State 도 None 아닌가.
+    UINT DeathAttackCombo;
     bool m_bToIdle;
     bool m_bOnIdle;
 

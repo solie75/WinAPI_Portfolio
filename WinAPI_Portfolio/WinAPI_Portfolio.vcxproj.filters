@@ -121,6 +121,9 @@
     <Filter Include="Game\04.Object\06.Monster">
       <UniqueIdentifier>{b17250ef-58b2-487a-ba8a-e8111d170e27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\07.NPC">
+      <UniqueIdentifier>{6694dbe1-ad91-4374-8ba4-ee3626afb361}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -249,6 +252,9 @@
     <ClInclude Include="CMonster.h">
       <Filter>Game\04.Object\06.Monster</Filter>
     </ClInclude>
+    <ClInclude Include="CNPC.h">
+      <Filter>Game\04.Object\07.NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -372,6 +378,9 @@
     </ClCompile>
     <ClCompile Include="CMonster.cpp">
       <Filter>Game\04.Object\06.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CNPC.cpp">
+      <Filter>Game\04.Object\07.NPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

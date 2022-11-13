@@ -80,13 +80,13 @@ void CAnimator::Play(const wstring& _strName, bool _bRepeat)
 	m_bRepeat = _bRepeat;
 }
 
-void CAnimator::CreateAnimation(const wstring& _strName, CTexture* _pAtlas, Vec _vLeftTop, Vec _vSize, int _iMaxFrameCount, float _fDuration)
+void CAnimator::CreateAnimation(const wstring& _strName, CTexture* _pAtlas, Vec _vLeftTop, Vec _vSize, Vec _vOffset, int _iMaxFrameCount, float _fDuration)
 {
 	CAnimation* pAnim = FindAnimation(_strName);
 	assert(!pAnim);
 
 	pAnim = new CAnimation(this);
-	pAnim->AnimationInit(_strName, _pAtlas, _vLeftTop, _vSize, _iMaxFrameCount, _fDuration);
+	pAnim->AnimationInit(_strName, _pAtlas, _vLeftTop, _vSize, _vOffset,_iMaxFrameCount, _fDuration);
 	m_mapAnim.insert(make_pair(_strName, pAnim));
 }
 

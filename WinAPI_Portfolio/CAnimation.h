@@ -21,6 +21,7 @@ private:
         CTexture* _pAtlas,
         Vec _vLeftTop,
         Vec _vSize,
+        Vec _vOffset,
         int _iMaxFrameCount,
         float _fDuration);
 

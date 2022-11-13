@@ -32,6 +32,24 @@ CTexture* m_pDeathRunLeft;
 
 CTexture* m_pDeath;
 
+//enum class DEATH_ATTACK_STATE
+//{
+//	PROCEEDING,
+//	NONE,
+//
+//	END
+//};
+
+enum class ATTACK_COMBO
+{
+	FIRST,
+	SECOND,
+	THIRD,
+	FOURTH,
+	
+	NONE
+};
+
 
 CPlayer::CPlayer()
 	: m_pTexture(nullptr)
@@ -67,6 +85,7 @@ CPlayer::CPlayer()
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
+	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
 
 	//, m_vecPlayerEffect{}
 {
@@ -106,6 +125,7 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
+	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
 	//, m_vecPlayerEffect{}
 {
 	CreateAnimator();
@@ -152,33 +172,33 @@ CPlayer::CPlayer(wstring _pstring)
 
 	SetName(_pstring);
 
-	GetAnimator()->CreateAnimation(L"DeathSpawn", m_pDeathSpawn, Vec(0.f, 0.f), Vec(130.f, 166.f), 99, 0.025f);
-	GetAnimator()->CreateAnimation(L"DeathIdleRight", m_pDeathIdleRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleLeft", m_pDeathIdleLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 60, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleLeftToRight", m_pDeathIdleLeftToRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 7, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathIdleRightToLeft", m_pDeathIdleRightToLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 7, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathIdleToRunRight", m_pDeathIdleToRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 4, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathIdleToRunLeft", m_pDeathIdleToRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 4, 0.04f);
-	GetAnimator()->CreateAnimation(L"DeathRunRightToIdle", m_pDeathRunRightToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), 9, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathRunLeftToIdle", m_pDeathRunLeftToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), 9, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathRunRight", m_pDeathRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 5, 0.08f);
-	GetAnimator()->CreateAnimation(L"DeathRunLeft", m_pDeathRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 5, 0.08f);
-	GetAnimator()->CreateAnimation(L"DeathRunLeftToRunRight", m_pDeathRunLeftToRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), 6, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathRunRightToRunLeft", m_pDeathRunRightToRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), 6, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathJumpRight", m_pDeathJumpRight, Vec(0.f, 0.f), Vec(120.f, 170.f), 7, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathJumpLeft", m_pDeathJumpLeft, Vec(0.f, 0.f), Vec(120.f, 170.f), 7, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathLandingRight", m_pDeathLandingRight, Vec(0.f, 0.f), Vec(116.f, 130.f), 4, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathLandingLeft", m_pDeathLandingLeft, Vec(0.f, 0.f), Vec(116.f, 130.f), 4, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathFallingRight", m_pDeathFallingRight, Vec(0.f, 0.f), Vec(114.f, 116.f), 6, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathFallingLeft", m_pDeathFallingLeft, Vec(0.f, 0.f), Vec(114.f, 116.f), 6, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1Right", m_pDeathAttackBasicCombo1Right, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1Left", m_pDeathAttackBasicCombo1Left, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo2Right", m_pDeathAttackBasicCombo2Right, Vec(0.f, 0.f), Vec(340.f, 280.f), 15, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo2Left", m_pDeathAttackBasicCombo2Left, Vec(0.f, 0.f), Vec(340.f, 280.f), 15, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Right", m_pDeathAttackBasicCombo3Right, Vec(0.f, 0.f), Vec(640.f, 110.f), 9, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Left", m_pDeathAttackBasicCombo3Left, Vec(0.f, 0.f), Vec(640.f, 110.f), 9, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Right", m_pDeathAttackBasicCombo4Right, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
-	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Left", m_pDeathAttackBasicCombo4Left, Vec(0.f, 0.f), Vec(400.f, 140.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathSpawn", m_pDeathSpawn, Vec(0.f, 0.f), Vec(130.f, 166.f), Vec(0.f, 0.f), 99, 0.025f);
+	GetAnimator()->CreateAnimation(L"DeathIdleRight", m_pDeathIdleRight, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 60, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathIdleLeft", m_pDeathIdleLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 60, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathIdleLeftToRight", m_pDeathIdleLeftToRight, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 7, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathIdleRightToLeft", m_pDeathIdleRightToLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 7, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathIdleToRunRight", m_pDeathIdleToRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 4, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathIdleToRunLeft", m_pDeathIdleToRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 4, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathRunRightToIdle", m_pDeathRunRightToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 9, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathRunLeftToIdle", m_pDeathRunLeftToIdle, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 9, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathRunRight", m_pDeathRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 5, 0.08f);
+	GetAnimator()->CreateAnimation(L"DeathRunLeft", m_pDeathRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 5, 0.08f);
+	GetAnimator()->CreateAnimation(L"DeathRunLeftToRunRight", m_pDeathRunLeftToRunRight, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 6, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathRunRightToRunLeft", m_pDeathRunRightToRunLeft, Vec(0.f, 0.f), Vec(98.f, 128.f), Vec(0.f, 0.f), 6, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathJumpRight", m_pDeathJumpRight, Vec(0.f, 0.f), Vec(120.f, 170.f), Vec(0.f, 0.f), 7, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathJumpLeft", m_pDeathJumpLeft, Vec(0.f, 0.f), Vec(120.f, 170.f), Vec(0.f, 0.f), 7, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathLandingRight", m_pDeathLandingRight, Vec(0.f, 0.f), Vec(116.f, 130.f), Vec(0.f, 0.f), 4, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathLandingLeft", m_pDeathLandingLeft, Vec(0.f, 0.f), Vec(116.f, 130.f), Vec(0.f, 0.f), 4, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathFallingRight", m_pDeathFallingRight, Vec(0.f, 0.f), Vec(114.f, 116.f), Vec(0.f, 0.f), 6, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathFallingLeft", m_pDeathFallingLeft, Vec(0.f, 0.f), Vec(114.f, 116.f), Vec(0.f, 0.f), 6, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1Right", m_pDeathAttackBasicCombo1Right, Vec(0.f, 0.f), Vec(400.f, 140.f), Vec(50.f, 0.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo1Left", m_pDeathAttackBasicCombo1Left, Vec(0.f, 0.f), Vec(400.f, 140.f), Vec(-50.f, 0.f), 18, 0.02f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo2Right", m_pDeathAttackBasicCombo2Right, Vec(0.f, 0.f), Vec(340.f, 280.f), Vec(50.f, -50.f), 15, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo2Left", m_pDeathAttackBasicCombo2Left, Vec(0.f, 0.f), Vec(340.f, 280.f), Vec(-50.f, -50.f), 15, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Right", m_pDeathAttackBasicCombo3Right, Vec(0.f, 0.f), Vec(640.f, 110.f), Vec(20.f, -20.f), 9, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Left", m_pDeathAttackBasicCombo3Left, Vec(0.f, 0.f), Vec(640.f, 110.f), Vec(-20.f, -20.f), 9, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Right", m_pDeathAttackBasicCombo4Right, Vec(0.f, 0.f), Vec(444.f, 360.f), Vec(70.f, -120.f), 18, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Left", m_pDeathAttackBasicCombo4Left, Vec(0.f, 0.f), Vec(444.f, 360.f), Vec(-70.f, -120.f), 18, 0.04f);
 	
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
@@ -207,62 +227,126 @@ void CPlayer::ObjectTick()
 	Vec vPos = GetPos();
 
 	CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
-
-	// 
-	
-	//if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1" && CurAnim->GetAnimCurFrame() == 14)
-	//{   
-	//	this->GetRigidBody()->SetGravity(true);
-	//}
-
-	
+	wstring CurAnimName = CurAnim->GetCurAnimName();
 
 	// after animation
 	if (true == GetKeyWorking())
 	{
-		if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1Right")
+		if ((DeathAttackCombo != (UINT)ATTACK_COMBO::NONE)) // 캐릭터의 콤보 애니메이션 하나가 끝났음.
 		{
 			if (CurAnim->IsFinish())
 			{
 				this->SetScale(Vec(154.f, 158.f));
+
 				this->GetRigidBody()->SetGravity(true);
+
+				DeathAttackCombo = (UINT)ATTACK_COMBO::NONE;
+
+				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathIdleRight", true);
+				}
+				if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathIdleLeft", true);
+				}
 			}
 			else
 			{
-				vPos.x += (m_fSpeed / 4.f) * DT;
-
+				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					vPos.x += (m_fSpeed / 4.f) * DT;
+				}
+				if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					vPos.x -= (m_fSpeed / 4.f) * DT;
+				}
 			}
 		}
 
-		if (CurAnim->GetCurAnimName() == L"DeathAttackBasicCombo1Left")
-		{
-			if (CurAnim->IsFinish())
-			{
-				this->SetScale(Vec(154.f, 158.f));
-				this->GetRigidBody()->SetGravity(true);
-			}
-			else
-			{
-				vPos.x -= (m_fSpeed / 4.f) * DT;
-			}
-		}
+		//if (CurAnimName == L"DeathAttackBasicCombo1Right")
+		//{
+		//	if (CurAnim->IsFinish())
+		//	{
+		//		this->SetScale(Vec(154.f, 158.f));
+		//		this->GetRigidBody()->SetGravity(true);
+		//	}
+		//	else
+		//	{
+		//		 // 이 방향 때문에 CurAnimName을 사용해야 한다...
+
+		//	}
+		//}
+
+		//if (CurAnimName == L"DeathAttackBasicCombo1Left")
+		//{
+		//	if (CurAnim->IsFinish())
+		//	{
+		//		this->SetScale(Vec(154.f, 158.f));
+		//		this->GetRigidBody()->SetGravity(true);
+		//	}
+		//	else
+		//	{
+		//		vPos.x -= (m_fSpeed / 4.f) * DT;
+		//	}
+		//}
 
 		//Attack Basic
 		if (IsTap(KEY::Z))
 		{
-			this->SetScale(Vec(400.f, 140.f));
+			
 			this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
 			this->GetRigidBody()->SetGravity(false);
 
-			if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
 			{
-				this->GetAnimator()->Play(L"DeathAttackBasicCombo1Right", false);
-				
+				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Right", false);
+				}
+				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Left", false);
+				}
+				DeathAttackCombo = (UINT)ATTACK_COMBO::FIRST;
 			}
-			if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::FIRST)
 			{
-				this->GetAnimator()->Play(L"DeathAttackBasicCombo1Left", false);
+				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Right", false);
+				}
+				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Left", false);
+				}
+				DeathAttackCombo = (UINT)ATTACK_COMBO::SECOND;
 			}
+			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::SECOND)
+			{
+				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Right", false);
+				}
+				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Left", false);
+				}
+				DeathAttackCombo = (UINT)ATTACK_COMBO::THIRD;
+			}
+			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::THIRD)
+			{
+				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Right", false);
+				}
+				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Left", false);
+				}
+				DeathAttackCombo = (UINT)ATTACK_COMBO::FOURTH;
+			}
+
 			
 		}
 		// Falling
@@ -279,7 +363,7 @@ void CPlayer::ObjectTick()
 		}
 
 		// ToIdle
-		if (CurAnim->GetCurAnimName() == L"DeathRunRightToIdle" && CurAnim->IsFinish())
+		if (CurAnimName == L"DeathRunRightToIdle" && CurAnim->IsFinish())
 		{
 			if (IsNone(KEY::LEFT) && IsNone(KEY::RIGHT))
 			{
@@ -287,7 +371,7 @@ void CPlayer::ObjectTick()
 			}
 		}
 
-		if (CurAnim->GetCurAnimName() == L"DeathRunLeftToIdle" && CurAnim->IsFinish())
+		if (CurAnimName == L"DeathRunLeftToIdle" && CurAnim->IsFinish())
 		{
 			if (IsNone(KEY::LEFT) && IsNone(KEY::RIGHT))
 			{
@@ -300,11 +384,11 @@ void CPlayer::ObjectTick()
 		{
 			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 			{
-				if (CurAnim->GetCurAnimName() == L"DeathFallingRight") // Landing
+				if (CurAnimName == L"DeathFallingRight") // Landing
 				{
 					this->GetAnimator()->Play(L"DeathLandingRight", false);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathLandingRight" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathLandingRight" && CurAnim->IsFinish())
 				{
 					this->m_bToIdle = true;
 				}
@@ -318,11 +402,11 @@ void CPlayer::ObjectTick()
 			}
 			else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
 			{
-				if (CurAnim->GetCurAnimName() == L"DeathFallingLeft") // Landing
+				if (CurAnimName == L"DeathFallingLeft") // Landing
 				{
 					this->GetAnimator()->Play(L"DeathLandingLeft", false);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathLandingLeft" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathLandingLeft" && CurAnim->IsFinish())
 				{
 					this->m_bToIdle = true;
 				}
@@ -346,7 +430,7 @@ void CPlayer::ObjectTick()
 				{
 					this->GetAnimator()->Play(L"DeathIdleToRunRight", false);
 				}
-				else if (CurAnim->GetCurAnimName() == L"DeathRunRightToIdle")
+				else if (CurAnimName == L"DeathRunRightToIdle")
 				{
 					this->GetAnimator()->Play(L"DeathIdleToRunRight", false);
 				}
@@ -406,19 +490,19 @@ void CPlayer::ObjectTick()
 			vPos.x += m_fSpeed * DT;
 			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 			{
-				if (CurAnim->GetCurAnimName() == L"DeathLandingRight" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathLandingRight" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathRunRight", true);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathRunLeftToRunRight" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathRunLeftToRunRight" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathRunRight", true);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathIdleToRunRight" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathIdleToRunRight" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathRunRight", true);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathIdleLeftToRight" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathIdleLeftToRight" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathIdleToRunRight", true);
 				}
@@ -432,19 +516,19 @@ void CPlayer::ObjectTick()
 			vPos.x -= m_fSpeed * DT;
 			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
 			{
-				if (CurAnim->GetCurAnimName() == L"DeathLandingLeft" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathLandingLeft" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathRunLeft", true);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathRunRightToRunLeft" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathRunRightToRunLeft" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathRunLeft", true);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathIdleToRunLeft" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathIdleToRunLeft" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathRunLeft", true);
 				}
-				if (CurAnim->GetCurAnimName() == L"DeathIdleRightToLeft" && CurAnim->IsFinish())
+				if (CurAnimName == L"DeathIdleRightToLeft" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathIdleToRunLeft", false);
 				}
@@ -456,14 +540,14 @@ void CPlayer::ObjectTick()
 
 
 
-		if (CurAnim->GetCurAnimName() == L"DeathIdleToRunRight" && CurAnim->IsFinish())
+		if (CurAnimName == L"DeathIdleToRunRight" && CurAnim->IsFinish())
 		{
 			this->GetAnimator()->Play(L"DeathRunRight", true);
 		}
 		// Run to Idle
 		if (IsRelease(KEY::RIGHT))
 		{
-			if (CurAnim->GetCurAnimName() == L"DeathRunLeft" || CurAnim->GetCurAnimName() == L"DeathRunRightToRunLeft")
+			if (CurAnimName == L"DeathRunLeft" || CurAnimName == L"DeathRunRightToRunLeft")
 			{
 
 			}
@@ -477,7 +561,7 @@ void CPlayer::ObjectTick()
 
 		if (IsRelease(KEY::LEFT))
 		{
-			if (CurAnim->GetCurAnimName() == L"DeathRunRight" || CurAnim->GetCurAnimName() == L"DeathRunLeftToRunRight")
+			if (CurAnimName == L"DeathRunRight" || CurAnimName == L"DeathRunLeftToRunRight")
 			{
 
 			}
@@ -521,7 +605,7 @@ void CPlayer::ObjectTick()
 	}
 	else
 	{
-		if (CurAnim->GetCurAnimName() == L"DeathSpawn" && CurAnim->GetAnimCurFrame() == 77)
+		if (CurAnimName == L"DeathSpawn" && CurAnim->GetAnimCurFrame() == 77)
 		{
 
 		}

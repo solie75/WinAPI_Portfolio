@@ -29,9 +29,10 @@ void CDeathOfficeLevel::LevelInit()
 	// Image Loading
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
 	CResourceMgr::GetInst()->LoadTexture(L"DeathChair", L"texture\\DeathChair.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"OfficeElevator", L"texture\\OfficeElevator.bmp");
 
 	// Test Image 
-	CResourceMgr::GetInst()->LoadTexture(L"TestMonster", L"texture\\OfficeElevator.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"TestMonster", L"texture\\Test2.bmp");
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 
@@ -43,6 +44,10 @@ void CDeathOfficeLevel::LevelInit()
 	CBackgroundObject* pOfficeChair = new CBackgroundObject(L"DeathChair");
 	pOfficeChair->SetScale(Vec(200.f, 350.f));
 	Instantiate(pOfficeChair, Vec(625.f, 325.f), LAYER::BACKGROUNDOBJECT);
+
+	CBackgroundObject* pOfficeElevator = new CBackgroundObject(L"OfficeElevator");
+	pOfficeElevator->SetScale(Vec(270.f, 370.f));
+	Instantiate(pOfficeElevator, Vec(2000.f, 650.f), LAYER::BACKGROUNDOBJECT);
 
 	// Create Player
 	CPlayer* pPlayer = new CPlayer(L"Player");

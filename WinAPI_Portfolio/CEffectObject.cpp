@@ -18,7 +18,7 @@ CEffectObject::CEffectObject(wstring _pstring)
 	CreateAnimator();
 
 	CTexture* _textrue = CResourceMgr::GetInst()->LoadTexture(L"DeathLandingDust", L"texture\\DeathLandingDust.bmp");
-	GetAnimator()->CreateAnimation(L"DeathLandingDust", _textrue, Vec(0.f, 0.f), Vec(280.f, 110.f), 12, 0.025f);
+	GetAnimator()->CreateAnimation(L"DeathLandingDust", _textrue, Vec(0.f, 0.f), Vec(280.f, 110.f), Vec(0.f, 0.f), 12, 0.025f);
 	this->GetAnimator()->Play(L"DeathLandingDust", false);
 }
 
