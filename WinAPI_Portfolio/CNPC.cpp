@@ -3,17 +3,24 @@
 #include "CTexture.h"
 #include "CResourceMgr.h"
 #include "CCameraMgr.h"
+#include "CAnimator.h"
 
 CNPC::CNPC()
 	: m_pTexture(nullptr)
+	, m_pElevatorAppear(nullptr)
 {
 }
 
 CNPC::CNPC(wstring _pstring)
 	: m_pTexture(nullptr)
+	, m_pElevatorAppear(nullptr)
 {
 	SetName(_pstring);
 	CreateSquareCollider();
+	CreateAnimator();
+
+	m_pElevatorAppear = CResourceMgr::GetInst()->LoadTexture(L"OfficeElevatorAppear", L"texture\\ElevatorAppear.bmp");
+	GetAnimator()->CreateAnimation(L"OfficeElevatorAppear", m_pElevatorAppear, Vec(0.f, 0.f), Vec(520.f, 370.f), Vec(0.f, 0.f), 87, 0.025f);
 }
 
 CNPC::~CNPC()
@@ -23,26 +30,10 @@ CNPC::~CNPC()
 
 void CNPC::ObjectTick()
 {
+	CObject::ObjectTick();
 }
 
 void CNPC::ObjectRender(HDC _dc, wstring _pstring)
 {
-	Vec vPos = CCameraMgr::GetInst()->GetRenderPos(GetPos());
-	Vec vScale = GetScale();
-
-	m_pTexture = CResourceMgr::GetInst()->FindTexture(_pstring);
-
-	Vec vLeftTop = Vec(vPos.x - m_pTexture->Width() / 2.f, vPos.y - m_pTexture->Height() / 2.f);
-
-	TransparentBlt(_dc
-		, (int)vLeftTop.x
-		, (int)vLeftTop.y
-		, (int)m_pTexture->Width()
-		, (int)m_pTexture->Height()
-		, m_pTexture->GetDC()
-		, 0, 0
-		, (int)m_pTexture->Width()
-		, (int)m_pTexture->Height()
-		, RGB(253, 253, 254)
-	);
+	CObject::ObjectRender(_dc, _pstring);
 }

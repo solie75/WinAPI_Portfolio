@@ -8,6 +8,7 @@ class CNPC :
 {
 public:
     CTexture* m_pTexture;
+    CTexture* m_pElevatorAppear;
 
 public:
     virtual void ObjectTick() override;

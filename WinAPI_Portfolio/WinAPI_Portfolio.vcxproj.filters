@@ -124,6 +124,9 @@
     <Filter Include="Game\04.Object\07.NPC">
       <UniqueIdentifier>{6694dbe1-ad91-4374-8ba4-ee3626afb361}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\08.Trigger">
+      <UniqueIdentifier>{2384422a-2b7d-4d11-bcfb-7738bdb537a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -255,6 +258,9 @@
     <ClInclude Include="CNPC.h">
       <Filter>Game\04.Object\07.NPC</Filter>
     </ClInclude>
+    <ClInclude Include="CTrigger.h">
+      <Filter>Game\04.Object\08.Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -381,6 +387,9 @@
     </ClCompile>
     <ClCompile Include="CNPC.cpp">
       <Filter>Game\04.Object\07.NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="CTrigger.cpp">
+      <Filter>Game\04.Object\08.Trigger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

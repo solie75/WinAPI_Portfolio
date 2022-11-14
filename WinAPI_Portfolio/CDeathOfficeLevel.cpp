@@ -7,6 +7,8 @@
 #include "CBackgroundObject.h"
 #include "CPlayer.h"
 #include "CMonster.h"
+#include "CNPC.h"
+#include "CTrigger.h"
 
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
@@ -54,8 +56,15 @@ void CDeathOfficeLevel::LevelInit()
 	pPlayer->SetScale(Vec(154.f, 158.f));
 	Instantiate(pPlayer, Vec(650.f, 500.f), LAYER::PLAYER);
 
+	// Create NPC
+	CNPC* pNPC_Elevator = new CNPC(L"Elevator");
+	pNPC_Elevator->SetScale(Vec(100.f, 100.f)); // 임시
+	Instantiate(pNPC_Elevator, Vec(2000.f, 650.f), LAYER::NPC);
+
+
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
+	//pOfficeElevator->GetAnimator()->Play(L"OfficeElevator", false);
 	pPlayer->SetKeyWorking(false);
 
 	// Create Test Monster
@@ -63,19 +72,30 @@ void CDeathOfficeLevel::LevelInit()
 	pMonster->SetScale(Vec(400.f, 130.f));
 	Instantiate(pMonster, Vec(300.f, 100.f), LAYER::MONSTER);
 
+	// Elevator Animation Trigger
+	CTrigger* pElevatorAppearTrigger = new CTrigger(L"ElevatorAppearTrigger");
+	pElevatorAppearTrigger->SetScale(Vec(50.f, 1000.f));
+	Instantiate(pElevatorAppearTrigger, Vec(1550.f, 500.f), LAYER::TRIGGER);
+
 	
 	//CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
 	CCameraMgr::GetInst()->SetLook(Vec(800.f, 450.f));
 
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::BACKGROUND);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::TRIGGER);
 
 }
 
 void CDeathOfficeLevel::LevelTick()
 {
 	vector<CObject*> playerlayer = this->GetLayer(LAYER::PLAYER);
+	vector<CObject*> NPClayer = this->GetLayer(LAYER::NPC);
+	vector<CObject*> Triggerlayer = this->GetLayer(LAYER::TRIGGER);
+
+	
+
 	if (playerlayer.empty() == false) {
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(this->GetLayer(LAYER::PLAYER)[0]);
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerlayer[0]);
 		if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
 		{
 			if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
@@ -88,6 +108,16 @@ void CDeathOfficeLevel::LevelTick()
 				pPlayer->m_bToIdle = true;
 				pPlayer->SetKeyWorking(true);
 			}
+		}
+		CTrigger* pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(Triggerlayer[0]);
+		if (NPClayer.empty() == false)
+		{
+			CNPC* pOfficeElevator = dynamic_cast<CNPC*>(NPClayer[0]);
+			if (pOfficeElevatorTrigger->IsTriggerOn()) // 이 트리거가 EndOverlap 에서 setDead 하여 오류가 난다.
+			{
+				pOfficeElevator->GetAnimator()->Play(L"OfficeElevatorAppear", false);
+			}
+			
 		}
 	}
 	CLevel::LevelTick();

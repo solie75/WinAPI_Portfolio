@@ -170,6 +170,7 @@
     <ClInclude Include="CStartLevel.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTimeMgr.h" />
+    <ClInclude Include="CTrigger.h" />
     <ClInclude Include="def.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="func.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="CStartLevel.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
+    <ClCompile Include="CTrigger.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="WinAPI_Portfolio.cpp" />
