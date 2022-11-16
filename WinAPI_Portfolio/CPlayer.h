@@ -40,6 +40,9 @@ public:
     CTexture* m_pDeathRunRightToRunLeft;
     CTexture* m_pDeathRunLeftToRunRight;
 
+    CTexture* m_pDeathDashRight;
+    CTexture* m_pDeathDashLeft;
+
     CTexture* m_pDeathJumpRight;
     CTexture* m_pDeathJumpLeft;
     CTexture* m_pDeathLandingRight;
@@ -62,10 +65,12 @@ public:
     //vector<CEffectObject*> m_vecPlayerEffect;
 
     UINT DeathSight;
+    UINT DeathState;
     //UINT DeathAttactState; // Death Attack 이 None 이면 State 도 None 아닌가.
     UINT DeathAttackCombo;
     bool m_bToIdle;
     bool m_bOnIdle;
+    int m_iJumpCount;
 
 public:
     virtual void ObjectTick() override;

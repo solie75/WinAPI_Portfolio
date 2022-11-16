@@ -17,10 +17,12 @@ private:
 	CAnimator* m_pAnimator;
 	map<int, CCollider*> m_mapCollider;
 	vector<CCollider*> m_vecCollider;
+	
 	//CCollider* m_pCollider;
 	CRigidBody* m_pRigidBody;
 
 public:
+
 	void SetPos(Vec _v) { m_vPos = _v; }
 	Vec GetPos() { return m_vPos; }
 
@@ -33,8 +35,12 @@ public:
 
 	void CreateAnimator();
 	void CreateSquareCollider();
+	void AddSquareCollider();
+	void AddSquareCollider(UINT _Collider_Type);
 	void CreateLineCollider(Vec _pStart, Vec _pEnd); // for GroundCollider
 	void CreateRigidBody();
+
+	//wstring GetStrName() { return strName; }
 	
 	virtual void CollisionBegin(CCollider* _pOther){}
 	virtual void Colliding(CCollider* _pOther){}
@@ -63,6 +69,8 @@ public:
 	CRigidBody* GetRigidBody() {
 		return m_pRigidBody;
 	}
+
+	void DeleteLastCollider() { m_vecCollider.erase(m_vecCollider.end() - 1); }
 
 
 

@@ -6,11 +6,13 @@
 
 CBackgroundObject::CBackgroundObject()
 	: m_pTexture(nullptr)
+	, m_bShow(false)
 {
 }
 
 CBackgroundObject::CBackgroundObject(wstring _pstring)
 	: m_pTexture(nullptr)
+	,m_bShow(false)
 {
 	SetName(_pstring);
 }
@@ -34,18 +36,21 @@ void CBackgroundObject::ObjectRender(HDC _dc, wstring _pstring)
 
 	Vec vLeftTop = Vec(vPos.x - m_pTexture->Width() / 2.f, vPos.y - m_pTexture->Height() / 2.f);
 
-	TransparentBlt(_dc
-		, (int)vLeftTop.x
-		, (int)vLeftTop.y
-		, (int)m_pTexture->Width()
-		, (int)m_pTexture->Height()
-		, m_pTexture->GetDC()
-		, 0, 0
-		, (int)m_pTexture->Width()
-		, (int)m_pTexture->Height()
-		, RGB(253, 253, 254)
-	);
-
+	if (m_bShow)
+	{
+		TransparentBlt(_dc
+			, (int)vLeftTop.x
+			, (int)vLeftTop.y
+			, (int)m_pTexture->Width()
+			, (int)m_pTexture->Height()
+			, m_pTexture->GetDC()
+			, 0, 0
+			, (int)m_pTexture->Width()
+			, (int)m_pTexture->Height()
+			, RGB(253, 253, 254)
+		);
+	}
+	
 	CObject::ObjectRender(_dc, _pstring);
 }
 

@@ -84,9 +84,14 @@ enum class CAMERA_EFFECT
 
 enum class COLLIDER_TYPE
 {
+	//LINE
 	LINE,
-	SQUARE,
 
+	//SQUARE
+	OBJECT,
+	PLAYERATTACK,
+	TRIGGER,
+	UNKNOWN,
 
 	END = 6
 };

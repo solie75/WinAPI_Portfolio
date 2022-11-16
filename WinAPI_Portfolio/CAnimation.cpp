@@ -51,7 +51,7 @@ void CAnimation::AnimationTick()
 
 	m_fAccTime += DT;
 
-	if (m_vecFrame[m_iCurFrame].fDuration < m_fAccTime)
+	if (m_vecFrame[m_iCurFrame].fDuration <= m_fAccTime)
 	{
 		++m_iCurFrame;
 		m_fAccTime = 0.f;

@@ -124,6 +124,17 @@ void CObject::CreateSquareCollider()
 	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
 }
 
+void CObject::AddSquareCollider()
+{
+	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
+}
+
+void CObject::AddSquareCollider(UINT _Collider_Type)
+{
+	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
+	m_vecCollider.back()->SetColliderType(_Collider_Type);
+}
+
 void CObject::CreateLineCollider(Vec _pStart, Vec _pEnd)
 {
 	//m_pCollider = new CLineCollider(this, _pStart, _pEnd);

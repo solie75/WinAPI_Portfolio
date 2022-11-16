@@ -19,6 +19,7 @@ CTrigger::CTrigger(wstring _pstring)
 	SetName(_pstring);
 	CreateSquareCollider();
 	GetColliderVector()[0]->SetColliderScale(Vec(50.f, 1000.f));
+	GetColliderVector()[0]->SetColliderType((UINT)COLLIDER_TYPE::TRIGGER);
 }
 
 CTrigger::~CTrigger()
@@ -38,13 +39,8 @@ void CTrigger::ObjectRender(HDC _dc, wstring _pstring)
 
 void CTrigger::CollisionBegin(CCollider* _pOther)
 {
-	// 충돌할 경우 Elevator Appear 시작
-	
-	/*if (this->GetName() == L"ElevatorAppearTrigger")
-	{
-		
-	}*/
 	Trigger = true;
+	SetDead();
 }
 
 void CTrigger::Colliding(CCollider* _pOther)
@@ -53,5 +49,5 @@ void CTrigger::Colliding(CCollider* _pOther)
 
 void CTrigger::CollisionEnd(CCollider* _pOther)
 {
-	SetDead();
+
 }

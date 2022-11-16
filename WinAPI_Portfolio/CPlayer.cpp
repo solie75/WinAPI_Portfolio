@@ -32,13 +32,15 @@ CTexture* m_pDeathRunLeft;
 
 CTexture* m_pDeath;
 
-//enum class DEATH_ATTACK_STATE
-//{
-//	PROCEEDING,
-//	NONE,
-//
-//	END
-//};
+enum class DEATH_STATE
+{
+	IDLE,
+	RUN,
+	DASH,
+	ATTACK,
+
+	NONE, // during Animation
+};
 
 enum class ATTACK_COMBO
 {
@@ -80,12 +82,16 @@ CPlayer::CPlayer()
 	, m_pDeathAttackBasicCombo3Left(nullptr)
 	, m_pDeathAttackBasicCombo4Right(nullptr)
 	, m_pDeathAttackBasicCombo4Left(nullptr)
+	, m_pDeathDashRight(nullptr)
+	, m_pDeathDashLeft(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
+	, m_iJumpCount(0)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
+	, DeathState((UINT)DEATH_STATE::NONE)
 
 	//, m_vecPlayerEffect{}
 {
@@ -120,26 +126,25 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathAttackBasicCombo3Left(nullptr)
 	, m_pDeathAttackBasicCombo4Right(nullptr)
 	, m_pDeathAttackBasicCombo4Left(nullptr)
+	, m_pDeathDashRight(nullptr)
+	, m_pDeathDashLeft(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
+	, m_iJumpCount(0)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
+	, DeathState((UINT)DEATH_STATE::NONE)
 	//, m_vecPlayerEffect{}
 {
 	CreateAnimator();
 	CreateSquareCollider();
 	CreateRigidBody();
 
-	//GetCollider()->SetColliderOffSetPos(Vec(-5.f, -25.f));
-	//GetCollider()->SetColliderScale(Vec(80.f, 100.f));
-
-	//GetColliderMap().begin()->second->SetColliderOffSetPos(Vec(-5.f, -25.f));
-	//GetColliderMap().begin()->second->SetColliderScale(Vec(80.f, 100.f));
-
 	GetColliderVector()[0]->SetColliderOffSetPos(Vec(-5.f, -25.f));
 	GetColliderVector()[0]->SetColliderScale(Vec(80.f, 100.f));
+	GetColliderVector()[0]->SetColliderType((UINT)COLLIDER_TYPE::OBJECT);
 
 	//m_pTexture = CResourceMgr::GetInst()->FindTexture(_pstring);
 	m_pDeathSpawn = CResourceMgr::GetInst()->LoadTexture(L"DeathSpawn", L"texture\\DeathSpawn.bmp");
@@ -169,6 +174,8 @@ CPlayer::CPlayer(wstring _pstring)
 	m_pDeathAttackBasicCombo3Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo3Left", L"texture\\DeathAttackBasicCombo3Left.bmp");
 	m_pDeathAttackBasicCombo4Right = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo4Right", L"texture\\DeathAttackBasicCombo4Right.bmp");
 	m_pDeathAttackBasicCombo4Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo4Left", L"texture\\DeathAttackBasicCombo4Left.bmp");
+	m_pDeathDashRight = CResourceMgr::GetInst()->LoadTexture(L"DeathDashRight", L"texture\\DeathDashRight.bmp");
+	m_pDeathDashLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathDashLeft", L"texture\\DeathDashLeft.bmp");
 
 	SetName(_pstring);
 
@@ -199,6 +206,8 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo3Left", m_pDeathAttackBasicCombo3Left, Vec(0.f, 0.f), Vec(640.f, 110.f), Vec(-20.f, -20.f), 9, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Right", m_pDeathAttackBasicCombo4Right, Vec(0.f, 0.f), Vec(444.f, 360.f), Vec(70.f, -120.f), 18, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Left", m_pDeathAttackBasicCombo4Left, Vec(0.f, 0.f), Vec(444.f, 360.f), Vec(-70.f, -120.f), 18, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathDashRight", m_pDeathDashRight, Vec(0.f, 0.f), Vec(320.f, 130.f), Vec(0.f, 0.f), 8, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathDashLeft", m_pDeathDashLeft, Vec(0.f, 0.f), Vec(320.f, 130.f), Vec(0.f, 0.f), 8, 0.04f);
 	
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
@@ -209,7 +218,7 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->LoadAnimation(L"animation\\WALK_LEFT.anim");
 	GetAnimator()->LoadAnimation(L"animation\\WALK_UP.anim");
 	GetAnimator()->LoadAnimation(L"animation\\WALK_RIGHT.anim");*/
-
+	 
 
 	// Gravity Setting
 	GetRigidBody()->SetGravity(false);
@@ -232,6 +241,34 @@ void CPlayer::ObjectTick()
 	// after animation
 	if (true == GetKeyWorking())
 	{
+
+		if (CurAnimName == L"DeathAttackBasicCombo4Right")
+		{
+			if (10 <= CurAnim->GetAnimCurFrame() && CurAnim->GetAnimCurFrame() <= 14)
+			{
+				this->GetColliderVector()[1]->SetColliderScale(Vec(400.f, 350.f));
+				this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(100.f, -130.f));
+			}
+			else
+			{
+				this->GetColliderVector()[1]->SetColliderScale(Vec(140.f, 130.f));
+				this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -50.f));
+			}
+		}
+		else if (CurAnimName == L"DeathAttackBasicCombo4Left")
+		{
+			if (10 <= CurAnim->GetAnimCurFrame() && CurAnim->GetAnimCurFrame() <= 14)
+			{
+				this->GetColliderVector()[1]->SetColliderScale(Vec(-400.f, 350.f));
+				this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(-100.f, -130.f));
+			}
+			else
+			{
+				this->GetColliderVector()[1]->SetColliderScale(Vec(-140.f, 130.f));
+				this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -50.f));
+			}
+		}
+
 		if ((DeathAttackCombo != (UINT)ATTACK_COMBO::NONE)) // 캐릭터의 콤보 애니메이션 하나가 끝났음.
 		{
 			if (CurAnim->IsFinish())
@@ -242,6 +279,12 @@ void CPlayer::ObjectTick()
 
 				DeathAttackCombo = (UINT)ATTACK_COMBO::NONE;
 
+				// 공격 Collider 지우기
+				if (GetColliderVector()[1]->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+				{
+					DeleteLastCollider();
+				}
+
 				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathIdleRight", true);
@@ -250,6 +293,7 @@ void CPlayer::ObjectTick()
 				{
 					this->GetAnimator()->Play(L"DeathIdleLeft", true);
 				}
+				
 			}
 			else
 			{
@@ -264,33 +308,6 @@ void CPlayer::ObjectTick()
 			}
 		}
 
-		//if (CurAnimName == L"DeathAttackBasicCombo1Right")
-		//{
-		//	if (CurAnim->IsFinish())
-		//	{
-		//		this->SetScale(Vec(154.f, 158.f));
-		//		this->GetRigidBody()->SetGravity(true);
-		//	}
-		//	else
-		//	{
-		//		 // 이 방향 때문에 CurAnimName을 사용해야 한다...
-
-		//	}
-		//}
-
-		//if (CurAnimName == L"DeathAttackBasicCombo1Left")
-		//{
-		//	if (CurAnim->IsFinish())
-		//	{
-		//		this->SetScale(Vec(154.f, 158.f));
-		//		this->GetRigidBody()->SetGravity(true);
-		//	}
-		//	else
-		//	{
-		//		vPos.x -= (m_fSpeed / 4.f) * DT;
-		//	}
-		//}
-
 		//Attack Basic
 		if (IsTap(KEY::Z))
 		{
@@ -300,13 +317,20 @@ void CPlayer::ObjectTick()
 
 			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
 			{
+				// 공격 충돌체 추가
+				this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK);
+
 				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Right", false);
+					this->GetColliderVector()[1]->SetColliderScale(Vec(250.f, 70.f));
+					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(GetScale().x - 25.f, -25.f));
 				}
 				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Left", false);
+					this->GetColliderVector()[1]->SetColliderScale(Vec(-250.f, 70.f));
+					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(-GetScale().x + 25.f, -25.f));
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::FIRST;
 			}
@@ -315,10 +339,14 @@ void CPlayer::ObjectTick()
 				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Right", false);
+					this->GetColliderVector()[1]->SetColliderScale(Vec(330.f, 280.f));
+					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(50.f, -60.f));
 				}
 				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Left", false);
+					this->GetColliderVector()[1]->SetColliderScale(Vec(-330.f, 280.f));
+					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(-50.f, -60.f));
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::SECOND;
 			}
@@ -327,10 +355,14 @@ void CPlayer::ObjectTick()
 				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Right", false);
+					this->GetColliderVector()[1]->SetColliderScale(Vec(580.f, 60.f));
+					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -35.f));
 				}
 				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Left", false);
+					this->GetColliderVector()[1]->SetColliderScale(Vec(-570.f, 60.f));
+					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -35.f));
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::THIRD;
 			}
@@ -339,10 +371,12 @@ void CPlayer::ObjectTick()
 				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Right", false);
+					// 애니 프레임이 1부터 시작할때 10부터 14까지 아래 크기이고 나머지 부분은 작아야 한다.
 				}
 				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Left", false);
+					
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::FOURTH;
 			}
@@ -477,17 +511,32 @@ void CPlayer::ObjectTick()
 		}
 
 
-
-
-
-
-
-
+		if (DeathState == (UINT)DEATH_STATE::DASH)
+		{
+			if (CurAnim->IsFinish())
+			{
+				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathRunRightToIdle", false);
+					this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
+				}
+				else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathRunLeftToIdle", false);
+					this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
+				}
+				DeathState = (UINT)DEATH_STATE::NONE;
+			}
+		}
 
 		// Death Run
 		if (IsPressed(KEY::RIGHT))
 		{
-			vPos.x += m_fSpeed * DT;
+			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
+			{
+				vPos.x += m_fSpeed * DT;
+			}
+
 			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
 			{
 				if (CurAnimName == L"DeathLandingRight" && CurAnim->IsFinish())
@@ -506,14 +555,64 @@ void CPlayer::ObjectTick()
 				{
 					this->GetAnimator()->Play(L"DeathIdleToRunRight", true);
 				}
+				if (CurAnimName == L"DeathIdleRight")
+				{
+					this->GetAnimator()->Play(L"DeathRunRight", true);
+				}
+				if (CurAnimName == L"DeathDashRight" && CurAnim->IsFinish())
+				{
+					this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
+					DeathState = (UINT)DEATH_STATE::NONE;
+					this->GetAnimator()->Play(L"DeathRunRight", true);
+				}
+				
 			}
 			this->m_bOnIdle = false;
 			this->m_bToIdle = false;
 		}
 
+		
+		// Dash
+		if (IsTap(KEY::LSHIFT))
+		{
+			if (DeathState != (UINT)DEATH_STATE::DASH)
+			{
+				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathDashRight", false);
+					if (CurAnimName == L"DeathRunRight")
+					{
+						this->GetRigidBody()->SetVelocity(Vec(1200, 0.f));
+					}
+					else
+					{
+						this->GetRigidBody()->SetVelocity(Vec(1400.f, 0.f));
+					}
+					this->DeathState = (UINT)DEATH_STATE::DASH;
+				}
+				else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathDashLeft", false);
+					if (CurAnimName == L"DeathRunLeft")
+					{
+						this->GetRigidBody()->SetVelocity(Vec(-1200.f, 0.f));
+					}
+					else
+					{
+						this->GetRigidBody()->SetVelocity(Vec(-1400.f, 0.f));
+					}
+					this->DeathState = (UINT)DEATH_STATE::DASH;
+				}
+			}
+		}
+
 		if (IsPressed(KEY::LEFT))
 		{
-			vPos.x -= m_fSpeed * DT;
+			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
+			{
+				vPos.x -= m_fSpeed * DT;
+			}
+
 			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
 			{
 				if (CurAnimName == L"DeathLandingLeft" && CurAnim->IsFinish())
@@ -531,6 +630,16 @@ void CPlayer::ObjectTick()
 				if (CurAnimName == L"DeathIdleRightToLeft" && CurAnim->IsFinish())
 				{
 					this->GetAnimator()->Play(L"DeathIdleToRunLeft", false);
+				}
+				if (CurAnimName == L"DeathDashLeft" && CurAnim->IsFinish())
+				{
+					this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
+					DeathState = (UINT)DEATH_STATE::NONE;
+					this->GetAnimator()->Play(L"DeathRunLeft", true);
+				}
+				if (CurAnimName == L"DeathIdleLeft")
+				{
+					this->GetAnimator()->Play(L"DeathRunLeft", true);
 				}
 			}
 			this->m_bOnIdle = false;
@@ -574,44 +683,42 @@ void CPlayer::ObjectTick()
 			}
 		}
 
-
-		if (IsTap(KEY::SPACE))
+		if (this->GetRigidBody()->GetBoolOnGround())
 		{
-			Vec V = GetRigidBody()->GetVelocity();
-			if (0.f < V.y) // jump in falling
-			{
-				GetRigidBody()->AddVelocity(Vec(0.f, -(V.y + 1600.f)));
+			this->m_iJumpCount = 0;
+		}
 
-				CEffectObject* _Effect = new CEffectObject(L"LandingDust");
-				Instantiate(_Effect, Vec(this->GetPos().x,(this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
+		if (m_iJumpCount < 1)
+		{
+			if (IsTap(KEY::SPACE))
+			{
+				Vec V = GetRigidBody()->GetVelocity();
+				if (0.f < V.y) // jump in falling
+				{
+					GetRigidBody()->AddVelocity(Vec(0.f, -(V.y + 1600.f)));
 
+					CEffectObject* _Effect = new CEffectObject(L"LandingDust");
+					Instantiate(_Effect, Vec(this->GetPos().x, (this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
+
+				}
+				else // jump on ground
+				{
+					GetRigidBody()->AddVelocity(Vec(0.f, -1600.f));
+					CEffectObject* _Effect = new CEffectObject(L"LandingDust");
+					Instantiate(_Effect, Vec(this->GetPos().x, (this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
+				}
+				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				{
+					this->GetAnimator()->Play(L"DeathJumpRight", false);
+				}
+				if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				{
+					this->GetAnimator()->Play(L"DeathJumpLeft", false);
+				}
+				m_iJumpCount++;
 			}
-			else // jump on ground
-			{
-				GetRigidBody()->AddVelocity(Vec(0.f, -1600.f));
-				CEffectObject* _Effect = new CEffectObject(L"LandingDust");
-				Instantiate(_Effect, Vec(this->GetPos().x, (this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
-			}
-			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
-			{
-				this->GetAnimator()->Play(L"DeathJumpRight", false);
-			}
-			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
-			{
-				this->GetAnimator()->Play(L"DeathJumpLeft", false);
-			}
-			
 		}
 	}
-	else
-	{
-		if (CurAnimName == L"DeathSpawn" && CurAnim->GetAnimCurFrame() == 77)
-		{
-
-		}
-		
-	}
-
 	SetPos(vPos);
 
 	CObject::ObjectTick();

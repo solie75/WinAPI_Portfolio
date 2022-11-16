@@ -11,6 +11,7 @@
 CCameraMgr::CCameraMgr()
 	: m_fRatio(0.f)
 	, m_pBlindTex(nullptr)
+	, m_bCameraWork(false)
 {
 	POINT ptResolution = CEngine::GetInst()->GetResolution();
 
@@ -32,6 +33,7 @@ void CCameraMgr::CameraMgrTick()
 		m_vLook.x += 500.f * DT;
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
+
 	m_vDiff = m_vLook - vResolution/ 2.f;
 
 	if (m_CamEffectList.empty())
@@ -39,6 +41,8 @@ void CCameraMgr::CameraMgrTick()
 		return;
 	}
 
+
+	//CameraEffect
 	tCamEffect& effect = m_CamEffectList.front();
 
 	effect.m_fAccTime += DT;

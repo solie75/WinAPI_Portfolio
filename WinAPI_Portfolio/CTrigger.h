@@ -18,9 +18,9 @@ public:
     virtual void Colliding(CCollider* _pOther) override;
     virtual void CollisionEnd(CCollider* _pOther) override;
 
-    bool IsTriggerOn() {
+    /*bool IsTriggerOn() {
         return Trigger;
-    }
+    }*/
 
 public:
     CLONE(CTrigger);

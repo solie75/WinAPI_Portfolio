@@ -45,10 +45,12 @@ void CDeathOfficeLevel::LevelInit()
 
 	CBackgroundObject* pOfficeChair = new CBackgroundObject(L"DeathChair");
 	pOfficeChair->SetScale(Vec(200.f, 350.f));
+	pOfficeChair->SetBoolShow(true);
 	Instantiate(pOfficeChair, Vec(625.f, 325.f), LAYER::BACKGROUNDOBJECT);
 
 	CBackgroundObject* pOfficeElevator = new CBackgroundObject(L"OfficeElevator");
 	pOfficeElevator->SetScale(Vec(270.f, 370.f));
+	pOfficeElevator->SetBoolShow(true);
 	Instantiate(pOfficeElevator, Vec(2000.f, 650.f), LAYER::BACKGROUNDOBJECT);
 
 	// Create Player
@@ -56,21 +58,23 @@ void CDeathOfficeLevel::LevelInit()
 	pPlayer->SetScale(Vec(154.f, 158.f));
 	Instantiate(pPlayer, Vec(650.f, 500.f), LAYER::PLAYER);
 
-	// Create NPC
-	CNPC* pNPC_Elevator = new CNPC(L"Elevator");
-	pNPC_Elevator->SetScale(Vec(100.f, 100.f)); // 임시
-	Instantiate(pNPC_Elevator, Vec(2000.f, 650.f), LAYER::NPC);
+
 
 
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
-	//pOfficeElevator->GetAnimator()->Play(L"OfficeElevator", false);
 	pPlayer->SetKeyWorking(false);
 
 	// Create Test Monster
 	CMonster* pMonster = new CMonster(L"TestMonster");
 	pMonster->SetScale(Vec(400.f, 130.f));
-	Instantiate(pMonster, Vec(300.f, 100.f), LAYER::MONSTER);
+	//Instantiate(pMonster, Vec(300.f, 100.f), LAYER::MONSTER);
+
+	// Create NPC
+	CNPC* pElevator = new CNPC(L"Elevator");
+	pElevator->SetScale(Vec(520.f, 370.f));
+	Instantiate(pElevator, Vec(2000.f, 650.f), LAYER::NPC);
+	
 
 	// Elevator Animation Trigger
 	CTrigger* pElevatorAppearTrigger = new CTrigger(L"ElevatorAppearTrigger");
@@ -83,6 +87,7 @@ void CDeathOfficeLevel::LevelInit()
 
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::BACKGROUND);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::TRIGGER);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::NPC);
 
 }
 
@@ -92,10 +97,8 @@ void CDeathOfficeLevel::LevelTick()
 	vector<CObject*> NPClayer = this->GetLayer(LAYER::NPC);
 	vector<CObject*> Triggerlayer = this->GetLayer(LAYER::TRIGGER);
 
-	
-
-	if (playerlayer.empty() == false) {
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerlayer[0]);
+	if (!playerlayer.empty()) {
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerlayer[0]);		
 		if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
 		{
 			if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
@@ -109,15 +112,26 @@ void CDeathOfficeLevel::LevelTick()
 				pPlayer->SetKeyWorking(true);
 			}
 		}
-		CTrigger* pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(Triggerlayer[0]);
-		if (NPClayer.empty() == false)
+	}
+	if (!NPClayer.empty())
+	{
+		CTrigger* pOfficeElevatorTrigger = nullptr;
+		if (!Triggerlayer.empty())
 		{
-			CNPC* pOfficeElevator = dynamic_cast<CNPC*>(NPClayer[0]);
-			if (pOfficeElevatorTrigger->IsTriggerOn()) // 이 트리거가 EndOverlap 에서 setDead 하여 오류가 난다.
+			pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(Triggerlayer[0]);
+		}
+		CNPC* pNPC_Elevator = dynamic_cast<CNPC*>(NPClayer[0]);
+		if (pOfficeElevatorTrigger != nullptr && pOfficeElevatorTrigger->Trigger) // 이 트리거가 EndOverlap 에서 setDead 하여 오류가 난다.
+		{
+			pNPC_Elevator->GetAnimator()->Play(L"ElevatorAppear", false);
+			pOfficeElevatorTrigger->Trigger = false;
+		}
+		if (pNPC_Elevator->GetAnimator()->GetCurAnimation() != nullptr)
+		{
+			if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorAppear" && pNPC_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
 			{
-				pOfficeElevator->GetAnimator()->Play(L"OfficeElevatorAppear", false);
+				pNPC_Elevator->GetAnimator()->Play(L"ElevatorIdle", true);
 			}
-			
 		}
 	}
 	CLevel::LevelTick();

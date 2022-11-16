@@ -3,6 +3,7 @@
 
 #include "CLevel.h"
 #include "CObject.h"
+#include "CPlayer.h"
 
 #include "CLevelMgr.h"
 #include "CCollider.h"
@@ -123,6 +124,8 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 			}
 			// -> 모든 충돌의 경우의 수는 다 저장이 된다.
 
+			
+
 			// case of during Colliding
 			if (CollisionBtwCollider(ColliderVector1[i], ColliderVector2[j]))
 			{
@@ -177,19 +180,16 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 
 	if ((UINT)COLLIDER_TYPE::LINE == _Collider1->GetColliderType())
 	{
-		//Vec vCollider2Pos = _Collider2->GetColliderFinalPos();
-		//Vec vCollider2Scale = _Collider2->GetColliderScale();
-
+		if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+		{
+			return false;
+		}
+		
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider1);
 
 		if (vCollider2Pos.x < _pLineCollider->GetEndPoint().x && vCollider2Pos.x > _pLineCollider->GetStartPoint().x)
 		{
-			// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
-			//float inclination = (_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x);
-			//float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
-			//double distance = fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y / 2.f) + (_pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x)) / (sqrtf(inclination * inclination + 1));
-			//double distance = fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y / 2.f) + y_intercept) / sqrtf(inclination * inclination + 1);
-
+			
 			_pLineCollider->SetInclination((_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x));
 			float inclination = _pLineCollider->GetInclination();
 			float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
@@ -198,13 +198,13 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 			if (_pLineCollider->GetDistance() <= 2.f) // distance == 0 이면 충돌이게 하고 싶지만 그렇게 하면 그냥 통과 해버린다.
 			{
 				return true;
+				
 			}
 
 			float yOfLineCollider = (_pLineCollider->GetInclination() * vCollider2Pos.x) + y_intercept;
-			//float playerYpos = 
+			
 			if ((vCollider2Pos.y + (vCollider2Scale.y / 2.f)) > yOfLineCollider)
 			{
-				//_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - vCollider2Scale.y / 2.f));
 				_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - 26.f)); // 왜 vCollider2Scale.y / 2.f 가 아니라 26.f 라는 값이 나오는가.
 			}
 
@@ -212,14 +212,16 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 	}
 	if ((UINT)COLLIDER_TYPE::LINE == _Collider2->GetColliderType()) // case of LineCollider
 	{
-		//Vec vCollider1Pos = _Collider1->GetColliderFinalPos();
-		//Vec vCollider1Scale = _Collider1->GetColliderScale();
-
+		if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+		{
+			return false;
+		}
+		
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider2);
 
 		if (vCollider1Pos.x < _pLineCollider->GetEndPoint().x && vCollider1Pos.x > _pLineCollider->GetStartPoint().x)
 		{
-			// Vec(vCollider2Pos.x, vCollider2Pos + vCollider2Scale);
+			
 			_pLineCollider->SetInclination((_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x));
 			float inclination = _pLineCollider->GetInclination();
 			float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
@@ -228,10 +230,11 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 			if (_pLineCollider->GetDistance() <= 2.f)
 			{
 				return true;
+				
 			}
 
 			float yOfLineCollider = (_pLineCollider->GetInclination() * vCollider1Pos.x) + y_intercept;
-			//float playerYpos = 
+			
 			if ((vCollider1Pos.y + vCollider1Scale.y / 2.f) > yOfLineCollider)
 			{
 				_Collider1->GetOwner()->SetPos(Vec(_Collider1->GetOwner()->GetPos().x, yOfLineCollider));
@@ -240,11 +243,13 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 
 	}
 
-	if (fabsf(vCollider1Pos.x - vCollider2Pos.x) > (vCollider1Scale.x + vCollider2Scale.x))
+
+
+	if (fabsf(vCollider1Pos.x - vCollider2Pos.x) > (vCollider1Scale.x/2.f + vCollider2Scale.x/2.f))
 	{
 		return false;
 	}
-	if (fabsf(vCollider1Pos.y - vCollider2Pos.y) > (vCollider1Scale.y + vCollider2Scale.y))
+	if (fabsf(vCollider1Pos.y - vCollider2Pos.y) > (vCollider1Scale.y / 2.f + vCollider2Scale.y / 2.f))
 	{
 		return false;
 	}

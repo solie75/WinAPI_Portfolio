@@ -17,6 +17,9 @@ private:
 	Vec m_vLook; // Camera position
 	Vec m_vDiff; // difference of Vec within RealPos and renderPos
 
+	// whether camera work on or off
+	bool m_bCameraWork;
+
 	list<tCamEffect> m_CamEffectList;
 	float m_fRatio;
 
@@ -26,6 +29,9 @@ public:
 	void SetLook(Vec _vLook) { m_vLook = _vLook; }
 	void FadeOut(float _fTerm);
 	void FadeIn(float _fTerm);
+
+	void SetCameraWork(bool _b) { m_bCameraWork = _b; }
+	bool GetCameraWork() { return m_bCameraWork; }
 
 public:
 	void CameraMgrTick();
