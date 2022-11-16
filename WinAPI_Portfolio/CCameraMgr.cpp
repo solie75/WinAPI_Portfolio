@@ -11,7 +11,8 @@
 CCameraMgr::CCameraMgr()
 	: m_fRatio(0.f)
 	, m_pBlindTex(nullptr)
-	, m_bCameraWork(false)
+	, m_bCameraWorkRow(true)
+	, m_bCameraWorkCol(true)
 {
 	POINT ptResolution = CEngine::GetInst()->GetResolution();
 
@@ -34,7 +35,7 @@ void CCameraMgr::CameraMgrTick()
 
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 
-	m_vDiff = m_vLook - vResolution/ 2.f;
+	m_vDiff = m_vLook - (vResolution/ 2.f);
 
 	if (m_CamEffectList.empty())
 	{

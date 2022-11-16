@@ -15,6 +15,7 @@ CBackground::CBackground(wstring _pstring)
 {
 	SetName(_pstring);
 
+
 	// 여기에서 _pstring 으로 LineCollider FILE 을 검색하여 로드해 CreateLineCollider 를 반복 재생한다.
 	CreateLineCollider(Vec(-740.f,800.f), Vec(100.f, 800.f));
 	CreateLineCollider(Vec(100.f, 800.f), Vec(250.f, 625.f));

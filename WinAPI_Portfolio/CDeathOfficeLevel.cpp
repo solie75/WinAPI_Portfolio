@@ -82,8 +82,10 @@ void CDeathOfficeLevel::LevelInit()
 	Instantiate(pElevatorAppearTrigger, Vec(1550.f, 500.f), LAYER::TRIGGER);
 
 	
-	//CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
+	CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
 	CCameraMgr::GetInst()->SetLook(Vec(800.f, 450.f));
+	/*Vec vPlayerRealPos = CCameraMgr::GetInst()->GetRealPos(pPlayer->GetPos());
+	CCameraMgr::GetInst()->SetLook(Vec(vPlayerRealPos.x, vPlayerRealPos.y));*/
 
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::BACKGROUND);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::TRIGGER);
@@ -93,26 +95,59 @@ void CDeathOfficeLevel::LevelInit()
 
 void CDeathOfficeLevel::LevelTick()
 {
+	vector<CObject*> pBackgroundLayer = this->GetLayer(LAYER::BACKGROUND);
 	vector<CObject*> playerlayer = this->GetLayer(LAYER::PLAYER);
 	vector<CObject*> NPClayer = this->GetLayer(LAYER::NPC);
 	vector<CObject*> Triggerlayer = this->GetLayer(LAYER::TRIGGER);
 
-	if (!playerlayer.empty()) {
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerlayer[0]);		
-		if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
-		{
-			if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
+	if (!pBackgroundLayer.empty())
+	{
+		CBackground* pBackground = dynamic_cast<CBackground*>(pBackgroundLayer[0]);
+		Vec vBackgroundRealPos = CCameraMgr::GetInst()->GetRealPos(pBackground->GetPos());
+		Vec vResolution = CEngine::GetInst()->GetResolution();
+		Vec vCameraPos = CCameraMgr::GetInst()->GetCameraLook();
+		Vec vCameraRealPos = CCameraMgr::GetInst()->GetRealPos(vCameraPos);
+		
+		if (!playerlayer.empty()) {
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerlayer[0]);
+			if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
 			{
-				pPlayer->GetRigidBody()->SetGravity(true);
-				pPlayer->GetRigidBody()->AddVelocity(Vec(10.f, -(pPlayer->GetRigidBody()->GetVelocity().y + 800.f)));
+				if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
+				{
+					pPlayer->GetRigidBody()->SetGravity(true);
+					pPlayer->GetRigidBody()->AddVelocity(Vec(10.f, -(pPlayer->GetRigidBody()->GetVelocity().y + 800.f)));
+				}
+				if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+				{
+					pPlayer->m_bToIdle = true;
+					pPlayer->SetKeyWorking(true);
+				}
 			}
-			if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
-			{
-				pPlayer->m_bToIdle = true;
-				pPlayer->SetKeyWorking(true);
+
+			Vec vDeathRealPos = CCameraMgr::GetInst()->GetRealPos(pPlayer->GetPos());
+			CCameraMgr::GetInst()->SetCameraWorkRow(true);
+			CCameraMgr::GetInst()->SetCameraWorkCol(true);
+			// 카메라의 시점 배경 이미지 안으로 제한
+			if ( (vBackgroundRealPos.y - (pBackground->GetScale().y / 2.f) - 200.f> vCameraRealPos.y - (vResolution.y/2.f)) && (vDeathRealPos.y + 100.f < vBackgroundRealPos.y - (pBackground->GetScale().y / 2.f) + (vResolution.y / 2.f))) // 실제 이미지의 위쪽 y 좌표가 카메라 의 실제 위쪽 y 좌표보다 아래에 있는 경우
+			{ // 상
+				CCameraMgr::GetInst()->SetCameraWorkCol(false);
 			}
+			if ((vBackgroundRealPos.y + (pBackground->GetScale().y / 2.f) + 200.f < vCameraRealPos.y + (vResolution.y / 2.f)) &&( vDeathRealPos.y - 200.f > vBackgroundRealPos.y + (pBackground->GetScale().y / 2.f) - (vResolution.y / 2.f)))
+			{ // 하
+				CCameraMgr::GetInst()->SetCameraWorkCol(false);
+			}
+			if ((vBackgroundRealPos.x - (pBackground->GetScale().x / 2.f) - 500.f > vCameraRealPos.x - (vResolution.x / 2.f)) && (vDeathRealPos.x + 500.f < vBackgroundRealPos.x - (pBackground->GetScale().x / 2.f) + (vResolution.x / 2.f)))
+			{ // 좌
+				CCameraMgr::GetInst()->SetCameraWorkRow(false);
+			}
+			if ((vBackgroundRealPos.x + (pBackground->GetScale().x / 2.f) + 500.f < vCameraRealPos.x + (vResolution.x / 2.f)) &&( vDeathRealPos.x - 500.f > vBackgroundRealPos.x + (pBackground->GetScale().x / 2.f) - (vResolution.x / 2.f)))
+			{ // 우
+				CCameraMgr::GetInst()->SetCameraWorkRow(false);
+			}
+			
 		}
 	}
+
 	if (!NPClayer.empty())
 	{
 		CTrigger* pOfficeElevatorTrigger = nullptr;

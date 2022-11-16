@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CPlayer.h"
+#include "CEngine.h"
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
 #include "CTimeMgr.h"
@@ -234,13 +235,78 @@ CPlayer::~CPlayer()
 void CPlayer::ObjectTick()
 {
 	Vec vPos = GetPos();
+	Vec vResolution = CEngine::GetInst()->GetResolution();
 
 	CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
 	wstring CurAnimName = CurAnim->GetCurAnimName();
+	if ( !GetRigidBody()->GetBoolOnGround())
+	{
+		Vec _v = GetRigidBody()->GetVelocity();
+		float _f = this->m_fSpeed;
+	}
 
 	// after animation
 	if (true == GetKeyWorking())
 	{
+		Vec _vCameraLook = CCameraMgr::GetInst()->GetCameraLook();
+		/*if (CCameraMgr::GetInst()->GetCameraWorkRow() || CCameraMgr::GetInst()->GetCameraWorkCol())
+		{
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).y < (vResolution.y / 2.f) - 50.f)
+			{
+				_vCameraLook.y -= 1400.f * DT;
+			}
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).y > (vResolution.y / 2.f) + 100.f)
+			{
+				_vCameraLook.y += 1400.f * DT;
+			}
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x > (vResolution.x / 2.f) + 100.f)
+			{
+				_vCameraLook.x += m_fSpeed * DT;
+			}
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x < (vResolution.x / 2.f) - 100.f)
+			{
+				_vCameraLook.x -= m_fSpeed * DT;
+
+			}
+			
+			CCameraMgr::GetInst()->SetLook(_vCameraLook);
+		}*/
+
+		if (CCameraMgr::GetInst()->GetCameraWorkCol())
+		{
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).y < (vResolution.y / 2.f)  + 150.f)
+			{
+				_vCameraLook.y -= 1400.f * DT;
+			}
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).y > (vResolution.y / 2.f) + 200.f)
+			{
+				_vCameraLook.y += 1400.f * DT;
+			}
+			CCameraMgr::GetInst()->SetLookCol(_vCameraLook.y);
+		}
+
+		if (CCameraMgr::GetInst()->GetCameraWorkRow())
+		{
+
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x > (vResolution.x / 2.f) + 100.f)
+			{
+				_vCameraLook.x += m_fSpeed * DT;
+			}
+			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x < (vResolution.x / 2.f) - 100.f)
+			{
+				_vCameraLook.x -= m_fSpeed * DT;
+
+			}
+			CCameraMgr::GetInst()->SetLookRow(_vCameraLook.x);
+		}
+		
+
+
+
+
+
+
+
 
 		if (CurAnimName == L"DeathAttackBasicCombo4Right")
 		{

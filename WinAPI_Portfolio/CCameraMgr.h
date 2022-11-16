@@ -18,7 +18,8 @@ private:
 	Vec m_vDiff; // difference of Vec within RealPos and renderPos
 
 	// whether camera work on or off
-	bool m_bCameraWork;
+	bool m_bCameraWorkCol;
+	bool m_bCameraWorkRow;
 
 	list<tCamEffect> m_CamEffectList;
 	float m_fRatio;
@@ -26,12 +27,32 @@ private:
 	CTexture* m_pBlindTex; // FADE_IN 과 FADE_OUT 에 사용되는 텍스쳐
 
 public:
-	void SetLook(Vec _vLook) { m_vLook = _vLook; }
+	
 	void FadeOut(float _fTerm);
 	void FadeIn(float _fTerm);
 
-	void SetCameraWork(bool _b) { m_bCameraWork = _b; }
-	bool GetCameraWork() { return m_bCameraWork; }
+	void SetCameraWorkCol(bool _b) { m_bCameraWorkCol = _b; }
+	void SetCameraWorkRow(bool _b) { m_bCameraWorkRow = _b; }
+	bool GetCameraWorkCol() { return m_bCameraWorkCol; }
+	bool GetCameraWorkRow() { return m_bCameraWorkRow; }
+
+	Vec GetCameraLook() { return m_vLook; }
+	void SetLookRow(float _vLookx) {
+		if (m_bCameraWorkRow)
+		{
+			m_vLook.x = _vLookx;
+		}
+	}
+	void SetLookCol(float _vLooky) {
+		if (m_bCameraWorkCol)
+		{
+			m_vLook.y = _vLooky;
+		}
+	}
+	void SetLook(Vec _v)
+	{
+		m_vLook = _v;
+	}
 
 public:
 	void CameraMgrTick();
