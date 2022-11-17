@@ -1,5 +1,8 @@
 #pragma once
 #include "CLevel.h"
+
+class CTexture;
+
 class CDeathOfficeLevel :
     public CLevel
 {

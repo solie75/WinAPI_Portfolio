@@ -92,7 +92,8 @@ void CEngine::CEngineRender()
 	// Level Rendering
 	CLevelMgr::GetInst()->LevelMgrRender(m_pMemTex->GetDC());
 
-	// Camera Effect?
+	// Camera Effect
+	CCameraMgr::GetInst()->CameraMgrRender(m_pMemTex->GetDC());
 	
 	// MemBitmap -> MainWindowBitmap
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);

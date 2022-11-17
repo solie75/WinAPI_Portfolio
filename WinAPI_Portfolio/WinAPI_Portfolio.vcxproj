@@ -139,6 +139,7 @@
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBackgroundObject.h" />
+    <ClInclude Include="CBlind.h" />
     <ClInclude Include="CBoss1Level.h" />
     <ClInclude Include="CBoss2Level.h" />
     <ClInclude Include="CCameraMgr.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDeathOfficeLevel.h" />
+    <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEffectObject.h" />
     <ClInclude Include="CEndLevel.h" />
     <ClInclude Include="CEngine.h" />
@@ -185,6 +187,7 @@
     <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBackgroundObject.cpp" />
+    <ClCompile Include="CBlind.cpp" />
     <ClCompile Include="CBoss1Level.cpp" />
     <ClCompile Include="CBoss2Level.cpp" />
     <ClCompile Include="CCameraMgr.cpp" />
@@ -192,6 +195,7 @@
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CDeathOfficeLevel.cpp" />
+    <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CEffectObject.cpp" />
     <ClCompile Include="CEndLevel.cpp" />
     <ClCompile Include="CEngine.cpp" />

@@ -24,6 +24,11 @@ public:
 		return sqrtf(x * x + y * y);
 	}
 
+	Vec vabs()
+	{
+		return Vec((float)fabs((double)x), (float)fabs((double)y));
+	}
+
 	Vec operator + (Vec _vOther)
 	{
 		return Vec(x + _vOther.x, y + _vOther.y);

@@ -14,6 +14,7 @@ CNPC::CNPC()
 	, m_bInteraction(false)
 	, m_pInteractionTexture(nullptr)
 	, m_pInteract(nullptr)
+	, vDiffWithPlayer(Vec(0.f, 0.f))
 {
 }
 
@@ -24,6 +25,7 @@ CNPC::CNPC(wstring _pstring)
 	, m_bInteraction(false)
 	, m_pInteractionTexture(nullptr)
 	, m_pInteract(nullptr)
+	, vDiffWithPlayer(Vec(0.f, 0.f))
 {
 	SetName(_pstring);
 	CreateSquareCollider();

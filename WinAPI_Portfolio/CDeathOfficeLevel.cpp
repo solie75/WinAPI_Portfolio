@@ -9,10 +9,14 @@
 #include "CMonster.h"
 #include "CNPC.h"
 #include "CTrigger.h"
+#include "CBlind.h"
+#include "CDialog.h"
 
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
 #include "CCollisionMgr.h"
+#include "CTimeMgr.h"
+#include "CKeyMgr.h"
 
 #include "CAnimator.h"
 #include "CAnimation.h"
@@ -28,10 +32,13 @@ CDeathOfficeLevel::~CDeathOfficeLevel()
 
 void CDeathOfficeLevel::LevelInit()
 {
+	Vec _resolution = CEngine::GetInst()->GetResolution();
+
 	// Image Loading
 	CResourceMgr::GetInst()->LoadTexture(L"DeathOffice", L"texture\\DeathOffice.bmp");
 	CResourceMgr::GetInst()->LoadTexture(L"DeathChair", L"texture\\DeathChair.bmp");
 	CResourceMgr::GetInst()->LoadTexture(L"OfficeElevator", L"texture\\OfficeElevator.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"ElevatorDialog", L"texture\\ElevatorDialog.bmp");
 
 	// Test Image 
 	CResourceMgr::GetInst()->LoadTexture(L"TestMonster", L"texture\\Test2.bmp");
@@ -58,9 +65,6 @@ void CDeathOfficeLevel::LevelInit()
 	pPlayer->SetScale(Vec(154.f, 158.f));
 	Instantiate(pPlayer, Vec(650.f, 500.f), LAYER::PLAYER);
 
-
-
-
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
 	pPlayer->SetKeyWorking(false);
@@ -81,6 +85,16 @@ void CDeathOfficeLevel::LevelInit()
 	pElevatorAppearTrigger->SetScale(Vec(50.f, 1000.f));
 	Instantiate(pElevatorAppearTrigger, Vec(1550.f, 500.f), LAYER::TRIGGER);
 
+	// Dialog
+	CBlind* pBlind = new CBlind(L"Blind");
+	Instantiate(pBlind, Vec(vResolution.x / 2.f, vResolution.y / 2.f), LAYER::BLIND);
+
+	CDialog* pElevatorDialog = new CDialog(L"ElevatorDialog");
+	pElevatorDialog->SetScale(Vec(1080.f, 450.f));
+	Instantiate(pElevatorDialog, Vec(vResolution.x / 2.f, vResolution.y / 2.f), LAYER::DIALOG);
+
+	
+
 	
 	CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
 	CCameraMgr::GetInst()->SetLook(Vec(800.f, 450.f));
@@ -96,9 +110,11 @@ void CDeathOfficeLevel::LevelInit()
 void CDeathOfficeLevel::LevelTick()
 {
 	vector<CObject*> pBackgroundLayer = this->GetLayer(LAYER::BACKGROUND);
-	vector<CObject*> playerlayer = this->GetLayer(LAYER::PLAYER);
-	vector<CObject*> NPClayer = this->GetLayer(LAYER::NPC);
-	vector<CObject*> Triggerlayer = this->GetLayer(LAYER::TRIGGER);
+	vector<CObject*> playerLayer = this->GetLayer(LAYER::PLAYER);
+	vector<CObject*> NPCLayer = this->GetLayer(LAYER::NPC);
+	vector<CObject*> TriggerLayer = this->GetLayer(LAYER::TRIGGER);
+	vector<CObject*> BlindLayer = this->GetLayer(LAYER::BLIND);
+	vector<CObject*> DialogLayer = this->GetLayer(LAYER::DIALOG);
 
 	if (!pBackgroundLayer.empty())
 	{
@@ -108,8 +124,8 @@ void CDeathOfficeLevel::LevelTick()
 		Vec vCameraPos = CCameraMgr::GetInst()->GetCameraLook();
 		Vec vCameraRealPos = CCameraMgr::GetInst()->GetRealPos(vCameraPos);
 		
-		if (!playerlayer.empty()) {
-			CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerlayer[0]);
+		if (!playerLayer.empty()) {
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerLayer[0]);
 			if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
 			{
 				if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
@@ -148,14 +164,16 @@ void CDeathOfficeLevel::LevelTick()
 		}
 	}
 
-	if (!NPClayer.empty())
+	if (!NPCLayer.empty())
 	{
 		CTrigger* pOfficeElevatorTrigger = nullptr;
-		if (!Triggerlayer.empty())
+		if (!TriggerLayer.empty())
 		{
-			pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(Triggerlayer[0]);
+			pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(TriggerLayer[0]);
 		}
-		CNPC* pNPC_Elevator = dynamic_cast<CNPC*>(NPClayer[0]);
+
+		CNPC* pNPC_Elevator = dynamic_cast<CNPC*>(NPCLayer[0]);
+		
 		if (pOfficeElevatorTrigger != nullptr && pOfficeElevatorTrigger->Trigger) // 이 트리거가 EndOverlap 에서 setDead 하여 오류가 난다.
 		{
 			pNPC_Elevator->GetAnimator()->Play(L"ElevatorAppear", false);
@@ -167,6 +185,66 @@ void CDeathOfficeLevel::LevelTick()
 			{
 				pNPC_Elevator->GetAnimator()->Play(L"ElevatorIdle", true);
 			}
+		}
+		CBlind* pBlind = dynamic_cast<CBlind*>(BlindLayer[0]);
+		CDialog* pDialog = dynamic_cast<CDialog*>(DialogLayer[0]);
+
+		if (pNPC_Elevator->m_bInteraction)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerLayer[0]);
+
+			if (pBlind->CurEffect == (UINT)Blind_Effect::FADE_OUT && pBlind->m_fAccTime > pBlind->m_fMaxTime / 2.f)
+			{
+				pDialog->CurAnim = 1;
+			}
+			if (IsTap(KEY::F))
+			{
+				
+				//pPlayer->SetKeyWorking(false);
+
+				if (pBlind->CurEffect == (UINT)Blind_Effect::NONE)
+				{
+					pBlind->FadeOut(0.7f);
+					
+				}
+				else if (pBlind->CurEffect == (UINT)Blind_Effect::FADE_OUT)
+				{
+					if (pBlind->m_fAccTime == 0.f)
+					{
+						pDialog->CurAnim++;
+					}
+					if (pDialog->CurAnim == 4)
+					{
+						pBlind->FadeIn(0.7f);
+						pDialog->CurAnim = 0;
+					}
+				}
+			}
+
+			if (pBlind->CurEffect == (UINT)Blind_Effect::DONE)
+			{
+				Vec vElevatorPos = pNPC_Elevator->GetPos();
+				Vec vPlayerPos = pPlayer->GetPos();
+				if (vPlayerPos.x < vElevatorPos.x + 10.f)
+				{
+					if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+					{
+						pPlayer->GetAnimator()->Play(L"DeathIdleRight", false);
+						pPlayer->DeathSight = (UINT)DEATH_SIGHT::RIGHT;
+					}
+					pPlayer->SetPos(Vec(vPlayerPos.x += pPlayer->m_fSpeed * DT, vPlayerPos.y));
+				}
+				if (vPlayerPos.x > vElevatorPos.x )
+				{
+					if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+					{
+						pPlayer->GetAnimator()->Play(L"DeathIdleLeft", true);
+						pPlayer->DeathSight = (UINT)DEATH_SIGHT::LEFT;
+					}
+					pPlayer->SetPos(Vec(vPlayerPos.x -= pPlayer->m_fSpeed * DT, vPlayerPos.y));
+				}
+			}
+
 		}
 	}
 	CLevel::LevelTick();

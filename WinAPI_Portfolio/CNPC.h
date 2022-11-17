@@ -14,6 +14,8 @@ public:
     CTexture* m_pInteractionTexture;
     CBackgroundObject* m_pInteract;
 
+    Vec vDiffWithPlayer;
+
     bool m_bInteraction;
 
 public:

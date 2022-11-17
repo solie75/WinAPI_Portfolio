@@ -792,8 +792,8 @@ void CPlayer::ObjectTick()
 
 void CPlayer::ObjectRender(HDC _dc, wstring _pstring)
 {
-	Vec vPos = CCameraMgr::GetInst()->GetRenderPos(GetPos());
-	Vec vScale = GetScale();
+	/*Vec vPos = CCameraMgr::GetInst()->GetRenderPos(GetPos());
+	Vec vScale = GetScale();*/
 
 	CObject::ObjectRender(_dc, _pstring);
 }

@@ -127,6 +127,12 @@
     <Filter Include="Game\04.Object\08.Trigger">
       <UniqueIdentifier>{2384422a-2b7d-4d11-bcfb-7738bdb537a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\09.Blind">
+      <UniqueIdentifier>{a1f618b9-cd29-432d-88c8-fb1578668f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\10.Dialog">
+      <UniqueIdentifier>{1c761cd2-f3fa-4cad-b197-818fcabd647f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -261,6 +267,12 @@
     <ClInclude Include="CTrigger.h">
       <Filter>Game\04.Object\08.Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="CBlind.h">
+      <Filter>Game\04.Object\09.Blind</Filter>
+    </ClInclude>
+    <ClInclude Include="CDialog.h">
+      <Filter>Game\04.Object\10.Dialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -390,6 +402,12 @@
     </ClCompile>
     <ClCompile Include="CTrigger.cpp">
       <Filter>Game\04.Object\08.Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlind.cpp">
+      <Filter>Game\04.Object\09.Blind</Filter>
+    </ClCompile>
+    <ClCompile Include="CDialog.cpp">
+      <Filter>Game\04.Object\10.Dialog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
