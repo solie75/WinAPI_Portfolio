@@ -7,6 +7,9 @@ class CDeathOfficeLevel :
     public CLevel
 {
 public:
+    bool onChange;
+
+public:
     virtual void LevelInit() override;
     virtual void LevelTick() override;
 

@@ -68,7 +68,6 @@ void CAnimation::AnimationRender(HDC _dc)
 {
 	CObject* pOwnerObject = m_pAnimator->GetOwner();
 	Vec vPos = CCameraMgr::GetInst()->GetRenderPos(pOwnerObject->GetPos());
-
 	tAnimFrame frm = m_vecFrame[m_iCurFrame];
 
 	TransparentBlt(

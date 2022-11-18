@@ -23,6 +23,7 @@
 #include "CRigidBody.h"
 
 CDeathOfficeLevel::CDeathOfficeLevel()
+	: onChange(false)
 {
 }
 
@@ -60,6 +61,8 @@ void CDeathOfficeLevel::LevelInit()
 	pOfficeElevator->SetBoolShow(true);
 	Instantiate(pOfficeElevator, Vec(2000.f, 650.f), LAYER::BACKGROUNDOBJECT);
 
+	
+
 	// Create Player
 	CPlayer* pPlayer = new CPlayer(L"Player");
 	pPlayer->SetScale(Vec(154.f, 158.f));
@@ -85,9 +88,11 @@ void CDeathOfficeLevel::LevelInit()
 	pElevatorAppearTrigger->SetScale(Vec(50.f, 1000.f));
 	Instantiate(pElevatorAppearTrigger, Vec(1550.f, 500.f), LAYER::TRIGGER);
 
-	// Dialog
+	// Blind
 	CBlind* pBlind = new CBlind(L"Blind");
-	Instantiate(pBlind, Vec(vResolution.x / 2.f, vResolution.y / 2.f), LAYER::BLIND);
+	pBlind->SetScale(Vec(1600.f, 900.f));
+	Vec _v = CCameraMgr::GetInst()->GetCameraLook();
+	Instantiate(pBlind, _v, LAYER::BLIND);
 
 	CDialog* pElevatorDialog = new CDialog(L"ElevatorDialog");
 	pElevatorDialog->SetScale(Vec(1080.f, 450.f));
@@ -96,7 +101,7 @@ void CDeathOfficeLevel::LevelInit()
 	
 
 	
-	CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
+	//CCameraMgr::GetInst()->SetLook(vResolution / 2.f);
 	CCameraMgr::GetInst()->SetLook(Vec(800.f, 450.f));
 	/*Vec vPlayerRealPos = CCameraMgr::GetInst()->GetRealPos(pPlayer->GetPos());
 	CCameraMgr::GetInst()->SetLook(Vec(vPlayerRealPos.x, vPlayerRealPos.y));*/
@@ -116,214 +121,255 @@ void CDeathOfficeLevel::LevelTick()
 	vector<CObject*> BlindLayer = this->GetLayer(LAYER::BLIND);
 	vector<CObject*> DialogLayer = this->GetLayer(LAYER::DIALOG);
 	vector<CObject*> BackgroundObjectLayer = this->GetLayer(LAYER::BACKGROUNDOBJECT);
-
-	if (!pBackgroundLayer.empty())
+	if (!BlindLayer.empty())
 	{
-		CBackground* pBackground = dynamic_cast<CBackground*>(pBackgroundLayer[0]);
-		Vec vBackgroundRealPos = CCameraMgr::GetInst()->GetRealPos(pBackground->GetPos());
-		Vec vResolution = CEngine::GetInst()->GetResolution();
-		Vec vCameraPos = CCameraMgr::GetInst()->GetCameraLook();
-		Vec vCameraRealPos = CCameraMgr::GetInst()->GetRealPos(vCameraPos);
-
-		if (!BackgroundObjectLayer.empty())
-		{
-			CBackgroundObject* pBackgroundObject = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[1]);
-			if (nullptr != pBackgroundObject->GetAnimator()->GetCurAnimation())
-			{
-				if (pBackgroundObject->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorClose" && pBackgroundObject->GetAnimator()->GetCurAnimation()->IsFinish())
-				{
-					pBackgroundObject->m_bShow = false;
-					pBackgroundObject->GetAnimator()->Play(L"ElevatorDigIn", false);
-				}
-			}
-		}
-		
-		if (!playerLayer.empty()) {
-			CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerLayer[0]);
-			if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
-			{
-				if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
-				{
-					pPlayer->GetRigidBody()->SetGravity(true);
-					pPlayer->GetRigidBody()->AddVelocity(Vec(10.f, -(pPlayer->GetRigidBody()->GetVelocity().y + 800.f)));
-				}
-				if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
-				{
-					pPlayer->m_bToIdle = true;
-					pPlayer->SetKeyWorking(true);
-				}
-			}
-
-			Vec vDeathRealPos = CCameraMgr::GetInst()->GetRealPos(pPlayer->GetPos());
-			CCameraMgr::GetInst()->SetCameraWorkRow(true);
-			CCameraMgr::GetInst()->SetCameraWorkCol(true);
-			// 카메라의 시점 배경 이미지 안으로 제한
-			if ( (vBackgroundRealPos.y - (pBackground->GetScale().y / 2.f) - 200.f> vCameraRealPos.y - (vResolution.y/2.f)) && (vDeathRealPos.y + 100.f < vBackgroundRealPos.y - (pBackground->GetScale().y / 2.f) + (vResolution.y / 2.f))) // 실제 이미지의 위쪽 y 좌표가 카메라 의 실제 위쪽 y 좌표보다 아래에 있는 경우
-			{ // 상
-				CCameraMgr::GetInst()->SetCameraWorkCol(false);
-			}
-			if ((vBackgroundRealPos.y + (pBackground->GetScale().y / 2.f) + 200.f < vCameraRealPos.y + (vResolution.y / 2.f)) &&( vDeathRealPos.y - 200.f > vBackgroundRealPos.y + (pBackground->GetScale().y / 2.f) - (vResolution.y / 2.f)))
-			{ // 하
-				CCameraMgr::GetInst()->SetCameraWorkCol(false);
-			}
-			if ((vBackgroundRealPos.x - (pBackground->GetScale().x / 2.f) - 500.f > vCameraRealPos.x - (vResolution.x / 2.f)) && (vDeathRealPos.x + 500.f < vBackgroundRealPos.x - (pBackground->GetScale().x / 2.f) + (vResolution.x / 2.f)))
-			{ // 좌
-				CCameraMgr::GetInst()->SetCameraWorkRow(false);
-			}
-			if ((vBackgroundRealPos.x + (pBackground->GetScale().x / 2.f) + 500.f < vCameraRealPos.x + (vResolution.x / 2.f)) &&( vDeathRealPos.x - 500.f > vBackgroundRealPos.x + (pBackground->GetScale().x / 2.f) - (vResolution.x / 2.f)))
-			{ // 우
-				CCameraMgr::GetInst()->SetCameraWorkRow(false);
-			}
-			
-		}
-	}
-
-	if (!NPCLayer.empty())
-	{
-		CNPC* pNPC_Elevator = dynamic_cast<CNPC*>(NPCLayer[0]);
-		if (!BackgroundObjectLayer.empty())
-		{
-			CBackgroundObject* pBackgroundObject = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[1]);
-			if (pBackgroundObject->m_bShow == false)
-			{
-				pNPC_Elevator->m_bInteraction = false;
-			}
-		}
-
-		CTrigger* pOfficeElevatorTrigger = nullptr;
-		if (!TriggerLayer.empty())
-		{
-			pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(TriggerLayer[0]);
-		}
-
-		
-		
-		if (pOfficeElevatorTrigger != nullptr && pOfficeElevatorTrigger->Trigger) // 이 트리거가 EndOverlap 에서 setDead 하여 오류가 난다.
-		{
-			pNPC_Elevator->GetAnimator()->Play(L"ElevatorAppear", false);
-			pOfficeElevatorTrigger->Trigger = false;
-		}
-		if (pNPC_Elevator->GetAnimator()->GetCurAnimation() != nullptr)
-		{
-			if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorAppear" && pNPC_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
-			{
-				pNPC_Elevator->GetAnimator()->Play(L"ElevatorIdle", true);
-			}
-		}
 		CBlind* pBlind = dynamic_cast<CBlind*>(BlindLayer[0]);
-		CDialog* pDialog = dynamic_cast<CDialog*>(DialogLayer[0]);
-
-		if (pNPC_Elevator->m_bInteraction)
+		if (!pBackgroundLayer.empty())
 		{
-			CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerLayer[0]);
+			CBackground* pBackground = dynamic_cast<CBackground*>(pBackgroundLayer[0]);
+			Vec vBackgroundRealPos = CCameraMgr::GetInst()->GetRealPos(pBackground->GetPos());
+			Vec vResolution = CEngine::GetInst()->GetResolution();
+			Vec vCameraPos = CCameraMgr::GetInst()->GetCameraLook();
+			Vec vCameraRealPos = CCameraMgr::GetInst()->GetRealPos(vCameraPos);
 
-			if (pBlind->CurEffect == (UINT)Blind_Effect::FADE_OUT && pBlind->m_fAccTime > pBlind->m_fMaxTime / 2.f)
+			// 화면 전환 애니메이션
+			if (pBlind->GetAnimator()->GetCurAnimation() != nullptr)
 			{
-				pDialog->CurAnim = 1;
+				if (pBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part1" && pBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+				{
+					pBlind->GetAnimator()->Play(L"TransitionIn_Part2", false);
+				}
+				if (pBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part2" && pBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+				{
+					pBlind->GetAnimator()->Play(L"TransitionIn_Part3", false);
+				}
+				if (pBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part3" && pBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+				{
+					pBlind->GetAnimator()->Play(L"TransitionIn_Part4", false);
+				}
+				if (pBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part4" && pBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+				{
+					pBlind->GetAnimator()->Play(L"TransitionIn_Part5", false);
+				}
 			}
-			if (IsTap(KEY::F))
+			if (!BackgroundObjectLayer.empty())
 			{
+				CBackgroundObject* pBackgroundObject = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[1]);
+				if (nullptr != pBackgroundObject->GetAnimator()->GetCurAnimation())
+				{
+					if (pBackgroundObject->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorClose" && pBackgroundObject->GetAnimator()->GetCurAnimation()->IsFinish())
+					{
+						pBackgroundObject->m_bShow = false;
+						pBackgroundObject->GetAnimator()->Play(L"ElevatorDigIn", false);
+						pBlind->CurEffect = (UINT)Blind_Effect::NONE;
+
+					}
+					if (pBackgroundObject->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorDigIn" && pBackgroundObject->GetAnimator()->GetCurAnimation()->IsFinish())
+					{
+						if (pBlind->GetAnimator()->GetCurAnimation() == nullptr && pBlind->CurEffect == (UINT)Blind_Effect::NONE)
+						{
+							pBlind->FadeOut(0.7f);
+							pBlind->GetAnimator()->Play(L"TransitionIn_Part1", true);
+						}
+					}
+				}
+			}
+
+			if (!playerLayer.empty())
+			{
+				CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerLayer[0]);
+				if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathSpawn")
+				{
+					if (pPlayer->GetAnimator()->GetCurAnimation()->GetAnimCurFrame() == 77)
+					{
+						pPlayer->GetRigidBody()->SetGravity(true);
+						pPlayer->GetRigidBody()->AddVelocity(Vec(10.f, -(pPlayer->GetRigidBody()->GetVelocity().y + 800.f)));
+					}
+					if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+					{
+						pPlayer->m_bToIdle = true;
+						pPlayer->SetKeyWorking(true);
+					}
+				}
+
+				Vec vDeathRealPos = CCameraMgr::GetInst()->GetRealPos(pPlayer->GetPos());
+				CCameraMgr::GetInst()->SetCameraWorkRow(true);
+				CCameraMgr::GetInst()->SetCameraWorkCol(true);
+				// 카메라의 시점 배경 이미지 안으로 제한
+				if ((vBackgroundRealPos.y - (pBackground->GetScale().y / 2.f) - 200.f > vCameraRealPos.y - (vResolution.y / 2.f)) && (vDeathRealPos.y + 100.f < vBackgroundRealPos.y - (pBackground->GetScale().y / 2.f) + (vResolution.y / 2.f))) // 실제 이미지의 위쪽 y 좌표가 카메라 의 실제 위쪽 y 좌표보다 아래에 있는 경우
+				{ // 상
+					CCameraMgr::GetInst()->SetCameraWorkCol(false);
+				}
+				if ((vBackgroundRealPos.y + (pBackground->GetScale().y / 2.f) + 200.f < vCameraRealPos.y + (vResolution.y / 2.f)) && (vDeathRealPos.y - 200.f > vBackgroundRealPos.y + (pBackground->GetScale().y / 2.f) - (vResolution.y / 2.f)))
+				{ // 하
+					CCameraMgr::GetInst()->SetCameraWorkCol(false);
+				}
+				if ((vBackgroundRealPos.x - (pBackground->GetScale().x / 2.f) - 500.f > vCameraRealPos.x - (vResolution.x / 2.f)) && (vDeathRealPos.x + 500.f < vBackgroundRealPos.x - (pBackground->GetScale().x / 2.f) + (vResolution.x / 2.f)))
+				{ // 좌
+					CCameraMgr::GetInst()->SetCameraWorkRow(false);
+				}
+				if ((vBackgroundRealPos.x + (pBackground->GetScale().x / 2.f) + 500.f < vCameraRealPos.x + (vResolution.x / 2.f)) && (vDeathRealPos.x - 500.f > vBackgroundRealPos.x + (pBackground->GetScale().x / 2.f) - (vResolution.x / 2.f)))
+				{ // 우
+					CCameraMgr::GetInst()->SetCameraWorkRow(false);
+				}
+
+			}
+		}
+
+		if (!NPCLayer.empty())
+		{
+			CNPC* pNPC_Elevator = dynamic_cast<CNPC*>(NPCLayer[0]);
+			if (!BackgroundObjectLayer.empty())
+			{
+				CBackgroundObject* pBackgroundObject = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[1]);
+				if (pBackgroundObject->m_bShow == false)
+				{
+					pNPC_Elevator->m_bInteraction = false;
+				}
+			}
+
+			CTrigger* pOfficeElevatorTrigger = nullptr;
+			if (!TriggerLayer.empty())
+			{
+				pOfficeElevatorTrigger = dynamic_cast<CTrigger*>(TriggerLayer[0]);
+			}
+
+
+
+			if (pOfficeElevatorTrigger != nullptr && pOfficeElevatorTrigger->Trigger) // 이 트리거가 EndOverlap 에서 setDead 하여 오류가 난다.
+			{
+				pNPC_Elevator->GetAnimator()->Play(L"ElevatorAppear", false);
+				pOfficeElevatorTrigger->Trigger = false;
+			}
+			if (pNPC_Elevator->GetAnimator()->GetCurAnimation() != nullptr)
+			{
+				if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorAppear" && pNPC_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
+				{
+					pNPC_Elevator->GetAnimator()->Play(L"ElevatorIdle", true);
+				}
+			}
+
+			
+			CDialog* pDialog = dynamic_cast<CDialog*>(DialogLayer[0]);
+
+			if (pNPC_Elevator->m_bInteraction)
+			{
+
+				CPlayer* pPlayer = dynamic_cast<CPlayer*>(playerLayer[0]);
+
+				if (pBlind->CurEffect == (UINT)Blind_Effect::FADE_OUT && pBlind->m_fAccTime > pBlind->m_fMaxTime / 2.f)
+				{
+					pDialog->CurAnim = 1;
+				}
+
 				
-				//pPlayer->SetKeyWorking(false);
 
-				if (pBlind->CurEffect == (UINT)Blind_Effect::NONE)
+				// 다이얼 대화
+				if (IsTap(KEY::F))
 				{
-					pBlind->FadeOut(0.7f);
-					
-				}
-				else if (pBlind->CurEffect == (UINT)Blind_Effect::FADE_OUT)
-				{
-					if (pBlind->m_fAccTime == 0.f)
+
+					//pPlayer->SetKeyWorking(false);
+
+					if (pBlind->CurEffect == (UINT)Blind_Effect::NONE)
 					{
-						pDialog->CurAnim++;
+						pBlind->FadeOut(0.7f);
 					}
-					if (pDialog->CurAnim == 4)
+					else if (pBlind->CurEffect == (UINT)Blind_Effect::FADE_OUT)
 					{
-						pBlind->FadeIn(0.7f);
-						pDialog->CurAnim = 0;
-					}
-				}
-			}
-
-			if (pBlind->CurEffect == (UINT)Blind_Effect::DONE)
-			{
-				if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorIdle")
-				{
-					pNPC_Elevator->GetAnimator()->Play(L"ElevatorDisappear", false);
-				}
-				if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorDisappear" && pNPC_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
-				{
-					Vec vElevatorPos = pNPC_Elevator->GetPos();
-					Vec vPlayerPos = pPlayer->GetPos();
-
-					// 데스가 왼쪽
-					if (vPlayerPos.x < vElevatorPos.x - 50.f)
-					{
-						// 방향 전환
-						if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+						if (pBlind->m_fAccTime == 0.f)
 						{
-							if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathIdleRight")
+							pDialog->CurAnim++;
+						}
+						if (pDialog->CurAnim == 4)
+						{
+							pBlind->FadeIn(0.7f);
+							pDialog->CurAnim = 0;
+						}
+					}
+				}
+
+				// 다이얼 종료시 애니메이션 시작
+				if (pBlind->CurEffect == (UINT)Blind_Effect::DONE)
+				{
+					if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorIdle")
+					{
+						pNPC_Elevator->GetAnimator()->Play(L"ElevatorDisappear", false);
+					}
+					if (pNPC_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorDisappear" && pNPC_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
+					{
+						Vec vElevatorPos = pNPC_Elevator->GetPos();
+						Vec vPlayerPos = pPlayer->GetPos();
+
+						// 데스가 왼쪽
+						if (vPlayerPos.x < vElevatorPos.x - 50.f)
+						{
+							// 방향 전환
+							if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::LEFT)
 							{
-								pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
-								pPlayer->DeathSight = (UINT)DEATH_SIGHT::RIGHT;
+								if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathIdleRight")
+								{
+									pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
+									pPlayer->DeathSight = (UINT)DEATH_SIGHT::RIGHT;
+								}
 							}
-						}
 
-						// 이동
-						pPlayer->SetPos(Vec(vPlayerPos.x += pPlayer->m_fSpeed * DT, vPlayerPos.y));
+							// 이동
+							pPlayer->SetPos(Vec(vPlayerPos.x += pPlayer->m_fSpeed * DT, vPlayerPos.y));
 
-						// 진입 애니메이션
-						if (vPlayerPos.x > vElevatorPos.x - 60.f && pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathElevatorInRight")
-						{
-							pPlayer->GetAnimator()->Play(L"DeathElevatorInRight", false);
-						}
-						
-					}
-					if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorInRight" && pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
-					{
-						pPlayer->GetAnimator()->Play(L"DeathElevatorIdleRight", false);
-					}
-					// 데스가 오른쪽
-					if (vPlayerPos.x > vElevatorPos.x + 50.f)
-					{
-						// 방향 전환
-						if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
-						{
-							if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathIdleLeft")
+							// 진입 애니메이션
+							if (vPlayerPos.x > vElevatorPos.x - 60.f && pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathElevatorInRight")
 							{
-								pPlayer->GetAnimator()->Play(L"DeathIdleLeft", true);
-								pPlayer->DeathSight = (UINT)DEATH_SIGHT::LEFT;
+								pPlayer->GetAnimator()->Play(L"DeathElevatorInRight", false);
 							}
-							
-						}
-						pPlayer->SetPos(Vec(vPlayerPos.x -= pPlayer->m_fSpeed * DT, vPlayerPos.y));
-						
-						if (vPlayerPos.x < vElevatorPos.x + 60.f && pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathElevatorInLeft")
-						{
-							pPlayer->GetAnimator()->Play(L"DeathElevatorInLeft", false);
-						}
-						
-					}
-					if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorInLeft" && pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
-					{
-						pPlayer->GetAnimator()->Play(L"DeathElevatorIdleLeft", false);
-					}
-					
-					CBackgroundObject* pBackgroundObject = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[1]);
-					
-					if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorIdleRight" || pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorIdleLeft")
-					{
 
-						if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+						}
+						if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorInRight" && pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
 						{
-							pPlayer->GetAnimator()->Play(L"DeathRemove", true);
-							pBackgroundObject->GetAnimator()->Play(L"ElevatorClose", false);
+							pPlayer->GetAnimator()->Play(L"DeathElevatorIdleRight", false);
+						}
+						// 데스가 오른쪽
+						if (vPlayerPos.x > vElevatorPos.x + 50.f)
+						{
+							// 방향 전환
+							if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+							{
+								if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathIdleLeft")
+								{
+									pPlayer->GetAnimator()->Play(L"DeathIdleLeft", true);
+									pPlayer->DeathSight = (UINT)DEATH_SIGHT::LEFT;
+								}
+
+							}
+							pPlayer->SetPos(Vec(vPlayerPos.x -= pPlayer->m_fSpeed * DT, vPlayerPos.y));
+
+							if (vPlayerPos.x < vElevatorPos.x + 60.f && pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathElevatorInLeft")
+							{
+								pPlayer->GetAnimator()->Play(L"DeathElevatorInLeft", false);
+							}
+
+						}
+						if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorInLeft" && pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+						{
+							pPlayer->GetAnimator()->Play(L"DeathElevatorIdleLeft", false);
+						}
+
+						CBackgroundObject* pBackgroundObject = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[1]);
+
+						if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorIdleRight" || pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorIdleLeft")
+						{
+							if (pPlayer->GetAnimator()->GetCurAnimation()->IsFinish())
+							{
+								pPlayer->GetAnimator()->Play(L"DeathRemove", true);
+								pBackgroundObject->GetAnimator()->Play(L"ElevatorClose", false);
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+	
+	
 	CLevel::LevelTick();
 }
 
@@ -337,4 +383,53 @@ void CDeathOfficeLevel::LevelExit()
 	DeleteAllObject();
 }
 
+//if (_blind-> CurEffect == (UINT)Blind_Effect::TRANSITION_OUT)
+		//{
 
+		//	_blind->GetAnimator()->Play(L"TransitionOut_Part1", false);
+		//	if (_blind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionOut_Part1" && _blind->GetAnimator()->GetCurAnimation()->IsFinish())
+		//	{
+		//		_blind->GetAnimator()->Play(L"TransitionOut_Part2", false);
+		//	}
+		//	if (_blind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionOut_Part2" && _blind->GetAnimator()->GetCurAnimation()->IsFinish())
+		//	{
+		//		_blind->GetAnimator()->Play(L"TransitionOut_Part3", false);
+		//	}
+		//	if (_blind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionOut_Part3" && _blind->GetAnimator()->GetCurAnimation()->IsFinish())
+		//	{
+		//		_blind->GetAnimator()->Play(L"TransitionOut_Part4", false);
+		//	}
+		//	if (_blind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionOut_Part4" && _blind->GetAnimator()->GetCurAnimation()->IsFinish())
+		//	{
+		//		_blind->GetAnimator()->Play(L"TransitionOut_Part5", false);
+		//	}
+		//}
+
+/*pBackBlind->CurEffect = (UINT)Blind_Effect::TRANSITION_IN;
+
+						if (pBackBlind->CurEffect == (UINT)Blind_Effect::TRANSITION_IN)
+						{
+							if (pBackBlind->GetAnimator()->GetCurAnimation() == nullptr)
+							{
+								pBackBlind->GetAnimator()->Play(L"TransitionIn_Part1", false);
+							}
+							else
+							{
+								if (pBackBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part1" && pBackBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+								{
+									pBackBlind->GetAnimator()->Play(L"TransitionIn_Part2", false);
+								}
+								if (pBackBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part2" && pBackBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+								{
+									pBackBlind->GetAnimator()->Play(L"TransitionIn_Part3", false);
+								}
+								if (pBackBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part3" && pBackBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+								{
+									pBackBlind->GetAnimator()->Play(L"TransitionIn_Part4", false);
+								}
+								if (pBackBlind->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"TransitionIn_Part4" && pBackBlind->GetAnimator()->GetCurAnimation()->IsFinish())
+								{
+									pBackBlind->GetAnimator()->Play(L"TransitionIn_Part5", false);
+								}
+							}
+						}*/
