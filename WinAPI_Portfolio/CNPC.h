@@ -11,6 +11,7 @@ public:
     CTexture* m_pTexture;
     CTexture* m_pElevatorAppear;
     CTexture* m_pElevatorIdle;
+    CTexture* m_pElevatorDisappear;
     CTexture* m_pInteractionTexture;
     CBackgroundObject* m_pInteract;
 

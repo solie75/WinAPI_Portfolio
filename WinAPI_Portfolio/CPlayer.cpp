@@ -13,26 +13,6 @@
 #include "CCollider.h"
 #include "CRigidBody.h"
 
-CTexture* m_pTexture;
-CTexture* m_pDeathSpawn;
-
-CTexture* m_pDeathIdleRight;
-CTexture* m_pDeathIdleLeft;
-
-CTexture* m_pDeathIdleRightToLeft;
-CTexture* m_pDeathIdleLeftToRight;
-
-CTexture* m_pDeathIdleToRunRight;
-CTexture* m_pDeathIdleToRunLeft;
-
-CTexture* m_pDeathRunRightToIdle;
-CTexture* m_pDeathRunLeftToIdle;
-
-CTexture* m_pDeathRunRight;
-CTexture* m_pDeathRunLeft;
-
-CTexture* m_pDeath;
-
 enum class DEATH_STATE
 {
 	IDLE,
@@ -85,11 +65,19 @@ CPlayer::CPlayer()
 	, m_pDeathAttackBasicCombo4Left(nullptr)
 	, m_pDeathDashRight(nullptr)
 	, m_pDeathDashLeft(nullptr)
+	, m_pDeathElevatorInLeft(nullptr)
+	, m_pDeathElevatorInRight(nullptr)
+	, m_pDeathElevatorIdleRight(nullptr)
+	, m_pDeathElevatorIdleLeft(nullptr)
+	, m_pRemove(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
+	//, OnRender(true)
+	, OnElevator(false)
 	, m_iJumpCount(0)
+	, m_pDeath(nullptr)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
 	, DeathState((UINT)DEATH_STATE::NONE)
@@ -129,11 +117,19 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathAttackBasicCombo4Left(nullptr)
 	, m_pDeathDashRight(nullptr)
 	, m_pDeathDashLeft(nullptr)
+	, m_pDeathElevatorInRight(nullptr)
+	, m_pDeathElevatorInLeft(nullptr)
+	, m_pDeathElevatorIdleRight(nullptr)
+	, m_pDeathElevatorIdleLeft(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
+	, m_pRemove(nullptr)
+	//, OnRender(true)
+	, OnElevator(false)
 	, m_iJumpCount(0)
+	, m_pDeath(nullptr)
 	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
 	, DeathState((UINT)DEATH_STATE::NONE)
@@ -177,6 +173,11 @@ CPlayer::CPlayer(wstring _pstring)
 	m_pDeathAttackBasicCombo4Left = CResourceMgr::GetInst()->LoadTexture(L"DeathAttackBasicCombo4Left", L"texture\\DeathAttackBasicCombo4Left.bmp");
 	m_pDeathDashRight = CResourceMgr::GetInst()->LoadTexture(L"DeathDashRight", L"texture\\DeathDashRight.bmp");
 	m_pDeathDashLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathDashLeft", L"texture\\DeathDashLeft.bmp");
+	m_pDeathElevatorInRight = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorInRight", L"texture\\DeathElevatorInRight.bmp");
+	m_pDeathElevatorInLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorInLeft", L"texture\\DeathElevatorInLeft.bmp");
+	m_pDeathElevatorIdleRight = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorIdleRight", L"texture\\DeathElevatorIdle.bmp");
+	m_pDeathElevatorIdleLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorIdleLeft", L"texture\\DeathElevatorIdle.bmp");
+	m_pRemove = CResourceMgr::GetInst()->CreateTexture(L"DeathRemove", 154, 158);
 
 	SetName(_pstring);
 
@@ -209,7 +210,11 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"DeathAttackBasicCombo4Left", m_pDeathAttackBasicCombo4Left, Vec(0.f, 0.f), Vec(444.f, 360.f), Vec(-70.f, -120.f), 18, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathDashRight", m_pDeathDashRight, Vec(0.f, 0.f), Vec(320.f, 130.f), Vec(0.f, 0.f), 8, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathDashLeft", m_pDeathDashLeft, Vec(0.f, 0.f), Vec(320.f, 130.f), Vec(0.f, 0.f), 8, 0.04f);
-	
+	GetAnimator()->CreateAnimation(L"DeathElevatorInRight", m_pDeathElevatorInRight, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(40.f, -30.f), 38, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathElevatorInLeft", m_pDeathElevatorInLeft, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(-55.f, -30.f), 38, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathElevatorIdleRight", m_pDeathElevatorIdleRight, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(40.f, -30.f), 27, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathElevatorIdleLeft", m_pDeathElevatorIdleLeft, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(-55.f, -30.f), 27, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathRemove", m_pRemove, Vec(0.f, 0.f), Vec(0.f, 0.f), Vec(0.f, 0.f), 1, 0.1f);
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
 	//GetAnimator()->FindAnimation(L"DeathSpawn")->Save(L"animation\\DeathSpawn.anim");

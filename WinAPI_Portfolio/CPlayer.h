@@ -19,6 +19,7 @@ private:
 
 public:
     float m_fSpeed;
+
     CTexture* m_pTexture;
     CTexture* m_pDeathSpawn;
 
@@ -50,6 +51,12 @@ public:
     CTexture* m_pDeathFallingRight;
     CTexture* m_pDeathFallingLeft;
 
+    CTexture* m_pDeathElevatorInRight;
+    CTexture* m_pDeathElevatorInLeft;
+
+    CTexture* m_pDeathElevatorIdleRight;
+    CTexture* m_pDeathElevatorIdleLeft;
+
     // attack
     CTexture* m_pDeathAttackBasicCombo1Right;
     CTexture* m_pDeathAttackBasicCombo1Left;
@@ -70,7 +77,11 @@ public:
     UINT DeathAttackCombo;
     bool m_bToIdle;
     bool m_bOnIdle;
+    bool OnElevator;
+    //bool OnRender;
     int m_iJumpCount;
+
+    CTexture* m_pRemove;
 
 public:
     virtual void ObjectTick() override;
@@ -94,6 +105,11 @@ public:
     {
         m_fSpeed = _f;
     }
+
+    /*void PlayerRemove()
+    {
+        OnRender = false;
+    }*/
 
 public:
     CPlayer();

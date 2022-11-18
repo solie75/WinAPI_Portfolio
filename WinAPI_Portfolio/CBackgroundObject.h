@@ -8,6 +8,8 @@ class CBackgroundObject :
 {
 public:
     CTexture* m_pTexture;
+    CTexture* m_pElevatorClose;
+    CTexture* m_pElevatorDigIn;
     bool m_bShow;
 
 public:

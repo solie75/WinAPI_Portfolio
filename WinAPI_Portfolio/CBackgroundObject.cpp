@@ -3,18 +3,30 @@
 #include "CTexture.h"
 #include "CResourceMgr.h"
 #include "CCameraMgr.h"
+#include "CAnimator.h"
 
 CBackgroundObject::CBackgroundObject()
 	: m_pTexture(nullptr)
+	, m_pElevatorClose(nullptr)
+	, m_pElevatorDigIn(nullptr)
 	, m_bShow(false)
 {
 }
 
 CBackgroundObject::CBackgroundObject(wstring _pstring)
 	: m_pTexture(nullptr)
+	, m_pElevatorClose(nullptr)
+	, m_pElevatorDigIn(nullptr)
 	,m_bShow(false)
 {
 	SetName(_pstring);
+	CreateAnimator();
+
+	m_pElevatorClose = CResourceMgr::GetInst()->LoadTexture(L"ElevatorClose", L"texture\\ElevatorClose.bmp");
+	m_pElevatorDigIn = CResourceMgr::GetInst()->LoadTexture(L"ElevatorDigIn", L"texture\\ElevatorDigIn.bmp");
+	GetAnimator()->CreateAnimation(L"ElevatorClose", m_pElevatorClose, Vec(0.f, 0.f), Vec(270.f, 360.f), Vec(0.f, 0.f), 13, 0.04f);
+	GetAnimator()->CreateAnimation(L"ElevatorDigIn", m_pElevatorDigIn, Vec(0.f, 0.f), Vec(270.f, 360.f), Vec(0.f, 0.f), 23, 0.04f);
+	
 }
 
 CBackgroundObject::~CBackgroundObject()
