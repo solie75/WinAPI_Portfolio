@@ -1,18 +1,129 @@
 #include "pch.h"
 #include "CGhostStageLevel.h"
 
+#include "CLevel.h"
+#include "CEngine.h"
+#include "CBackground.h"
+#include "CBackgroundObject.h"
+#include "CPlayer.h"
+#include "CMonster.h"
+#include "CNPC.h"
+#include "CTrigger.h"
+#include "CBlind.h"
+#include "CDialog.h"
+
+#include "CCameraMgr.h"
+#include "CResourceMgr.h"
+#include "CCollisionMgr.h"
+#include "CTimeMgr.h"
+#include "CKeyMgr.h"
+#include "CLevelMgr.h"
+
+#include "CAnimator.h"
+#include "CAnimation.h"
+#include "CRigidBody.h"
+
+
+CGhostStageLevel::CGhostStageLevel()
+	: OnStage(false)
+{
+}
+
+CGhostStageLevel::~CGhostStageLevel()
+{
+}
+
 void CGhostStageLevel::LevelInit()
 {
+	Vec _vResolution = CEngine::GetInst()->GetResolution();
+
+	// Image BackGround Loading
+	CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer1", L"texture\\Ghost_Stage_Layer1.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer2", L"texture\\Ghost_Stage_Layer2.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer3", L"texture\\Ghost_Stage_Layer3.bmp");
+	CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer4", L"texture\\Ghost_Stage_Layer4.bmp");
+
+	// Camera Position
+	CCameraMgr::GetInst()->SetLook(Vec(900.f, 800.f));
+
+	// Create BackGround
+	CBackground* Ghost_Stage_Layer1 = new CBackground(L"Ghost_Stage_Layer1"); // create Line Collider here
+	Ghost_Stage_Layer1->SetScale(Vec(12000.f, 3000.f));
+	Instantiate(Ghost_Stage_Layer1, Ghost_Stage_Layer1->GetScale()/2.f, LAYER::BACKGROUND);
+	
+	CBackground* Ghost_Stage_Layer2 = new CBackground(L"Ghost_Stage_Layer2");
+	Ghost_Stage_Layer2->SetScale(Vec(12000.f, 3000.f));
+	Instantiate(Ghost_Stage_Layer2, Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::BACKGROUND);
+	
+	CBackground* Ghost_Stage_Layer3 = new CBackground(L"Ghost_Stage_Layer3");
+	Ghost_Stage_Layer3->SetScale(Vec(12000.f, 3000.f));
+	Instantiate(Ghost_Stage_Layer3, Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::BACKGROUND);
+	
+	CBackground* Ghost_Stage_Layer4 = new CBackground(L"Ghost_Stage_Layer4");
+	Ghost_Stage_Layer4->SetScale(Vec(12000.f, 3000.f));
+	Instantiate(Ghost_Stage_Layer4 , Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::BACKGROUND);
+
+	// create Playera
+	CPlayer* pPlayer = new CPlayer(L"Player");
+	pPlayer->SetScale(Vec(154.f, 158.f));
+	Instantiate(pPlayer, Vec(0.f, 0.f), LAYER::PLAYER);
+
+	CBackgroundObject* pElevator = new CBackgroundObject(L"Elevator");
+	pElevator->SetScale(Vec(270.f, 370.f));
+	Instantiate(pElevator, Vec(620.f, 964.f), LAYER::BACKGROUNDOBJECT);
+
+	pElevator->GetAnimator()->Play(L"ElevatorDigOut", false);
+
+	
 }
 
 void CGhostStageLevel::LevelTick()
 {
+	vector<CObject*> BackgroundLayer = this->GetLayer(LAYER::BACKGROUND);
+	vector<CObject*> PlayerLayer = this->GetLayer(LAYER::PLAYER);
+	vector<CObject*> BackgroundObjectLayer = this->GetLayer(LAYER::BACKGROUNDOBJECT);
+
+	CBackground* _background  = nullptr;
+	CPlayer* _player = nullptr ;
+	CBackgroundObject* _backObject_Elevator = nullptr;
+
+	if (BackgroundLayer.size() != 0)
+	{
+		_background = dynamic_cast<CBackground*>(BackgroundLayer[0]);
+	}
+	if (PlayerLayer.size() != 0)
+	{
+		_player = dynamic_cast<CPlayer*>(PlayerLayer[0]);
+	}
+	if (BackgroundObjectLayer.size() != 0)
+	{
+		_backObject_Elevator = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[0]);
+	}
+	
+	if (_backObject_Elevator != nullptr)
+	{
+		if (_backObject_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorDigOut" && _backObject_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
+		{
+			_backObject_Elevator->GetAnimator()->Play(L"ElevatorOpen", false);
+		}
+		if (_backObject_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorOpen" && _backObject_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
+		{
+			_backObject_Elevator->SetBoolShow(true);
+		}
+	}
+	
+	
+	CLevel::LevelTick();
 }
 
 void CGhostStageLevel::LevelEnter()
 {
+	LevelInit();
 }
 
 void CGhostStageLevel::LevelExit()
 {
+	DeleteAllObject();
 }
+
+

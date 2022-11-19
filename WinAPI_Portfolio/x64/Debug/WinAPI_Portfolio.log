@@ -1,4 +1,4 @@
-﻿  CBlind.cpp
-D:\신중은\WinAPI_Portfolio\WinAPI_Portfolio\CBlind.cpp(56,102): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\신중은\WinAPI_Portfolio\WinAPI_Portfolio\CBlind.cpp(56,87): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  CBackgroundObject.cpp
+  CGhostStageLevel.cpp
+  코드를 생성하고 있습니다...
   WinAPI_Portfolio.vcxproj -> D:\신중은\WinAPI_Portfolio\OutputFile\bin_d\WinAPI_Portfolio.exe

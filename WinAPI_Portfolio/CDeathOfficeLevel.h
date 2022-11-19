@@ -7,7 +7,7 @@ class CDeathOfficeLevel :
     public CLevel
 {
 public:
-    bool onChange;
+    bool OnStage;
 
 public:
     virtual void LevelInit() override;

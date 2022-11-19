@@ -35,6 +35,7 @@ public:
     float			m_fMaxTime;
     bool            m_bAccOn;
     UINT            CurEffect;
+    bool StartStage;
     //vector<CTexture*> m_vecTransition;
 
 public:

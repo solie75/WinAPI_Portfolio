@@ -34,58 +34,6 @@ enum class ATTACK_COMBO
 };
 
 
-CPlayer::CPlayer()
-	: m_pTexture(nullptr)
-	, m_pDeathSpawn(nullptr)
-	, m_pDeathIdleRight(nullptr)
-	, m_pDeathIdleLeft(nullptr)
-	, m_pDeathIdleLeftToRight(nullptr)
-	, m_pDeathIdleRightToLeft(nullptr)
-	, m_pDeathIdleToRunRight(nullptr)
-	, m_pDeathIdleToRunLeft(nullptr)
-	, m_pDeathRunRightToIdle(nullptr)
-	, m_pDeathRunLeftToIdle(nullptr)
-	, m_pDeathRunRight(nullptr)
-	, m_pDeathRunLeft(nullptr)
-	, m_pDeathRunLeftToRunRight(nullptr)
-	, m_pDeathRunRightToRunLeft(nullptr)
-	, m_pDeathJumpRight(nullptr)
-	, m_pDeathJumpLeft(nullptr)
-	, m_pDeathLandingRight(nullptr)
-	, m_pDeathLandingLeft(nullptr)
-	, m_pDeathFallingRight(nullptr)
-	, m_pDeathFallingLeft(nullptr)
-	, m_pDeathAttackBasicCombo1Right(nullptr)
-	, m_pDeathAttackBasicCombo1Left(nullptr)
-	, m_pDeathAttackBasicCombo2Right(nullptr)
-	, m_pDeathAttackBasicCombo2Left(nullptr)
-	, m_pDeathAttackBasicCombo3Right(nullptr)
-	, m_pDeathAttackBasicCombo3Left(nullptr)
-	, m_pDeathAttackBasicCombo4Right(nullptr)
-	, m_pDeathAttackBasicCombo4Left(nullptr)
-	, m_pDeathDashRight(nullptr)
-	, m_pDeathDashLeft(nullptr)
-	, m_pDeathElevatorInLeft(nullptr)
-	, m_pDeathElevatorInRight(nullptr)
-	, m_pDeathElevatorIdleRight(nullptr)
-	, m_pDeathElevatorIdleLeft(nullptr)
-	, m_pRemove(nullptr)
-	, m_fSpeed(500.f)
-	, m_bKeyWorking(false)
-	, m_bToIdle(false)
-	, m_bOnIdle(false)
-	//, OnRender(true)
-	, OnElevator(false)
-	, m_iJumpCount(0)
-	, m_pDeath(nullptr)
-	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
-	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
-	, DeathState((UINT)DEATH_STATE::NONE)
-
-	//, m_vecPlayerEffect{}
-{
-}
-
 CPlayer::CPlayer(wstring _pstring)
 	: m_pTexture(nullptr)
 	, m_pDeathSpawn(nullptr)
@@ -121,6 +69,7 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathElevatorInLeft(nullptr)
 	, m_pDeathElevatorIdleRight(nullptr)
 	, m_pDeathElevatorIdleLeft(nullptr)
+	, m_pDeathElevatorOut(nullptr)
 	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
@@ -177,6 +126,7 @@ CPlayer::CPlayer(wstring _pstring)
 	m_pDeathElevatorInLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorInLeft", L"texture\\DeathElevatorInLeft.bmp");
 	m_pDeathElevatorIdleRight = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorIdleRight", L"texture\\DeathElevatorIdle.bmp");
 	m_pDeathElevatorIdleLeft = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorIdleLeft", L"texture\\DeathElevatorIdle.bmp");
+	m_pDeathElevatorOut = CResourceMgr::GetInst()->LoadTexture(L"DeathElevatorOut", L"texture\\DeathElevatorOut.bmp");
 	m_pRemove = CResourceMgr::GetInst()->CreateTexture(L"DeathRemove", 154, 158);
 
 	SetName(_pstring);
@@ -215,6 +165,7 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"DeathElevatorIdleRight", m_pDeathElevatorIdleRight, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(40.f, -30.f), 27, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathElevatorIdleLeft", m_pDeathElevatorIdleLeft, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(-55.f, -30.f), 27, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathRemove", m_pRemove, Vec(0.f, 0.f), Vec(0.f, 0.f), Vec(0.f, 0.f), 1, 0.1f);
+	GetAnimator()->CreateAnimation(L"DeathElevatorOut", m_pDeathElevatorOut, Vec(0.f, 0.f), Vec(170.f, 300.f), Vec(0.f, 0.f), 13, 0.04f);
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
 	//GetAnimator()->FindAnimation(L"DeathSpawn")->Save(L"animation\\DeathSpawn.anim");
@@ -242,8 +193,7 @@ void CPlayer::ObjectTick()
 	Vec vPos = GetPos();
 	Vec vResolution = CEngine::GetInst()->GetResolution();
 
-	CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
-	wstring CurAnimName = CurAnim->GetCurAnimName();
+	
 	if ( !GetRigidBody()->GetBoolOnGround())
 	{
 		Vec _v = GetRigidBody()->GetVelocity();
@@ -311,7 +261,8 @@ void CPlayer::ObjectTick()
 
 
 
-
+		CAnimation* CurAnim = this->GetAnimator()->GetCurAnimation();
+		wstring CurAnimName = CurAnim->GetCurAnimName();
 
 		if (CurAnimName == L"DeathAttackBasicCombo4Right")
 		{

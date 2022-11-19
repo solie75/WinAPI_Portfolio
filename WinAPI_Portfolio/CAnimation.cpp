@@ -70,6 +70,12 @@ void CAnimation::AnimationRender(HDC _dc)
 	Vec vPos = CCameraMgr::GetInst()->GetRenderPos(pOwnerObject->GetPos());
 	tAnimFrame frm = m_vecFrame[m_iCurFrame];
 
+	if (m_pAtlas->GetName() == L"ElevatorDigOut")
+	{
+		int a = 19;
+	}
+
+
 	TransparentBlt(
 		_dc,
 		int((vPos.x - frm.vSize.x / 2.f) + frm.vOffset.x),

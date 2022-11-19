@@ -4,6 +4,7 @@
 
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
+#include "CLevelMgr.h"
 
 CBackground::CBackground()
 	: m_pTexture(nullptr)
@@ -12,22 +13,31 @@ CBackground::CBackground()
 
 CBackground::CBackground(wstring _pstring)
 	: m_pTexture(nullptr)
+	//, m_pGhostStageLayer1(nullptr)
+	//, m_pGhostStageLayer2(nullptr)
+	//, m_pGhostStageLayer3(nullptr)
+	//, m_pGhostStageLayer4(nullptr)
 {
 	SetName(_pstring);
 
+	//m_pGhostStageLayer1 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer1", L"texture\\Ghost_Stage_Layer1");
+	//m_pGhostStageLayer2 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer2", L"texture\\Ghost_Stage_Layer2");
+	//m_pGhostStageLayer3 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer3", L"texture\\Ghost_Stage_Layer3");
+	//m_pGhostStageLayer4 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer4", L"texture\\Ghost_Stage_Layer4");
 
-	// 여기에서 _pstring 으로 LineCollider FILE 을 검색하여 로드해 CreateLineCollider 를 반복 재생한다.
-	CreateLineCollider(Vec(-740.f,800.f), Vec(100.f, 800.f));
-	CreateLineCollider(Vec(100.f, 800.f), Vec(250.f, 625.f));
-	CreateLineCollider(Vec(250.f, 625.f), Vec(1550.f, 625.f));
-	CreateLineCollider(Vec(1550.f, 625.f), Vec(1700.f, 800.f));
-	CreateLineCollider(Vec(1700.f, 800.f), Vec(2335.f, 800.f));
+	if (_pstring == L"DeathOffice")
+	{
+		CreateLineCollider(Vec(-740.f, 800.f), Vec(100.f, 800.f));
+		CreateLineCollider(Vec(100.f, 800.f), Vec(250.f, 625.f));
+		CreateLineCollider(Vec(250.f, 625.f), Vec(1550.f, 625.f));
+		CreateLineCollider(Vec(1550.f, 625.f), Vec(1700.f, 800.f));
+		CreateLineCollider(Vec(1700.f, 800.f), Vec(2335.f, 800.f));
+	}
 
-	//CreateLineCollider(Vec(-741.f, 801.f), Vec(101.f, 801.f));
-	//CreateLineCollider(Vec(101.f, 801.f), Vec(251.f, 621.f));
-	//CreateLineCollider(Vec(249.f, 626.f), Vec(1551.f, 626.f));
-	//CreateLineCollider(Vec(1549.f, 624.f), Vec(1701.f, 801.f));
-	//CreateLineCollider(Vec(1699.f, 799.f), Vec(2336.f, 801.f));
+	if (_pstring == L"Ghost_Stage_Layer1")
+	{
+
+	}
 }
 
 CBackground::~CBackground()
@@ -50,18 +60,37 @@ void CBackground::ObjectRender(HDC _dc, wstring _pstring)
 
 	m_pTexture = CResourceMgr::GetInst()->FindTexture(_pstring);
 
-	BitBlt(_dc
-		, (int)(vPos.x - m_pTexture->Width() / 2.f)
-		, (int)(vPos.y - m_pTexture->Height() / 2.f)
-		, m_pTexture->Width()
-		, m_pTexture->Height()
-		, m_pTexture->GetDC()
-		, 0
-		, 0
-		, SRCCOPY);
+	if(CLevelMgr::GetInst()->GetCurLevelType() == (UINT)LEVEL_TYPE::DEATHOFFICE)
+	{
+		BitBlt(_dc
+			, (int)(vPos.x - m_pTexture->Width() / 2.f)
+			, (int)(vPos.y - m_pTexture->Height() / 2.f)
+			, m_pTexture->Width()
+			, m_pTexture->Height()
+			, m_pTexture->GetDC()
+			, 0
+			, 0
+			, SRCCOPY);
+	}
 
-
-
+	if (CLevelMgr::GetInst()->GetCurLevelType() == (UINT)LEVEL_TYPE::GHOSTSTAGE)
+	{
+		TransparentBlt
+		(
+			_dc,
+			(int)(vPos.x - m_pTexture->Width() / 2.f),
+			(int)(vPos.y - m_pTexture->Height() / 2.f),
+			m_pTexture->Width(),
+			m_pTexture->Height(),
+			m_pTexture->GetDC(),
+			0,
+			0,
+			m_pTexture->Width(),
+			m_pTexture->Height(),
+			RGB(253, 253, 254)
+		);
+	}
+	
 	CObject::ObjectRender(_dc, _pstring);
 }
 

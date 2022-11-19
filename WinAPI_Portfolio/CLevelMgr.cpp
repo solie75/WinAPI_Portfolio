@@ -33,7 +33,8 @@ void CLevelMgr::LevelMgrInit()
 	m_arrLevel[(UINT)LEVEL_TYPE::BOSS_MRGORDONGRIMES] = new CBoss2Level;
 	//m_arrLevel[(UINT)LEVEL_TYPE::END] = new CEndLevel;
 
-	m_pCurLevel = m_arrLevel[(UINT)LEVEL_TYPE::DEATHOFFICE];
+	m_pCurLevel = m_arrLevel[(UINT)LEVEL_TYPE::GHOSTSTAGE];
+	CurLevelType = (UINT)LEVEL_TYPE::GHOSTSTAGE;
 	m_pCurLevel->LevelInit();
 }
 
@@ -57,6 +58,7 @@ void CLevelMgr::ChangeLevel(LEVEL_TYPE _eNext)
 	m_pCurLevel->LevelExit();
 
 	m_pCurLevel = m_arrLevel[(UINT)_eNext];
+	CurLevelType = (UINT)_eNext;
 
 	m_pCurLevel->LevelEnter();
 

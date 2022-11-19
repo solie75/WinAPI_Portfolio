@@ -9,7 +9,9 @@ class CBackgroundObject :
 public:
     CTexture* m_pTexture;
     CTexture* m_pElevatorClose;
+    CTexture* m_pElevatorOpen;
     CTexture* m_pElevatorDigIn;
+    CTexture* m_pElevatorDigOut;
     bool m_bShow;
 
 public:

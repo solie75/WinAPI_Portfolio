@@ -28,6 +28,7 @@ CBlind::CBlind()
 	, m_pTransitionOut_Part5(nullptr)
 	//, m_vecTransition{}
 	, CurEffect((UINT)Blind_Effect::NONE)
+	, StartStage(false)
 {
 }
 
@@ -49,11 +50,12 @@ CBlind::CBlind(wstring _pstring)
 	, m_pTransitionOut_Part5(nullptr)
 	//, m_vecTransition{}
 	, CurEffect((UINT)Blind_Effect::NONE)
+	, StartStage(false)
 {
 	SetName(_pstring);
 	CreateAnimator();
 	Vec _Resolution = CEngine::GetInst()->GetResolution();
-	m_pBlindTexture = CResourceMgr::GetInst()->CreateTexture(L"BlindTexture", _Resolution.x, _Resolution.y);
+	m_pBlindTexture = CResourceMgr::GetInst()->CreateTexture(L"BlindTexture", (int)_Resolution.x, (int)_Resolution.y);
 
 	m_pTransitionIn_Part1 = CResourceMgr::GetInst()->LoadTexture(L"TransitionIn_Part1", L"texture\\Transition_Part1.bmp");
 	m_pTransitionIn_Part2 = CResourceMgr::GetInst()->LoadTexture(L"TransitionIn_Part2", L"texture\\Transition_Part2.bmp");
@@ -87,6 +89,7 @@ CBlind::~CBlind()
 
 void CBlind::ObjectTick()
 {
+
 	if (m_bAccOn == true)
 	{
 		m_fAccTime += DT;
@@ -119,6 +122,8 @@ void CBlind::ObjectTick()
 
 	CObject::ObjectTick();
 }
+
+
 
 void CBlind::ObjectRender(HDC _dc, wstring _pstring)
 {

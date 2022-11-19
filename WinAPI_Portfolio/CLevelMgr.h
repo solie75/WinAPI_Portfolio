@@ -8,8 +8,9 @@ class CLevelMgr
 private:
 	CLevel* m_arrLevel[(UINT)LEVEL_TYPE::END];
 	CLevel* m_pCurLevel;
+	UINT CurLevelType;
 
-private:
+public:
 	void ChangeLevel(LEVEL_TYPE _eNext);
 
 public:
@@ -18,6 +19,9 @@ public:
 	void LevelMgrRender(HDC _dc);
 
 	CLevel* GetCurLevel() { return m_pCurLevel; }
+	UINT GetCurLevelType() {
+		return CurLevelType;
+	}
 
 	friend class CEventMgr;
 };

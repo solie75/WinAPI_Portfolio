@@ -57,6 +57,8 @@ public:
     CTexture* m_pDeathElevatorIdleRight;
     CTexture* m_pDeathElevatorIdleLeft;
 
+    CTexture* m_pDeathElevatorOut;
+
     // attack
     CTexture* m_pDeathAttackBasicCombo1Right;
     CTexture* m_pDeathAttackBasicCombo1Left;
@@ -112,7 +114,7 @@ public:
     }*/
 
 public:
-    CPlayer();
+    //CPlayer();
     CPlayer(wstring _pstring);
     ~CPlayer();
 };
