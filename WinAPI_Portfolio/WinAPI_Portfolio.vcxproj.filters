@@ -136,6 +136,12 @@
     <Filter Include="Game\04.Object\11.Forwardground">
       <UniqueIdentifier>{3368dcf8-48b4-41e9-adaa-b5306e4fe50d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\06.Monster\01.GhostWoman">
+      <UniqueIdentifier>{a87ede8d-8e2d-4696-9e43-07543fb2384f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\06.Monster\02.GhostBook">
+      <UniqueIdentifier>{979e45bc-88c1-40f8-9137-6bcd7c533ce0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -279,6 +285,12 @@
     <ClInclude Include="CForwardground.h">
       <Filter>Game\04.Object\11.Forwardground</Filter>
     </ClInclude>
+    <ClInclude Include="CGhostWoman.h">
+      <Filter>Game\04.Object\06.Monster\01.GhostWoman</Filter>
+    </ClInclude>
+    <ClInclude Include="CGhostBook.h">
+      <Filter>Game\04.Object\06.Monster\02.GhostBook</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -417,6 +429,12 @@
     </ClCompile>
     <ClCompile Include="CForwardground.cpp">
       <Filter>Game\04.Object\11.Forwardground</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhostWoman.cpp">
+      <Filter>Game\04.Object\06.Monster\01.GhostWoman</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhostBook.cpp">
+      <Filter>Game\04.Object\06.Monster\02.GhostBook</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

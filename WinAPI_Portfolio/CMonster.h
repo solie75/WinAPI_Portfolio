@@ -7,7 +7,6 @@ class CMonster :
     public CObject
 {
 public:
-    CTexture* m_pTexture;
 
 public:
     virtual void ObjectTick() override;

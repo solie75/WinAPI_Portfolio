@@ -70,6 +70,8 @@ void CGhostStageLevel::LevelInit()
 
 	pElevator->GetAnimator()->Play(L"ElevatorDigOut", false);
 
+	CMonster* pGhostWoman = new CMonster
+
 	// create Playera
 	CPlayer* pPlayer = new CPlayer(L"Player");
 	pPlayer->SetScale(Vec(154.f, 158.f));
