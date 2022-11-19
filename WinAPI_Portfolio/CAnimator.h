@@ -23,7 +23,16 @@ public:
     CAnimation* FindAnimation(const wstring& _strName);
     CAnimation* LoadAnimation(const wstring& _strRelativePath);
 
-    CAnimation* GetCurAnimation() { return m_pCurAnim; }
+    CAnimation* GetCurAnimation() { 
+        if (m_pCurAnim != nullptr)
+        {
+            return m_pCurAnim;
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
 
 public:
     CLONE(CAnimator);

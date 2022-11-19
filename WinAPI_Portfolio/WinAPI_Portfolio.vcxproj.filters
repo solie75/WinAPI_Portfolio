@@ -133,6 +133,9 @@
     <Filter Include="Game\04.Object\10.Dialog">
       <UniqueIdentifier>{1c761cd2-f3fa-4cad-b197-818fcabd647f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\11.Forwardground">
+      <UniqueIdentifier>{3368dcf8-48b4-41e9-adaa-b5306e4fe50d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -273,6 +276,9 @@
     <ClInclude Include="CDialog.h">
       <Filter>Game\04.Object\10.Dialog</Filter>
     </ClInclude>
+    <ClInclude Include="CForwardground.h">
+      <Filter>Game\04.Object\11.Forwardground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -408,6 +414,9 @@
     </ClCompile>
     <ClCompile Include="CDialog.cpp">
       <Filter>Game\04.Object\10.Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="CForwardground.cpp">
+      <Filter>Game\04.Object\11.Forwardground</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

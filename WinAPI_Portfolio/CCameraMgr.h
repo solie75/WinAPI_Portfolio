@@ -28,8 +28,8 @@ private:
 
 public:
 	
-	void FadeOut(float _fTerm);
-	void FadeIn(float _fTerm);
+	/*void FadeOut(float _fTerm);
+	void FadeIn(float _fTerm);*/
 
 	void SetCameraWorkCol(bool _b) { m_bCameraWorkCol = _b; }
 	void SetCameraWorkRow(bool _b) { m_bCameraWorkRow = _b; }

@@ -4,6 +4,7 @@
 #include "CLevel.h"
 #include "CEngine.h"
 #include "CBackground.h"
+#include "CForwardground.h"
 #include "CBackgroundObject.h"
 #include "CPlayer.h"
 #include "CMonster.h"
@@ -58,15 +59,10 @@ void CGhostStageLevel::LevelInit()
 	CBackground* Ghost_Stage_Layer3 = new CBackground(L"Ghost_Stage_Layer3");
 	Ghost_Stage_Layer3->SetScale(Vec(12000.f, 3000.f));
 	Instantiate(Ghost_Stage_Layer3, Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::BACKGROUND);
-	
-	CBackground* Ghost_Stage_Layer4 = new CBackground(L"Ghost_Stage_Layer4");
-	Ghost_Stage_Layer4->SetScale(Vec(12000.f, 3000.f));
-	Instantiate(Ghost_Stage_Layer4 , Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::BACKGROUND);
 
-	// create Playera
-	CPlayer* pPlayer = new CPlayer(L"Player");
-	pPlayer->SetScale(Vec(154.f, 158.f));
-	Instantiate(pPlayer, Vec(0.f, 0.f), LAYER::PLAYER);
+	CForwardground* Ghost_Stage_Layer4 = new CForwardground(L"Ghost_Stage_Layer4");
+	Ghost_Stage_Layer4->SetScale(Vec(12000.f, 3000.f));
+	Instantiate(Ghost_Stage_Layer4, Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::FORWARDGROUND);
 
 	CBackgroundObject* pElevator = new CBackgroundObject(L"Elevator");
 	pElevator->SetScale(Vec(270.f, 370.f));
@@ -74,6 +70,16 @@ void CGhostStageLevel::LevelInit()
 
 	pElevator->GetAnimator()->Play(L"ElevatorDigOut", false);
 
+	// create Playera
+	CPlayer* pPlayer = new CPlayer(L"Player");
+	pPlayer->SetScale(Vec(154.f, 158.f));
+	Instantiate(pPlayer, Vec(pElevator->GetPos().x + 50.f, pElevator->GetPos().y + 140.f), LAYER::PLAYER);
+
+	pPlayer->GetAnimator()->Play(L"DeathRemove", false);
+	pPlayer->SetKeyWorking(false);
+
+	
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::BACKGROUND);
 	
 }
 
@@ -100,7 +106,7 @@ void CGhostStageLevel::LevelTick()
 		_backObject_Elevator = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[0]);
 	}
 	
-	if (_backObject_Elevator != nullptr)
+	if (_backObject_Elevator != nullptr && _player != nullptr)
 	{
 		if (_backObject_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorDigOut" && _backObject_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
 		{
@@ -109,6 +115,16 @@ void CGhostStageLevel::LevelTick()
 		if (_backObject_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorOpen" && _backObject_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
 		{
 			_backObject_Elevator->SetBoolShow(true);
+			if (_player->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathRemove" && _player->GetAnimator()->GetCurAnimation()->IsFinish())
+			{
+				_player->GetAnimator()->Play(L"DeathElevatorOut", false);
+			}
+		}
+		if (_player->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathElevatorOut" && _player->GetAnimator()->GetCurAnimation()->IsFinish())
+		{
+			_player->GetAnimator()->Play(L"DeathIdleRight", true);
+			_player->SetKeyWorking(true);
+			_player->GetRigidBody()->SetGravity(true);
 		}
 	}
 	

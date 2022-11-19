@@ -153,6 +153,7 @@
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CEventMgr.h" />
+    <ClInclude Include="CForwardground.h" />
     <ClInclude Include="CGhostStageLevel.h" />
     <ClInclude Include="CGround.h" />
     <ClInclude Include="CLineCollider.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
+    <ClCompile Include="CForwardground.cpp" />
     <ClCompile Include="CGhostStageLevel.cpp" />
     <ClCompile Include="CGround.cpp" />
     <ClCompile Include="CLineCollider.cpp" />

@@ -8,7 +8,7 @@ class CBackground :
 {
 public:
     CTexture* m_pTexture;
-    bool StageON;
+    //bool StageON;
 
     // background Layer
     //CTexture* m_pGhostStageLayer1;

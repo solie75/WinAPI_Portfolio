@@ -34,9 +34,16 @@ CBackground::CBackground(wstring _pstring)
 		CreateLineCollider(Vec(1700.f, 800.f), Vec(2335.f, 800.f));
 	}
 
-	if (_pstring == L"Ghost_Stage_Layer1")
+	if (_pstring == L"Ghost_Stage_Layer3")
 	{
-
+		CreateLineCollider(Vec(0.f, 1150.f), Vec(3500.f, 1150.f));
+		CreateLineCollider(Vec(3500.f, 1150.f), Vec(4200.f, 1720.f));
+		CreateLineCollider(Vec(4200.f, 1720.f), Vec(5380.f, 1720.f));
+		CreateLineCollider(Vec(5380.f, 1720.f), Vec(5380.f, 2530.f));
+		CreateLineCollider(Vec(5380.f, 2530.f), Vec(10040.f, 2530.f));
+		CreateLineCollider(Vec(9820.f, 2100.f), Vec(10660.f, 2100.f));
+		CreateLineCollider(Vec(10660.f, 2100.f), Vec(10660.f, 1910.f));
+		CreateLineCollider(Vec(10660.f, 1910.f), Vec(11860.f, 1910.f));
 	}
 }
 

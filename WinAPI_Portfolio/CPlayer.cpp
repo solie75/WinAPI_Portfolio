@@ -165,7 +165,7 @@ CPlayer::CPlayer(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"DeathElevatorIdleRight", m_pDeathElevatorIdleRight, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(40.f, -30.f), 27, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathElevatorIdleLeft", m_pDeathElevatorIdleLeft, Vec(0.f, 0.f), Vec(180.f, 170.f), Vec(-55.f, -30.f), 27, 0.04f);
 	GetAnimator()->CreateAnimation(L"DeathRemove", m_pRemove, Vec(0.f, 0.f), Vec(0.f, 0.f), Vec(0.f, 0.f), 1, 0.1f);
-	GetAnimator()->CreateAnimation(L"DeathElevatorOut", m_pDeathElevatorOut, Vec(0.f, 0.f), Vec(170.f, 300.f), Vec(0.f, 0.f), 13, 0.04f);
+	GetAnimator()->CreateAnimation(L"DeathElevatorOut", m_pDeathElevatorOut, Vec(0.f, 0.f), Vec(170.f, 150.f), Vec(0.f, -30.f), 13, 0.04f);
 	//GetAnimator()->FindAnimation(L"DeathIdleRight")->Save(L"animation\\DeathIdleRight.anim");
 	//GetAnimator()->FindAnimation(L"DeathIdleLeft")->Save(L"animation\\DeathIdleLeft.anim");
 	//GetAnimator()->FindAnimation(L"DeathSpawn")->Save(L"animation\\DeathSpawn.anim");
@@ -246,10 +246,26 @@ void CPlayer::ObjectTick()
 			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x > (vResolution.x / 2.f) + 100.f)
 			{
 				_vCameraLook.x += m_fSpeed * DT;
+				if (this->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathDashRight")
+				{
+					_vCameraLook.x += (m_fSpeed + 800.f) * DT;
+				}
+				else
+				{
+					_vCameraLook.x += m_fSpeed * DT;
+				}
 			}
 			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x < (vResolution.x / 2.f) - 100.f)
 			{
 				_vCameraLook.x -= m_fSpeed * DT;
+				if (this->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathDashLeft")
+				{
+					_vCameraLook.x -= (m_fSpeed + 800.f) * DT;
+				}
+				else
+				{
+					_vCameraLook.x -= m_fSpeed * DT;
+				}
 
 			}
 			CCameraMgr::GetInst()->SetLookRow(_vCameraLook.x);
