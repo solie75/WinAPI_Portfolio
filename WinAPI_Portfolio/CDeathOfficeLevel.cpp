@@ -313,17 +313,17 @@ void CDeathOfficeLevel::LevelTick()
 							if (vPlayerPos.x < vElevatorPos.x - 50.f)
 							{
 								// 방향 전환
-								if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+								if (pPlayer->GetObjectSight() == (UINT)SIGHT::LEFT)
 								{
 									if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathIdleRight")
 									{
 										pPlayer->GetAnimator()->Play(L"DeathIdleRight", true);
-										pPlayer->DeathSight = (UINT)DEATH_SIGHT::RIGHT;
+										pPlayer->SetObjectSight((UINT)SIGHT::RIGHT);
 									}
 								}
 
 								// 이동
-								pPlayer->SetPos(Vec(vPlayerPos.x += pPlayer->m_fSpeed * DT, vPlayerPos.y));
+								pPlayer->SetPos(Vec(vPlayerPos.x += pPlayer->GetObjectSpeed() * DT, vPlayerPos.y));
 
 								// 진입 애니메이션
 								if (vPlayerPos.x > vElevatorPos.x - 60.f && pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathElevatorInRight")
@@ -340,16 +340,16 @@ void CDeathOfficeLevel::LevelTick()
 							if (vPlayerPos.x > vElevatorPos.x + 50.f)
 							{
 								// 방향 전환
-								if (pPlayer->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+								if (pPlayer->GetObjectSight() == (UINT)SIGHT::RIGHT)
 								{
 									if (pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathIdleLeft")
 									{
 										pPlayer->GetAnimator()->Play(L"DeathIdleLeft", true);
-										pPlayer->DeathSight = (UINT)DEATH_SIGHT::LEFT;
+										pPlayer->SetObjectSight((UINT)SIGHT::LEFT);
 									}
 
 								}
-								pPlayer->SetPos(Vec(vPlayerPos.x -= pPlayer->m_fSpeed * DT, vPlayerPos.y));
+								pPlayer->SetPos(Vec(vPlayerPos.x -= pPlayer->GetObjectSpeed() * DT, vPlayerPos.y));
 
 								if (vPlayerPos.x < vElevatorPos.x + 60.f && pPlayer->GetAnimator()->GetCurAnimation()->GetCurAnimName() != L"DeathElevatorInLeft")
 								{

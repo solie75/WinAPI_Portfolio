@@ -61,25 +61,43 @@ void CLineCollider::BeginOverlap(CCollider* _other)
 {
 	AddOverlapCount();
 	GetOwner()->CollisionBegin(_other);
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_other->GetOwner());
-	if(nullptr == pPlayer)
+	if (_other->GetColliderType() == (UINT)COLLIDER_TYPE::OBJECT)
 	{
-		return;
+		if (nullptr == _other->GetOwner())
+		{
+			return;
+		}
+		_other->GetOwner()->GetRigidBody()->SetBoolOnGround(true);
 	}
-	// 바닥 충돌체와 맞닿은 플레이어의 추락 정지
-	pPlayer->GetRigidBody()->SetBoolOnGround(true);
+	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(_other->GetOwner());
+	//if(nullptr == pPlayer)
+	//{
+	//	return;
+	//}
+	//// 바닥 충돌체와 맞닿은 플레이어의 추락 정지
+	//pPlayer->GetRigidBody()->SetBoolOnGround(true);
+
+
 }
 
 void CLineCollider::EndOverlap(CCollider* _other)
 {
 	SubtractOvelapCount();
 	GetOwner()->CollisionEnd(_other);
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_other->GetOwner());
+	if (_other->GetColliderType() == (UINT)COLLIDER_TYPE::OBJECT)
+	{
+		if (nullptr == _other->GetOwner())
+		{
+			return;
+		}
+		_other->GetOwner()->GetRigidBody()->SetBoolOnGround(false);
+	}
+	/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(_other->GetOwner());
 	if (nullptr == pPlayer)
 	{
 		return;
 	}
-	pPlayer->GetRigidBody()->SetBoolOnGround(false);
+	pPlayer->GetRigidBody()->SetBoolOnGround(false);*/
 }
 
 void CLineCollider::OnOverlap(CCollider* _other)

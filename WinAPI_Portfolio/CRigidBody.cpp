@@ -107,13 +107,3 @@ void CRigidBody::Final_Tick()
 void CRigidBody::ComponentRender(HDC _dc)
 {
 }
-
-void CRigidBody::SetBoolOnGround(bool _bGround)
-{
-	m_bOnGround = _bGround;
-
-	if (m_bOnGround)
-	{
-		m_vVelocity.y = 0.f;
-	}
-}

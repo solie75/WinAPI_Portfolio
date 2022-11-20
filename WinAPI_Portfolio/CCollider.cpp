@@ -35,6 +35,11 @@ void CCollider::ComponentTick()
 	// decide finalPosition of Collider
 	m_vColliderFinalPos = GetOwner()->GetPos() + m_vColliderOffsetPos;
 
+	if (this->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		m_vColliderFinalPos = m_vColliderOffsetPos;
+	}
+
 	// if overlapcount
 	assert(!(m_iOverlapCount < 0));
 }
@@ -45,12 +50,18 @@ void CCollider::ComponentRender(HDC _dc)
 
 void CCollider::BeginOverlap(CCollider* _other)
 {
+	_other->GetOwner()->CollisionBegin(this);
+	this->GetOwner()->CollisionBegin(_other);
 }
 
 void CCollider::EndOverlap(CCollider* _other)
 {
+	_other->GetOwner()->Colliding(this);
+	this->GetOwner()->Colliding(_other);
 }
 
 void CCollider::OnOverlap(CCollider* _other)
 {
+	_other->GetOwner()->CollisionEnd(this);
+	this->GetOwner()->CollisionEnd(_other);
 }

@@ -94,7 +94,15 @@ enum class COLLIDER_TYPE
 	OBJECT,
 	PLAYERATTACK,
 	TRIGGER,
+	WALL,
 	UNKNOWN,
 
-	END = 6
+	END = 8
+};
+
+enum class SIGHT
+{
+	RIGHT,
+	LEFT,
+	NONE
 };

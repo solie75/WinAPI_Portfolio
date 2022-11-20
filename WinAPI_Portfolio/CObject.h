@@ -13,6 +13,7 @@ private:
 	Vec m_vScale;
 	bool m_bDead;
 	wstring strName;
+	UINT m_iObjectType;
 
 	CAnimator* m_pAnimator;
 	map<int, CCollider*> m_mapCollider;
@@ -20,6 +21,9 @@ private:
 	
 	//CCollider* m_pCollider;
 	CRigidBody* m_pRigidBody;
+
+	UINT m_iObjectSight;
+	float m_fObjectSpeed;
 
 public:
 
@@ -37,8 +41,15 @@ public:
 	void CreateSquareCollider();
 	void AddSquareCollider();
 	void AddSquareCollider(UINT _Collider_Type);
+	void AddSquareCollider(UINT _Collider_Type, Vec _vSize, Vec _vPos);
 	void CreateLineCollider(Vec _pStart, Vec _pEnd); // for GroundCollider
 	void CreateRigidBody();
+	UINT GetObjectType() { return m_iObjectType; }
+	void SetObjectType(UINT _i) { m_iObjectType = _i; }
+	UINT GetObjectSight() { return m_iObjectSight; }
+	void SetObjectSight(UINT _i) { m_iObjectSight = _i; }
+	float GetObjectSpeed() { return m_fObjectSpeed; }
+	void SetObjectSpeed(float _f) { m_fObjectSpeed = _f;}
 
 	//wstring GetStrName() { return strName; }
 	

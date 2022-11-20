@@ -42,6 +42,10 @@ public:
     }
     int GetAnimCurFrame() { return m_iCurFrame; }
 
+    Vec GetAnimCurSize() {
+       return  m_vecFrame[m_iCurFrame].vSize;
+    }
+
     void Save(const wstring& _strRelativePath);
     void Load(const wstring& _strRelativePath);
 

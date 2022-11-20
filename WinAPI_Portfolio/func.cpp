@@ -19,6 +19,7 @@ bool IsValid(CObject*& _pTarget)
 void Instantiate(CObject* _pNewObj, Vec _vPos, LAYER _eLayer)
 {
 	_pNewObj->SetPos(_vPos);
+	_pNewObj->SetObjectType((UINT)_eLayer);
 
 	tEvent event = {};
 	event.eType = EVENT_TYPE::CREATE_OBJECT;

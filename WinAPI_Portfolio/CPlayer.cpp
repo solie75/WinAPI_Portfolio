@@ -70,7 +70,6 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeathElevatorIdleRight(nullptr)
 	, m_pDeathElevatorIdleLeft(nullptr)
 	, m_pDeathElevatorOut(nullptr)
-	, m_fSpeed(500.f)
 	, m_bKeyWorking(false)
 	, m_bToIdle(false)
 	, m_bOnIdle(false)
@@ -79,7 +78,6 @@ CPlayer::CPlayer(wstring _pstring)
 	, OnElevator(false)
 	, m_iJumpCount(0)
 	, m_pDeath(nullptr)
-	, DeathSight((UINT)DEATH_SIGHT::RIGHT)
 	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
 	, DeathState((UINT)DEATH_STATE::NONE)
 	//, m_vecPlayerEffect{}
@@ -181,6 +179,9 @@ CPlayer::CPlayer(wstring _pstring)
 	GetRigidBody()->SetGravity(false);
 	GetRigidBody()->SetGravityAccel(1200.f);
 	GetRigidBody()->SetGravityVelocityLimit(1400.f);
+
+	this->SetObjectSight((UINT)SIGHT::RIGHT);
+	this->SetObjectSpeed(500.f);
 }
 
 CPlayer::~CPlayer()
@@ -197,7 +198,7 @@ void CPlayer::ObjectTick()
 	if ( !GetRigidBody()->GetBoolOnGround())
 	{
 		Vec _v = GetRigidBody()->GetVelocity();
-		float _f = this->m_fSpeed;
+		float _f = this->GetObjectSpeed();
 	}
 
 	// after animation
@@ -245,26 +246,26 @@ void CPlayer::ObjectTick()
 
 			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x > (vResolution.x / 2.f) + 100.f)
 			{
-				_vCameraLook.x += m_fSpeed * DT;
+				_vCameraLook.x += GetObjectSpeed() * DT;
 				if (this->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathDashRight")
 				{
-					_vCameraLook.x += (m_fSpeed + 800.f) * DT;
+					_vCameraLook.x += (GetObjectSpeed() + 800.f) * DT;
 				}
 				else
 				{
-					_vCameraLook.x += m_fSpeed * DT;
+					_vCameraLook.x += GetObjectSpeed() * DT;
 				}
 			}
 			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x < (vResolution.x / 2.f) - 100.f)
 			{
-				_vCameraLook.x -= m_fSpeed * DT;
+				_vCameraLook.x -= GetObjectSpeed() * DT;
 				if (this->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"DeathDashLeft")
 				{
-					_vCameraLook.x -= (m_fSpeed + 800.f) * DT;
+					_vCameraLook.x -= (GetObjectSpeed() + 800.f) * DT;
 				}
 				else
 				{
-					_vCameraLook.x -= m_fSpeed * DT;
+					_vCameraLook.x -= GetObjectSpeed() * DT;
 				}
 
 			}
@@ -323,11 +324,11 @@ void CPlayer::ObjectTick()
 					DeleteLastCollider();
 				}
 
-				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathIdleRight", true);
 				}
-				if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathIdleLeft", true);
 				}
@@ -335,13 +336,13 @@ void CPlayer::ObjectTick()
 			}
 			else
 			{
-				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
-					vPos.x += (m_fSpeed / 4.f) * DT;
+					vPos.x += (GetObjectSpeed() / 4.f) * DT;
 				}
-				if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
-					vPos.x -= (m_fSpeed / 4.f) * DT;
+					vPos.x -= (GetObjectSpeed() / 4.f) * DT;
 				}
 			}
 		}
@@ -358,13 +359,13 @@ void CPlayer::ObjectTick()
 				// 공격 충돌체 추가
 				this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK);
 
-				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Right", false);
 					this->GetColliderVector()[1]->SetColliderScale(Vec(250.f, 70.f));
 					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(GetScale().x - 25.f, -25.f));
 				}
-				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Left", false);
 					this->GetColliderVector()[1]->SetColliderScale(Vec(-250.f, 70.f));
@@ -374,13 +375,13 @@ void CPlayer::ObjectTick()
 			}
 			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::FIRST)
 			{
-				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Right", false);
 					this->GetColliderVector()[1]->SetColliderScale(Vec(330.f, 280.f));
 					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(50.f, -60.f));
 				}
-				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Left", false);
 					this->GetColliderVector()[1]->SetColliderScale(Vec(-330.f, 280.f));
@@ -390,13 +391,13 @@ void CPlayer::ObjectTick()
 			}
 			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::SECOND)
 			{
-				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Right", false);
 					this->GetColliderVector()[1]->SetColliderScale(Vec(580.f, 60.f));
 					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -35.f));
 				}
-				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Left", false);
 					this->GetColliderVector()[1]->SetColliderScale(Vec(-570.f, 60.f));
@@ -406,12 +407,12 @@ void CPlayer::ObjectTick()
 			}
 			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::THIRD)
 			{
-				if (this->DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Right", false);
 					// 애니 프레임이 1부터 시작할때 10부터 14까지 아래 크기이고 나머지 부분은 작아야 한다.
 				}
-				if (this->DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Left", false);
 					
@@ -424,11 +425,11 @@ void CPlayer::ObjectTick()
 		// Falling
 		if (false == this->GetRigidBody()->GetBoolOnGround() && this->GetRigidBody()->GetVelocity().y < 0)
 		{
-			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 			{
 				this->GetAnimator()->Play(L"DeathFallingRight", true);
 			}
-			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 			{
 				this->GetAnimator()->Play(L"DeathFallingLeft", true);
 			}
@@ -454,7 +455,7 @@ void CPlayer::ObjectTick()
 		// Death Idled
 		if (this->GetRigidBody()->GetBoolOnGround())
 		{
-			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 			{
 				if (CurAnimName == L"DeathFallingRight") // Landing
 				{
@@ -472,7 +473,7 @@ void CPlayer::ObjectTick()
 					this->m_bOnIdle = true;
 				}
 			}
-			else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			else if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 			{
 				if (CurAnimName == L"DeathFallingLeft") // Landing
 				{
@@ -496,7 +497,7 @@ void CPlayer::ObjectTick()
 		// Death Sight and MoveStart
 		if (IsTap(KEY::RIGHT))
 		{
-			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 			{
 				if (m_bOnIdle == true)
 				{
@@ -507,7 +508,7 @@ void CPlayer::ObjectTick()
 					this->GetAnimator()->Play(L"DeathIdleToRunRight", false);
 				}
 			}
-			else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			else if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 			{
 				if (m_bOnIdle == true)
 				{
@@ -517,13 +518,13 @@ void CPlayer::ObjectTick()
 				{
 					this->GetAnimator()->Play(L"DeathRunLeftToRunRight", false);
 				}
-				DeathSight = (UINT)DEATH_SIGHT::RIGHT;
+				this->SetObjectSight((UINT)SIGHT::RIGHT);
 			}
 		}
 
 		if (IsTap(KEY::LEFT))
 		{
-			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 			{
 				if (m_bOnIdle == true)
 				{
@@ -534,7 +535,7 @@ void CPlayer::ObjectTick()
 					this->GetAnimator()->Play(L"DeathIdleToRunLeft", false);
 				}
 			}
-			else if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			else if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 			{
 				if (m_bOnIdle == true)
 				{
@@ -544,7 +545,7 @@ void CPlayer::ObjectTick()
 				{
 					this->GetAnimator()->Play(L"DeathRunRightToRunLeft", false);
 				}
-				DeathSight = (UINT)DEATH_SIGHT::LEFT;
+				this->SetObjectSight((UINT)SIGHT::LEFT);
 			}
 		}
 
@@ -553,12 +554,12 @@ void CPlayer::ObjectTick()
 		{
 			if (CurAnim->IsFinish())
 			{
-				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathRunRightToIdle", false);
 					this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
 				}
-				else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				else if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathRunLeftToIdle", false);
 					this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
@@ -572,10 +573,10 @@ void CPlayer::ObjectTick()
 		{
 			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
 			{
-				vPos.x += m_fSpeed * DT;
+				vPos.x += GetObjectSpeed() * DT;
 			}
 
-			if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+			if (GetObjectSight() == (UINT)SIGHT::RIGHT)
 			{
 				if (CurAnimName == L"DeathLandingRight" && CurAnim->IsFinish())
 				{
@@ -615,7 +616,7 @@ void CPlayer::ObjectTick()
 		{
 			if (DeathState != (UINT)DEATH_STATE::DASH)
 			{
-				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathDashRight", false);
 					if (CurAnimName == L"DeathRunRight")
@@ -628,7 +629,7 @@ void CPlayer::ObjectTick()
 					}
 					this->DeathState = (UINT)DEATH_STATE::DASH;
 				}
-				else if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				else if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathDashLeft", false);
 					if (CurAnimName == L"DeathRunLeft")
@@ -648,10 +649,10 @@ void CPlayer::ObjectTick()
 		{
 			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
 			{
-				vPos.x -= m_fSpeed * DT;
+				vPos.x -= GetObjectSpeed() * DT;
 			}
 
-			if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+			if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 			{
 				if (CurAnimName == L"DeathLandingLeft" && CurAnim->IsFinish())
 				{
@@ -745,11 +746,11 @@ void CPlayer::ObjectTick()
 					CEffectObject* _Effect = new CEffectObject(L"LandingDust");
 					Instantiate(_Effect, Vec(this->GetPos().x, (this->GetPos().y) - 30.f), LAYER::BACKGROUNDOBJECT);
 				}
-				if (DeathSight == (UINT)DEATH_SIGHT::RIGHT)
+				if (GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathJumpRight", false);
 				}
-				if (DeathSight == (UINT)DEATH_SIGHT::LEFT)
+				if (GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathJumpLeft", false);
 				}
@@ -772,13 +773,32 @@ void CPlayer::ObjectRender(HDC _dc, wstring _pstring)
 
 void CPlayer::CollisionBegin(CCollider* _pOther)
 {
+	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		SetObjectSpeed(0.f);
+	}
 }
 
 void CPlayer::Colliding(CCollider* _pOther)
 {
+	if (_pOther->GetColliderFinalPos().x > this->GetPos().x)
+	{
+		if(IsTap(KEY::LEFT))
+		{
+			SetObjectSpeed(500.f);
+		}
+	}
+	else if (_pOther->GetColliderFinalPos().x < this->GetPos().x)
+	{
+		if (IsTap(KEY::RIGHT))
+		{
+			SetObjectSpeed(500.f);
+		}
+	}
 }
 
 void CPlayer::CollisionEnd(CCollider* _pOther)
 {
+	SetObjectSpeed(500.f);
 }
 

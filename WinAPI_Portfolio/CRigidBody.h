@@ -37,7 +37,14 @@ public:
     void AddVelocity(Vec _vAddV) { m_vVelocity += _vAddV; }
 
     void SetGravity(bool _bSet) { m_bGravityUse = _bSet; }
-    void SetBoolOnGround(bool _bGround);
+    void SetBoolOnGround(bool _bGround) {
+        m_bOnGround = _bGround;
+
+        if (m_bOnGround)
+        {
+            m_vVelocity.y = 0.f;
+        }
+    };
     bool GetBoolOnGround() { return m_bOnGround; }
     void SetGravityAccel(float _fAccel) { m_fGravityAccel = _fAccel; }
 

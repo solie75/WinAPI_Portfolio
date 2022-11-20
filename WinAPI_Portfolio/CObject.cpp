@@ -15,6 +15,9 @@ CObject::CObject()
 	, m_pAnimator(nullptr)
 	, m_vecCollider{}
 	, m_pRigidBody(nullptr)
+	, m_iObjectType(-1)
+	, m_iObjectSight((UINT)SIGHT::NONE)
+	, m_fObjectSpeed(0.f)
 { 
 }
 
@@ -26,6 +29,9 @@ CObject::CObject(const CObject& _other)
 	, m_pAnimator(nullptr)
 	, m_vecCollider{}
 	, m_pRigidBody(nullptr)
+	, m_iObjectType(-1)
+	, m_iObjectSight((UINT)SIGHT::NONE)
+	, m_fObjectSpeed(0.f)
 {
 	if (nullptr != _other.m_pAnimator)
 	{
@@ -133,6 +139,15 @@ void CObject::AddSquareCollider(UINT _Collider_Type)
 {
 	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
 	m_vecCollider.back()->SetColliderType(_Collider_Type);
+}
+
+void CObject::AddSquareCollider(UINT _Collider_Type, Vec _vSize, Vec _vPos)
+{
+	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
+	m_vecCollider.back()->SetColliderType(_Collider_Type);
+	m_vecCollider.back()->SetColliderScale(_vSize);
+	m_vecCollider.back()->SetColliderOffSetPos(_vPos);
+
 }
 
 void CObject::CreateLineCollider(Vec _pStart, Vec _pEnd)

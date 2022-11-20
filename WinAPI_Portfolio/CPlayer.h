@@ -2,13 +2,6 @@
 #include "CObject.h"
 #include "CEffectObject.h"
 
-enum class DEATH_SIGHT
-{
-    RIGHT,
-    LEFT,
-    END = 2
-};
-
 class CTexture;
 
 class CPlayer :
@@ -18,8 +11,6 @@ private:
     bool m_bKeyWorking;
 
 public:
-    float m_fSpeed;
-
     CTexture* m_pTexture;
     CTexture* m_pDeathSpawn;
 
@@ -73,7 +64,7 @@ public:
 
     //vector<CEffectObject*> m_vecPlayerEffect;
 
-    UINT DeathSight;
+    //UINT m_iObjectSight;
     UINT DeathState;
     //UINT DeathAttactState; // Death Attack 이 None 이면 State 도 None 아닌가.
     UINT DeathAttackCombo;
@@ -102,16 +93,6 @@ public:
 
 public:
     CLONE(CPlayer);
-
-    void SetSpeed(float _f)
-    {
-        m_fSpeed = _f;
-    }
-
-    /*void PlayerRemove()
-    {
-        OnRender = false;
-    }*/
 
 public:
     //CPlayer();

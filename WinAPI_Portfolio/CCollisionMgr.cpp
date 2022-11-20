@@ -94,22 +94,13 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 	// check the state of Object's dead
 	bool bDead = _Object1->IsDead() || _Object2->IsDead();
 
-	//map<int, CCollider*> ColliderMap1 = _Object1->GetColliderMap();
-	//map<int, CCollider*> ColliderMap2 = _Object2->GetColliderMap();
-
 	vector<CCollider*> ColliderVector1 = _Object1->GetColliderVector();
 	vector<CCollider*> ColliderVector2 = _Object2->GetColliderVector();
-
-	//map<int, CCollider*>::iterator Iter1 = ColliderMap1.begin();
-	//map<int, CCollider*>::iterator Iter2 = ColliderMap2.begin();
 
 	for (size_t i = 0 ; i < ColliderVector1.size(); ++i)
 	{
 		for (size_t j = 0 ; j < ColliderVector2.size(); ++j) // Collier map 에 Collder가 하나만 존재하는 경우 Iter는 첫 번째에 ColliderMap의 End() 가 된다.'
 		{
-			/*if (nullptr == ColliderVector1[j].GetCollider() || ColliderVector2[i] == vecRight[j])
-				continue;*/
-			// combine for creating ID of Collision 
 			CollisionID ID = {};
 			ID.FirstID = ColliderVector1[i]->GetID();
 			ID.SecondID = ColliderVector2[j]->GetID();
@@ -190,9 +181,14 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 		if (vCollider2Pos.x < _pLineCollider->GetEndPoint().x && vCollider2Pos.x > _pLineCollider->GetStartPoint().x)
 		{
 			
+			// line 충돌체의 기울기 구하기
 			_pLineCollider->SetInclination((_pLineCollider->GetEndPoint().y - _pLineCollider->GetStartPoint().y) / (_pLineCollider->GetEndPoint().x - _pLineCollider->GetStartPoint().x));
 			float inclination = _pLineCollider->GetInclination();
+			
+			// line 충돌체의 y 절편 구하기
 			float y_intercept = _pLineCollider->GetStartPoint().y - inclination * _pLineCollider->GetStartPoint().x;
+
+			// line 충돌체와 그외 사각 충돌체 및 점에 대한 거리
 			_pLineCollider->SetDistance(fabs((double)inclination * vCollider2Pos.x - (vCollider2Pos.y + vCollider2Scale.y/2.f) + y_intercept) / (sqrtf(inclination * inclination + 1)));
 
 			if (_pLineCollider->GetDistance() <= 2.f) // distance == 0 이면 충돌이게 하고 싶지만 그렇게 하면 그냥 통과 해버린다.
@@ -205,7 +201,15 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 			
 			if ((vCollider2Pos.y + (vCollider2Scale.y / 2.f)) > yOfLineCollider)
 			{
-				_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - 26.f)); // 왜 vCollider2Scale.y / 2.f 가 아니라 26.f 라는 값이 나오는가.
+				if (_Collider2->GetOwner()->GetObjectType() == (UINT)LAYER::PLAYER)
+				{
+					_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - 26.f));
+				}
+				if (_Collider2->GetOwner()->GetObjectType() == (UINT)LAYER::MONSTER)
+				{
+					_Collider2->GetOwner()->SetPos(Vec(_Collider2->GetOwner()->GetPos().x, yOfLineCollider - _Collider2->GetOwner()->GetScale().y / 2.f));
+				}
+				
 			}
 
 		}
@@ -243,16 +247,10 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 
 	}
 
-
-
-	if (fabsf(vCollider1Pos.x - vCollider2Pos.x) > (vCollider1Scale.x/2.f + vCollider2Scale.x/2.f))
+	if (fabsf(vCollider1Pos.x - vCollider2Pos.x) <= (vCollider1Scale.x/2.f + vCollider2Scale.x/2.f) && fabsf(vCollider1Pos.y - vCollider2Pos.y) <= (vCollider1Scale.y / 2.f + vCollider2Scale.y / 2.f))
 	{
-		return false;
-	}
-	if (fabsf(vCollider1Pos.y - vCollider2Pos.y) > (vCollider1Scale.y / 2.f + vCollider2Scale.y / 2.f))
-	{
-		return false;
+		return true;
 	}
 
-	return true;
+	return false;
 }

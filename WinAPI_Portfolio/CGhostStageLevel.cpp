@@ -8,6 +8,8 @@
 #include "CBackgroundObject.h"
 #include "CPlayer.h"
 #include "CMonster.h"
+#include "CGhostWoman.h"
+#include "CGhostBook.h"
 #include "CNPC.h"
 #include "CTrigger.h"
 #include "CBlind.h"
@@ -64,24 +66,38 @@ void CGhostStageLevel::LevelInit()
 	Ghost_Stage_Layer4->SetScale(Vec(12000.f, 3000.f));
 	Instantiate(Ghost_Stage_Layer4, Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::FORWARDGROUND);
 
+
+	// Create BackObject
 	CBackgroundObject* pElevator = new CBackgroundObject(L"Elevator");
 	pElevator->SetScale(Vec(270.f, 370.f));
 	Instantiate(pElevator, Vec(620.f, 964.f), LAYER::BACKGROUNDOBJECT);
 
 	pElevator->GetAnimator()->Play(L"ElevatorDigOut", false);
 
-	CMonster* pGhostWoman = new CMonster
+
+	// Create Monster
+	CGhostWoman* pGhostWoman = new CGhostWoman(L"GhostWoman");
+	pGhostWoman->SetScale(Vec(80.f, 220.f));
+	Instantiate(pGhostWoman, Vec(1000.f, 900.f), LAYER::MONSTER);
+
+	/*CGhostBook* pGhostBook = new CGhostBook(L"GhostBook");
+	pGhostBook->SetScale(Vec(100.f, 80.f));
+	Instantiate(pGhostBook, Vec(1200.f, 900.f), LAYER::MONSTER);*/
+
 
 	// create Playera
 	CPlayer* pPlayer = new CPlayer(L"Player");
 	pPlayer->SetScale(Vec(154.f, 158.f));
-	Instantiate(pPlayer, Vec(pElevator->GetPos().x + 50.f, pElevator->GetPos().y + 140.f), LAYER::PLAYER);
+	Instantiate(pPlayer, Vec(670.f, 1104.f), LAYER::PLAYER);
 
 	pPlayer->GetAnimator()->Play(L"DeathRemove", false);
 	pPlayer->SetKeyWorking(false);
 
 	
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::BACKGROUND);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::MONSTER, LAYER::BACKGROUND);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER , LAYER::MONSTER_PROJECTILE);
+	
 	
 }
 
@@ -95,9 +111,13 @@ void CGhostStageLevel::LevelTick()
 	CPlayer* _player = nullptr ;
 	CBackgroundObject* _backObject_Elevator = nullptr;
 
+	Vec vResolution = CEngine::GetInst()->GetResolution();
+	Vec vCameraPos = CCameraMgr::GetInst()->GetCameraLook();
+	Vec vCameraRealPos = CCameraMgr::GetInst()->GetRealPos(vCameraPos);
+
 	if (BackgroundLayer.size() != 0)
 	{
-		_background = dynamic_cast<CBackground*>(BackgroundLayer[0]);
+		_background = dynamic_cast<CBackground*>(BackgroundLayer[2]);
 	}
 	if (PlayerLayer.size() != 0)
 	{
@@ -108,7 +128,7 @@ void CGhostStageLevel::LevelTick()
 		_backObject_Elevator = dynamic_cast<CBackgroundObject*>(BackgroundObjectLayer[0]);
 	}
 	
-	if (_backObject_Elevator != nullptr && _player != nullptr)
+	if (_backObject_Elevator != nullptr && _player != nullptr && _background != nullptr)
 	{
 		if (_backObject_Elevator->GetAnimator()->GetCurAnimation()->GetCurAnimName() == L"ElevatorDigOut" && _backObject_Elevator->GetAnimator()->GetCurAnimation()->IsFinish())
 		{
@@ -127,6 +147,28 @@ void CGhostStageLevel::LevelTick()
 			_player->GetAnimator()->Play(L"DeathIdleRight", true);
 			_player->SetKeyWorking(true);
 			_player->GetRigidBody()->SetGravity(true);
+		}
+
+		Vec vDeathRealPos = CCameraMgr::GetInst()->GetRealPos(_player->GetPos());
+		Vec vBackgroundRealPos = CCameraMgr::GetInst()->GetRealPos(_background->GetPos());
+		CCameraMgr::GetInst()->SetCameraWorkRow(true);
+		CCameraMgr::GetInst()->SetCameraWorkCol(true);
+		// 카메라의 시점 배경 이미지 안으로 제한
+		if ((vBackgroundRealPos.y - (_background->GetScale().y / 2.f) + 2000.f > vCameraRealPos.y - (vResolution.y / 2.f)) && (vDeathRealPos.y  < vBackgroundRealPos.y - (_background->GetScale().y / 2.f) + (vResolution.y / 2.f))) // 실제 이미지의 위쪽 y 좌표가 카메라 의 실제 위쪽 y 좌표보다 아래에 있는 경우
+		{ // 상
+			CCameraMgr::GetInst()->SetCameraWorkCol(false);
+		}
+		if ((vBackgroundRealPos.y + (_background->GetScale().y / 2.f)  < vCameraRealPos.y + (vResolution.y / 2.f)) && (vDeathRealPos.y  > vBackgroundRealPos.y + (_background->GetScale().y / 2.f) - (vResolution.y / 2.f)))
+		{ // 하
+			CCameraMgr::GetInst()->SetCameraWorkCol(false);
+		}
+		if ((vBackgroundRealPos.x - (_background->GetScale().x / 2.f) + 20.f > vCameraRealPos.x - (vResolution.x / 2.f)) && (vDeathRealPos.x  < vBackgroundRealPos.x - (_background->GetScale().x / 2.f) + (vResolution.x / 2.f)))
+		{ // 좌
+			CCameraMgr::GetInst()->SetCameraWorkRow(false);
+		}
+		if ((vBackgroundRealPos.x + (_background->GetScale().x / 2.f)  < vCameraRealPos.x + (vResolution.x / 2.f)) && (vDeathRealPos.x  > vBackgroundRealPos.x + (_background->GetScale().x / 2.f) - (vResolution.x / 2.f)))
+		{ // 우
+			CCameraMgr::GetInst()->SetCameraWorkRow(false);
 		}
 	}
 	

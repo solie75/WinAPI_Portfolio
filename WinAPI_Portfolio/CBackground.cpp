@@ -27,11 +27,16 @@ CBackground::CBackground(wstring _pstring)
 
 	if (_pstring == L"DeathOffice")
 	{
+		// GroundCollider
 		CreateLineCollider(Vec(-740.f, 800.f), Vec(100.f, 800.f));
 		CreateLineCollider(Vec(100.f, 800.f), Vec(250.f, 625.f));
 		CreateLineCollider(Vec(250.f, 625.f), Vec(1550.f, 625.f));
 		CreateLineCollider(Vec(1550.f, 625.f), Vec(1700.f, 800.f));
 		CreateLineCollider(Vec(1700.f, 800.f), Vec(2335.f, 800.f));
+
+		// WallCollider //여기에서 VPos 까지 입력하면 그게 곧 finalpos 가 된다.
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 1000.f), Vec(0.f, 500.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 1000.f), Vec(2330.f, 500.f));
 	}
 
 	if (_pstring == L"Ghost_Stage_Layer3")
@@ -39,11 +44,16 @@ CBackground::CBackground(wstring _pstring)
 		CreateLineCollider(Vec(0.f, 1150.f), Vec(3500.f, 1150.f));
 		CreateLineCollider(Vec(3500.f, 1150.f), Vec(4200.f, 1720.f));
 		CreateLineCollider(Vec(4200.f, 1720.f), Vec(5380.f, 1720.f));
-		CreateLineCollider(Vec(5380.f, 1720.f), Vec(5380.f, 2530.f));
+		//CreateLineCollider(Vec(5380.f, 1720.f), Vec(5380.f, 2530.f));
 		CreateLineCollider(Vec(5380.f, 2530.f), Vec(10040.f, 2530.f));
-		CreateLineCollider(Vec(9820.f, 2100.f), Vec(10660.f, 2100.f));
-		CreateLineCollider(Vec(10660.f, 2100.f), Vec(10660.f, 1910.f));
-		CreateLineCollider(Vec(10660.f, 1910.f), Vec(11860.f, 1910.f));
+		CreateLineCollider(Vec(10040.f, 2100.f), Vec(10760.f, 2100.f));
+		CreateLineCollider(Vec(10760.f, 1910.f), Vec(11860.f, 1910.f));
+
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 2000.f), Vec(0.f, 500.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 810.f), Vec(5380.f, 2125.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 430.f), Vec(10040.f, 2315.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 190.f), Vec(10760.f, 2005.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 1000.f), Vec(11860.f, 1910.f));
 	}
 }
 
