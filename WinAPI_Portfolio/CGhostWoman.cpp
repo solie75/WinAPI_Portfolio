@@ -17,6 +17,7 @@ CGhostWoman::CGhostWoman(wstring _pstring)
 	, m_pGhostWomanHitRight(nullptr)
 	, m_pGhostWomanHitLeft(nullptr)
 	, m_GhostWoman_State((UINT)GhostWoman_State::NONE)
+	, m_bCollidingWall(false)
 {
 	SetName(_pstring);
 	CreateAnimator();
@@ -53,6 +54,8 @@ CGhostWoman::CGhostWoman(wstring _pstring)
 	GetColliderVector()[0]->SetColliderOffSetPos(Vec(-5.f, 0.f));
 	Vec _CurAnimSize = GetAnimator()->GetCurAnimation()->GetAnimCurSize();
 	GetColliderVector()[0]->SetColliderScale(_CurAnimSize); // 사실 여기에서는 Idle 의 사이즈를 하드코딩해도 된다.
+	m_GhostWoman_State = (UINT)GhostWoman_State::IDLE;
+	this->SetObjectSpeed(250.f);
 
 
 }
@@ -70,8 +73,6 @@ void CGhostWoman::ObjectTick()
 	
 	if (m_GhostWoman_State == (UINT)GhostWoman_State::IDLE)
 	{
-		this->SetObjectSpeed(200.f);
-
 		if (GetObjectSight() == (UINT)SIGHT::RIGHT)
 		{
 			if (_CurAnimName != L"GhostWomanIdleRight")
@@ -89,9 +90,13 @@ void CGhostWoman::ObjectTick()
 			_vThisPos.x -= this->GetObjectSpeed() * DT;
 		}
 	}
+	if (this->m_GhostWoman_State == (UINT)GhostWoman_State::HIT && this->GetAnimator()->GetCurAnimation()->IsFinish())
+	{
+		this->m_GhostWoman_State = (UINT)GhostWoman_State::IDLE;
+	}
 
 	//if()
-	
+	this->SetPos(_vThisPos);
 
 	CMonster::ObjectTick();
 }
@@ -103,17 +108,73 @@ void CGhostWoman::ObjectRender(HDC _dc, wstring _pstring)
 
 void CGhostWoman::CollisionBegin(CCollider* _pOther)
 {
-	/*if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
 	{
-		SetObjectSpeed(0.f);
-	}*/
+		m_GhostWoman_State = (UINT)GhostWoman_State::NONE;
+		this->SetObjectSpeed(0.f);
+		this->GetRigidBody()->SetVelocity(Vec(0.f, 0.f));
+		this->m_bCollidingWall = true;
+	}
+	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+	{
+		if (_pOther-> GetOwner()->GetPos().x > this->GetPos().x)
+		{
+			this->GetAnimator()->Play(L"GhostWomanHitRight", false);
+			if (this->m_bCollidingWall == true)
+			{
+				this->GetRigidBody()->AddVelocity(Vec(0.f, -300.f));
+			}
+			else
+			{
+				this->GetRigidBody()->AddVelocity(Vec(-100.f, -300.f));
+			}
+			this->SetObjectSight((UINT)SIGHT::RIGHT);
+			this->m_GhostWoman_State = (UINT)GhostWoman_State::HIT;
+		}
+		if (_pOther->GetOwner()->GetPos().x < this->GetPos().x)
+		{
+			this->GetAnimator()->Play(L"GhostWomanHitLeft", false);
+			if (this->m_bCollidingWall == true)
+			{
+				this->GetRigidBody()->AddVelocity(Vec(0.f, -300.f));
+			}
+			else
+			{
+				this->GetRigidBody()->AddVelocity(Vec(100.f, -300.f));
+			}
+			
+			this->SetObjectSight((UINT)SIGHT::LEFT);
+			this->m_GhostWoman_State = (UINT)GhostWoman_State::HIT;
+		}
+	}
 }
 
 void CGhostWoman::Colliding(CCollider* _pOther)
 {
+	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		if (_pOther->GetColliderFinalPos().x > this->GetPos().x)
+		{
+			this->SetObjectSight((UINT)SIGHT::LEFT);
+			m_GhostWoman_State = (UINT)GhostWoman_State::IDLE;
+			this->SetObjectSpeed(250.f);
+		}
+		else if (_pOther->GetColliderScale().x < this->GetPos().x)
+		{
+			this->SetObjectSight((UINT)SIGHT::RIGHT);
+			m_GhostWoman_State = (UINT)GhostWoman_State::IDLE;
+			this->SetObjectSpeed(250.f);
+		}
+	}
+	
+	//if()
 }
 
 void CGhostWoman::CollisionEnd(CCollider* _pOther)
 {
+	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		this->m_bCollidingWall = false;
+	}
 }
 

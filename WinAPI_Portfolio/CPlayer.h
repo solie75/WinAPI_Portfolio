@@ -74,6 +74,7 @@ public:
     //bool OnRender;
     int m_iJumpCount;
 
+    bool m_bCollidingWall;
     CTexture* m_pRemove;
 
 public:

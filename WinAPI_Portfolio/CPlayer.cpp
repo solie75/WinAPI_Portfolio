@@ -80,6 +80,7 @@ CPlayer::CPlayer(wstring _pstring)
 	, m_pDeath(nullptr)
 	, DeathAttackCombo((UINT)ATTACK_COMBO::NONE)
 	, DeathState((UINT)DEATH_STATE::NONE)
+	, m_bCollidingWall(false)
 	//, m_vecPlayerEffect{}
 {
 	CreateAnimator();
@@ -89,6 +90,11 @@ CPlayer::CPlayer(wstring _pstring)
 	GetColliderVector()[0]->SetColliderOffSetPos(Vec(-5.f, -25.f));
 	GetColliderVector()[0]->SetColliderScale(Vec(80.f, 100.f));
 	GetColliderVector()[0]->SetColliderType((UINT)COLLIDER_TYPE::OBJECT);
+
+	//this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK); // Combo 1
+	//this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK); // Combo 1
+	//this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK); // Combo 1
+	//this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK); // Combo 1
 
 	//m_pTexture = CResourceMgr::GetInst()->FindTexture(_pstring);
 	m_pDeathSpawn = CResourceMgr::GetInst()->LoadTexture(L"DeathSpawn", L"texture\\DeathSpawn.bmp");
@@ -193,7 +199,6 @@ void CPlayer::ObjectTick()
 {
 	Vec vPos = GetPos();
 	Vec vResolution = CEngine::GetInst()->GetResolution();
-
 	
 	if ( !GetRigidBody()->GetBoolOnGround())
 	{
@@ -298,12 +303,12 @@ void CPlayer::ObjectTick()
 		{
 			if (10 <= CurAnim->GetAnimCurFrame() && CurAnim->GetAnimCurFrame() <= 14)
 			{
-				this->GetColliderVector()[1]->SetColliderScale(Vec(-400.f, 350.f));
+				this->GetColliderVector()[1]->SetColliderScale(Vec(400.f, 350.f));
 				this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(-100.f, -130.f));
 			}
 			else
 			{
-				this->GetColliderVector()[1]->SetColliderScale(Vec(-140.f, 130.f));
+				this->GetColliderVector()[1]->SetColliderScale(Vec(140.f, 130.f));
 				this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -50.f));
 			}
 		}
@@ -356,7 +361,6 @@ void CPlayer::ObjectTick()
 
 			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
 			{
-				// 공격 충돌체 추가
 				this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK);
 
 				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
@@ -368,13 +372,16 @@ void CPlayer::ObjectTick()
 				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo1Left", false);
-					this->GetColliderVector()[1]->SetColliderScale(Vec(-250.f, 70.f));
+					this->GetColliderVector()[1]->SetColliderScale(Vec(250.f, 70.f));
 					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(-GetScale().x + 25.f, -25.f));
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::FIRST;
 			}
 			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::FIRST)
 			{
+				DeleteLastCollider();
+				this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK);
+
 				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Right", false);
@@ -384,13 +391,16 @@ void CPlayer::ObjectTick()
 				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo2Left", false);
-					this->GetColliderVector()[1]->SetColliderScale(Vec(-330.f, 280.f));
+					this->GetColliderVector()[1]->SetColliderScale(Vec(330.f, 280.f));
 					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(-50.f, -60.f));
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::SECOND;
 			}
 			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::SECOND)
 			{
+				DeleteLastCollider();
+				this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK);
+
 				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Right", false);
@@ -400,13 +410,16 @@ void CPlayer::ObjectTick()
 				if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo3Left", false);
-					this->GetColliderVector()[1]->SetColliderScale(Vec(-570.f, 60.f));
+					this->GetColliderVector()[1]->SetColliderScale(Vec(580.f, 60.f));
 					this->GetColliderVector()[1]->SetColliderOffSetPos(Vec(0.f, -35.f));
 				}
 				DeathAttackCombo = (UINT)ATTACK_COMBO::THIRD;
 			}
 			else if (DeathAttackCombo == (UINT)ATTACK_COMBO::THIRD)
 			{
+				DeleteLastCollider();
+				this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK);
+
 				if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
 				{
 					this->GetAnimator()->Play(L"DeathAttackBasicCombo4Right", false);
@@ -571,7 +584,7 @@ void CPlayer::ObjectTick()
 		// Death Run
 		if (IsPressed(KEY::RIGHT))
 		{
-			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
+			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE && m_bCollidingWall == false)
 			{
 				vPos.x += GetObjectSpeed() * DT;
 			}
@@ -621,11 +634,18 @@ void CPlayer::ObjectTick()
 					this->GetAnimator()->Play(L"DeathDashRight", false);
 					if (CurAnimName == L"DeathRunRight")
 					{
-						this->GetRigidBody()->SetVelocity(Vec(1200, 0.f));
+						if (m_bCollidingWall == false)
+						{
+							this->GetRigidBody()->SetVelocity(Vec(1000, 0.f));
+						}
+						
 					}
 					else
 					{
-						this->GetRigidBody()->SetVelocity(Vec(1400.f, 0.f));
+						if (m_bCollidingWall == false)
+						{
+							this->GetRigidBody()->SetVelocity(Vec(1200.f, 0.f));
+						}
 					}
 					this->DeathState = (UINT)DEATH_STATE::DASH;
 				}
@@ -634,11 +654,11 @@ void CPlayer::ObjectTick()
 					this->GetAnimator()->Play(L"DeathDashLeft", false);
 					if (CurAnimName == L"DeathRunLeft")
 					{
-						this->GetRigidBody()->SetVelocity(Vec(-1200.f, 0.f));
+						this->GetRigidBody()->SetVelocity(Vec(-1000.f, 0.f));
 					}
 					else
 					{
-						this->GetRigidBody()->SetVelocity(Vec(-1400.f, 0.f));
+						this->GetRigidBody()->SetVelocity(Vec(-1200.f, 0.f));
 					}
 					this->DeathState = (UINT)DEATH_STATE::DASH;
 				}
@@ -647,7 +667,7 @@ void CPlayer::ObjectTick()
 
 		if (IsPressed(KEY::LEFT))
 		{
-			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE)
+			if (DeathAttackCombo == (UINT)ATTACK_COMBO::NONE && m_bCollidingWall == false)
 			{
 				vPos.x -= GetObjectSpeed() * DT;
 			}
@@ -775,7 +795,10 @@ void CPlayer::CollisionBegin(CCollider* _pOther)
 {
 	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
 	{
+		Vec v = this->GetRigidBody()->GetVelocity();
 		SetObjectSpeed(0.f);
+		GetRigidBody()->AddVelocity(-v);
+		m_bCollidingWall = true;
 	}
 }
 
@@ -800,5 +823,25 @@ void CPlayer::Colliding(CCollider* _pOther)
 void CPlayer::CollisionEnd(CCollider* _pOther)
 {
 	SetObjectSpeed(500.f);
+	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		m_bCollidingWall = false;
+	}
 }
 
+
+구현
+1. Ghost Woman 충돌체
+2. Back 벽 세우기
+3. 벽과 Woman 충돌
+4. 벽과 Player 충돌(충돌상태에서 옆 점프나 대쉬 누르면 뚫림)
+5. 플레이어 공격 충돌체와 Ghost Woman 간의 충돌
+6. Ghost Woman이 피격시 애니메이션
+7. Player가 연속적으로 공격하더라도 콤보의 단계가 바뀔 때마다 Ghost Woman이 피격 모션을 취함.
+8. ghost Woman 이 피격 모션을 취할 때 공격의 반대 방향으로 위로 튕기듯이 밀린다.
+9. 플레이어가 벽과 충돌상태에서 옆 점프나 대쉬를 못하도록 구현
+
+문제
+1. 플레이어가 벽과 충돌상태에서 옆 점프나 대쉬를 누르면 뚫린다.(해결)
+2. 플레이어의 공격 충돌체도 벽이 인식해 버린다
+3. 플레이어의 위치가 실시간으로 SetPos되는 것이기 때문에 벽과 충돌하기보다 벽에 박힌다.

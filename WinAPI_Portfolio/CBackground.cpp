@@ -49,11 +49,12 @@ CBackground::CBackground(wstring _pstring)
 		CreateLineCollider(Vec(10040.f, 2100.f), Vec(10760.f, 2100.f));
 		CreateLineCollider(Vec(10760.f, 1910.f), Vec(11860.f, 1910.f));
 
-		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 2000.f), Vec(0.f, 500.f));
-		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 810.f), Vec(5380.f, 2125.f));
-		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 430.f), Vec(10040.f, 2315.f));
-		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 190.f), Vec(10760.f, 2005.f));
-		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(10.f, 1000.f), Vec(11860.f, 1910.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 2000.f), Vec(0.f, 500.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 2000.f), Vec(1600.f, 900.f)); // GhostWoman Test Wall
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 810.f), Vec(5340.f, 2125.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 430.f), Vec(10060.f, 2315.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 190.f), Vec(10780.f, 2005.f));
+		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 1000.f), Vec(11860.f, 1910.f));
 	}
 }
 

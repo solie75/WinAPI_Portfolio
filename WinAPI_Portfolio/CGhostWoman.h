@@ -26,6 +26,7 @@ public:
     CTexture* m_pGhostWomanHitLeft;
 
     UINT m_GhostWoman_State;
+    bool m_bCollidingWall;
 
 public:
     virtual void ObjectTick() override;

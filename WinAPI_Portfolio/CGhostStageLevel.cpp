@@ -96,6 +96,7 @@ void CGhostStageLevel::LevelInit()
 	
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::BACKGROUND);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::MONSTER, LAYER::BACKGROUND);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::MONSTER);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER , LAYER::MONSTER_PROJECTILE);
 	
 	
