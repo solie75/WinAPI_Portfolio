@@ -162,9 +162,6 @@
     <ClInclude Include="WinAPI_Portfolio.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Default</Filter>
-    </ClInclude>
     <ClInclude Include="CEngine.h">
       <Filter>Game\01.Engine</Filter>
     </ClInclude>
@@ -302,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="CMonsterProjectile.h">
       <Filter>Game\04.Object\13.Monster_Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Default</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

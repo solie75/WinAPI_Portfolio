@@ -1,21 +1,54 @@
-﻿  CCameraMgr.cpp
+﻿  pch.cpp
+  CAnimation.cpp
+  CAnimator.cpp
+  CBackground.cpp
+  CBackgroundObject.cpp
+  CBlind.cpp
+  CBoss1Level.cpp
+  CBoss2Level.cpp
+  CCameraMgr.cpp
+  CCollider.cpp
+  CCollisionMgr.cpp
+  CComponent.cpp
   CDeathOfficeLevel.cpp
+  CDialog.cpp
+  CEffectObject.cpp
+  CEndLevel.cpp
   CEngine.cpp
+  CEntity.cpp
+  CEventMgr.cpp
+  CForwardground.cpp
+  CGhostBook.cpp
+  컴파일하고 있습니다...
+  CGhostStageLevel.cpp
+  CGhostWoman.cpp
+D:\신중은\WinAPI_Portfolio\WinAPI_Portfolio\CGhostWoman.cpp(255,85): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CGround.cpp
+  CLineCollider.cpp
   CKeyMgr.cpp
+  CLevel.cpp
+  CLevelMgr.cpp
+  CMonster.cpp
+  CMonsterProjectile.cpp
+  CNPC.cpp
+  CObject.cpp
   CPathMgr.cpp
+  CPlayer.cpp
+  CResource.cpp
   CResourceMgr.cpp
+  CRigidBody.cpp
+  CSoldierStageLevel.cpp
+  CSquareCollider.cpp
   CStartLevel.cpp
   CTexture.cpp
+  컴파일하고 있습니다...
   CTimeMgr.cpp
+  CTrigger.cpp
+  CWall.cpp
+  func.cpp
   WinAPI_Portfolio.cpp
-LINK : warning C4727: 타임스탬프가 동일한 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.pch PCH가 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\cengine.obj 및 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\cdeathofficelevel.obj에 있습니다.  첫 번째 PCH를 사용합니다.
-LINK : warning C4727: 타임스탬프가 동일한 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.pch PCH가 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\cghoststagelevel.obj 및 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\ceventmgr.obj에 있습니다.  첫 번째 PCH를 사용합니다.
-LINK : warning C4727: 타임스탬프가 동일한 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.pch PCH가 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\cpathmgr.obj 및 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\ckeymgr.obj에 있습니다.  첫 번째 PCH를 사용합니다.
-LINK : warning C4727: 타임스탬프가 동일한 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.pch PCH가 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\ctexture.obj 및 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\cstartlevel.obj에 있습니다.  첫 번째 PCH를 사용합니다.
-LINK : warning C4727: 타임스탬프가 동일한 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.pch PCH가 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\pch.obj 및 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\func.obj에 있습니다.  첫 번째 PCH를 사용합니다.
-LINK : warning C4727: 타임스탬프가 동일한 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.pch PCH가 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\winapi_portfolio.obj 및 d:\신중은\winapi_portfolio\winapi_portfolio\x64\release\ctimemgr.obj에 있습니다.  첫 번째 PCH를 사용합니다.
   코드를 생성하고 있습니다.
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-  All 560 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Previous IPDB not found, fall back to full compilation.
+  All 1213 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   코드를 생성했습니다.
   WinAPI_Portfolio.vcxproj -> D:\신중은\WinAPI_Portfolio\OutputFile\bin\WinAPI_Portfolio.exe

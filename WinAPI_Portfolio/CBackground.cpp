@@ -13,17 +13,9 @@ CBackground::CBackground()
 
 CBackground::CBackground(wstring _pstring)
 	: m_pTexture(nullptr)
-	//, m_pGhostStageLayer1(nullptr)
-	//, m_pGhostStageLayer2(nullptr)
-	//, m_pGhostStageLayer3(nullptr)
-	//, m_pGhostStageLayer4(nullptr)
 {
 	SetName(_pstring);
 
-	//m_pGhostStageLayer1 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer1", L"texture\\Ghost_Stage_Layer1");
-	//m_pGhostStageLayer2 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer2", L"texture\\Ghost_Stage_Layer2");
-	//m_pGhostStageLayer3 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer3", L"texture\\Ghost_Stage_Layer3");
-	//m_pGhostStageLayer4 = CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer4", L"texture\\Ghost_Stage_Layer4");
 
 	if (_pstring == L"DeathOffice")
 	{
@@ -34,9 +26,6 @@ CBackground::CBackground(wstring _pstring)
 		CreateLineCollider(Vec(1774.f, 686.f), Vec(1924.f, 862.f));
 		CreateLineCollider(Vec(1924.f, 862.f), Vec(2559.f, 862.f));
 
-		// WallCollider //여기에서 VPos 까지 입력하면 그게 곧 finalpos 가 된다.
-		/*AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 1000.f), Vec(-(1480.f), 0.f));
-		AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(60.f, 1000.f), Vec(+(1524.f), 0.f));*/
 	}
 
 	if (_pstring == L"Ghost_Stage_Layer3")
@@ -47,14 +36,7 @@ CBackground::CBackground(wstring _pstring)
 		//CreateLineCollider(Vec(5380.f, 1720.f), Vec(5380.f, 2530.f));
 		CreateLineCollider(Vec(5380.f, 2530.f), Vec(10040.f, 2530.f));
 		CreateLineCollider(Vec(10040.f, 2100.f), Vec(10760.f, 2100.f));
-		CreateLineCollider(Vec(10760.f, 1910.f), Vec(11860.f, 1910.f));
-
-		//AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 2000.f), Vec(-6000.f, -500.f));
-		//AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 2000.f), Vec(-4600.f, -500.f)); // GhostWoman Test Wall
-		//AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 810.f), Vec(-1340.f, 2125.f));
-		//AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 430.f), Vec(10060.f, 2315.f));
-		//AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 190.f), Vec(10780.f, 2005.f));
-		//AddSquareCollider((UINT)COLLIDER_TYPE::WALL, Vec(40.f, 1000.f), Vec(11860.f, 1910.f));
+		CreateLineCollider(Vec(10760.f, 1910.f), Vec(11950.f, 1910.f));
 	}
 }
 

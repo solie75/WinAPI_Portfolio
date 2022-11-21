@@ -30,4 +30,3 @@ using std::wstring;
 #include "func.h"
 
 #pragma comment (lib, "Msimg32.lib")
-
