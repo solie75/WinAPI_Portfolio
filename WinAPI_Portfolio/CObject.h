@@ -53,9 +53,9 @@ public:
 
 	//wstring GetStrName() { return strName; }
 	
-	virtual void CollisionBegin(CCollider* _pOther){}
-	virtual void Colliding(CCollider* _pOther){}
-	virtual void CollisionEnd(CCollider* _pOther){}
+	virtual void BeginOverlap(CCollider* _pOther){}
+	virtual void OnOverlap(CCollider* _pOther){}
+	virtual void EndOverlap(CCollider* _pOther){}
 
 
 

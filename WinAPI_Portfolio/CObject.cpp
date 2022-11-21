@@ -141,12 +141,12 @@ void CObject::AddSquareCollider(UINT _Collider_Type)
 	m_vecCollider.back()->SetColliderType(_Collider_Type);
 }
 
-void CObject::AddSquareCollider(UINT _Collider_Type, Vec _vSize, Vec _vPos)
+void CObject::AddSquareCollider(UINT _Collider_Type, Vec _vSize, Vec _vOffSet)
 {
 	m_vecCollider.push_back((CCollider*)(new CSquareCollider(this)));
 	m_vecCollider.back()->SetColliderType(_Collider_Type);
 	m_vecCollider.back()->SetColliderScale(_vSize);
-	m_vecCollider.back()->SetColliderOffSetPos(_vPos);
+	m_vecCollider.back()->SetColliderOffSetPos(_vOffSet);
 
 }
 

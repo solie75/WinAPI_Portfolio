@@ -117,14 +117,22 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 
 			
 
-			// case of during Colliding
+			// case of during OnOverlap
 			if (CollisionBtwCollider(ColliderVector1[i], ColliderVector2[j]))
 			{
-				// Case of Colliding in PrevFrame
+				// Case of OnOverlap in PrevFrame
 				if (iter->second) // 현재 비교중인 두 충돌체가 실제 충돌했고 또한 이전 프레임에도 충돌중인 경우
 				{
 					if (bDead) // 두 충돌체 중 하나라도 죽은 상태라면
 					{
+						/*if (ColliderVector1[i]->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG)
+						{
+							int i = ColliderVector1[i]->GetOverlapCount();
+						}
+						if (ColliderVector2[j]->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG)
+						{
+							int i
+						}*/
 						ColliderVector1[i]->EndOverlap(ColliderVector2[j]);
 						ColliderVector2[j]->EndOverlap(ColliderVector1[i]);
 						iter->second = false;
@@ -147,9 +155,17 @@ void CCollisionMgr::CollisionBtwObject(CObject* _Object1, CObject* _Object2)
 			}
 			else
 			{
-				// case of Colliding in PrevFrame
+				// case of OnOverlap in PrevFrame
 				if (iter->second) // 현재 충돌상태가 아니지만 이전 프레임에서 충돌이 있었던 경우
 				{
+					if (ColliderVector1[i]->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG)
+					{
+						ColliderVector1[i]->GetOverlapCount();
+					}
+					if (ColliderVector2[j]->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG)
+					{
+						ColliderVector2[j]->GetOverlapCount();
+					}
 					ColliderVector1[i]->EndOverlap(ColliderVector2[j]);
 					ColliderVector2[j]->EndOverlap(ColliderVector1[i]);
 					iter->second = false; // 더 이상 충돌이 아니므로 충돌상태를 false 로 바꾼다.
@@ -172,6 +188,14 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 	if ((UINT)COLLIDER_TYPE::LINE == _Collider1->GetColliderType())
 	{
 		if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+		{
+			return false;
+		}
+		if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG)
+		{
+			return false;
+		}
+		if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
 		{
 			return false;
 		}
@@ -220,6 +244,14 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 		{
 			return false;
 		}
+		if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG)
+		{
+			return false;
+		}
+		if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+		{
+			return false;
+		}
 		
 		CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider2);
 
@@ -246,6 +278,56 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider* _Collider1, CCollider* _Coll
 		}
 
 	}
+
+
+	
+	// 충돌체 종류에 따른 충돌 무시
+	if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK && _Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		return false;
+	}
+	if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK && _Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		return false;
+	}
+
+	if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG && _Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+	{
+		return false;
+	}
+	if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG && _Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYERATTACK)
+	{
+		return false;
+	}
+
+	if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG && _Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		return false;
+	}
+	if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG && _Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
+	{
+		return false;
+	}
+	//CLineCollider* _pLineCollider = dynamic_cast<CLineCollider*>(_Collider2);
+	if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::GHOSTWOMAN && _Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYER)
+	{
+		return false;
+	}
+	if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::GHOSTWOMAN && _Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYER)
+	{
+		return false;
+	}
+
+	//if (_Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG && _Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYER)
+	//{
+	//	CGhostWoman_Collider1->GetOwner()
+	//}
+	//if (_Collider2->GetColliderType() == (UINT)COLLIDER_TYPE::MONSTER_DETECT_RANGE_LONG && _Collider1->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYER)
+	//{
+	//	return false;
+	//}
+
+	// 사각 충돌
 
 	if (fabsf(vCollider1Pos.x - vCollider2Pos.x) <= (vCollider1Scale.x/2.f + vCollider2Scale.x/2.f) && fabsf(vCollider1Pos.y - vCollider2Pos.y) <= (vCollider1Scale.y / 2.f + vCollider2Scale.y / 2.f))
 	{

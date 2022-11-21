@@ -27,15 +27,15 @@ void CMonster::ObjectRender(HDC _dc, wstring _pstring)
 	CObject::ObjectRender(_dc, _pstring);
 }
 
-void CMonster::CollisionBegin(CCollider* _pOther)
+void CMonster::BeginOverlap(CCollider* _pOther)
 {
 }
 
-void CMonster::Colliding(CCollider* _pOther)
+void CMonster::OnOverlap(CCollider* _pOther)
 {
 }
 
-void CMonster::CollisionEnd(CCollider* _pOther)
+void CMonster::EndOverlap(CCollider* _pOther)
 {
 }
 

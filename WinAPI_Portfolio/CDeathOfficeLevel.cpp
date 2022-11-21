@@ -51,24 +51,25 @@ void CDeathOfficeLevel::LevelInit()
 	// Create BackGround
 	CBackground* pBackground = new CBackground(L"DeathOffice");
 	pBackground->SetScale(Vec(2048.f, 1024.f));
-	Instantiate(pBackground, Vec(vResolution.x /2.f, vResolution.y / 2.f), LAYER::BACKGROUND);
+	//Instantiate(pBackground, Vec(vResolution.x /2.f, vResolution.y / 2.f), LAYER::BACKGROUND);
+	Instantiate(pBackground, Vec(pBackground->GetScale()/2.f), LAYER::BACKGROUND);;
 
 	CBackgroundObject* pOfficeChair = new CBackgroundObject(L"DeathChair");
 	pOfficeChair->SetScale(Vec(200.f, 350.f));
 	pOfficeChair->SetBoolShow(true);
-	Instantiate(pOfficeChair, Vec(625.f, 325.f), LAYER::BACKGROUNDOBJECT);
+	Instantiate(pOfficeChair, Vec(849.f, 387.f), LAYER::BACKGROUNDOBJECT);
 
 	CBackgroundObject* pOfficeElevator = new CBackgroundObject(L"OfficeElevator");
 	pOfficeElevator->SetScale(Vec(270.f, 370.f));
 	pOfficeElevator->SetBoolShow(true);
-	Instantiate(pOfficeElevator, Vec(2000.f, 650.f), LAYER::BACKGROUNDOBJECT);
+	Instantiate(pOfficeElevator, Vec(2224.f, 712.f), LAYER::BACKGROUNDOBJECT);
 
 	
 
 	// Create Player
 	CPlayer* pPlayer = new CPlayer(L"Player");
 	pPlayer->SetScale(Vec(154.f, 158.f));
-	Instantiate(pPlayer, Vec(650.f, 500.f), LAYER::PLAYER);
+	Instantiate(pPlayer, Vec(874.f, 562.f), LAYER::PLAYER);
 
 	// Play Animation of Death's Spawn
 	pPlayer->GetAnimator()->Play(L"DeathSpawn", false);
@@ -82,13 +83,13 @@ void CDeathOfficeLevel::LevelInit()
 	// Create NPC
 	CNPC* pElevator = new CNPC(L"Elevator");
 	pElevator->SetScale(Vec(520.f, 370.f));
-	Instantiate(pElevator, Vec(2000.f, 650.f), LAYER::NPC);
+	Instantiate(pElevator, Vec(2224.f, 712.f), LAYER::NPC);
 	
 
 	// Elevator Animation Trigger
 	CTrigger* pElevatorAppearTrigger = new CTrigger(L"ElevatorAppearTrigger");
 	pElevatorAppearTrigger->SetScale(Vec(50.f, 1000.f));
-	Instantiate(pElevatorAppearTrigger, Vec(1550.f, 500.f), LAYER::TRIGGER);
+	Instantiate(pElevatorAppearTrigger, Vec(1774.f, 562.f), LAYER::TRIGGER);
 
 	// Blind
 	CBlind* pBlind = new CBlind(L"Blind");

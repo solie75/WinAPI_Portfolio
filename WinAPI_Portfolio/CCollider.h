@@ -29,7 +29,8 @@ public:
     Vec GetColliderScale() { return m_vColliderScale; }
 
 public:
-    virtual void ComponentTick();
+    virtual void ComponentTick() override;
+    virtual void Final_Tick() override;
     virtual void ComponentRender(HDC _dc);
 
 public:

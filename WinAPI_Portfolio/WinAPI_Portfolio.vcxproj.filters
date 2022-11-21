@@ -142,6 +142,12 @@
     <Filter Include="Game\04.Object\06.Monster\02.GhostBook">
       <UniqueIdentifier>{979e45bc-88c1-40f8-9137-6bcd7c533ce0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\04.Object\12.Wall">
+      <UniqueIdentifier>{df924ca1-4603-476a-9f99-9feb6c9114f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\04.Object\13.Monster_Projectile">
+      <UniqueIdentifier>{d611c1f7-7eb5-4030-bdab-ad235e209663}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -291,6 +297,12 @@
     <ClInclude Include="CGhostBook.h">
       <Filter>Game\04.Object\06.Monster\02.GhostBook</Filter>
     </ClInclude>
+    <ClInclude Include="CWall.h">
+      <Filter>Game\04.Object\12.Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterProjectile.h">
+      <Filter>Game\04.Object\13.Monster_Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -435,6 +447,12 @@
     </ClCompile>
     <ClCompile Include="CGhostBook.cpp">
       <Filter>Game\04.Object\06.Monster\02.GhostBook</Filter>
+    </ClCompile>
+    <ClCompile Include="CWall.cpp">
+      <Filter>Game\04.Object\12.Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterProjectile.cpp">
+      <Filter>Game\04.Object\13.Monster_Projectile</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -46,7 +46,7 @@ CNPC::CNPC(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"ElevatorDisappear", m_pElevatorDisappear, Vec(0.f, 0.f), Vec(520.f, 370.f), Vec(0.f, 50.f), 22, 0.04f);
 
 	m_pInteract = new CBackgroundObject(L"InteractionKey");
-	Instantiate(m_pInteract, Vec(2010.f, 400.f), LAYER::BACKGROUNDOBJECT);
+	Instantiate(m_pInteract, Vec(2234.f, 462.f), LAYER::BACKGROUNDOBJECT);
 }
 
 CNPC::~CNPC()
@@ -72,16 +72,16 @@ void CNPC::ObjectRender(HDC _dc, wstring _pstring)
 	CObject::ObjectRender(_dc, _pstring);
 }
 
-void CNPC::CollisionBegin(CCollider* _pOther)
+void CNPC::BeginOverlap(CCollider* _pOther)
 {
 	m_bInteraction = true;
 }
 
-void CNPC::Colliding(CCollider* _pOther)
+void CNPC::OnOverlap(CCollider* _pOther)
 {
 }
 
-void CNPC::CollisionEnd(CCollider* _pOther)
+void CNPC::EndOverlap(CCollider* _pOther)
 {
 	m_bInteraction = false;
 }

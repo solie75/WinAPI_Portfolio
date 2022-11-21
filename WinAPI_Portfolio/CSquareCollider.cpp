@@ -9,7 +9,6 @@ CSquareCollider::CSquareCollider(CObject* _pOwner)
 {
 	SetOverlapCount(0);
 	SetColliderType((UINT)COLLIDER_TYPE::UNKNOWN);
-	//SetColliderOffSetPos(GetOwner()->GetPos() + GetColliderOffSetPos());
 }
 
 CSquareCollider::~CSquareCollider()
@@ -18,6 +17,8 @@ CSquareCollider::~CSquareCollider()
 
 void CSquareCollider::ComponentTick()
 {
+
+
 	CCollider::ComponentTick();
 }
 
@@ -53,18 +54,22 @@ void CSquareCollider::ComponentRender(HDC _dc)
 
 void CSquareCollider::BeginOverlap(CCollider* _other)
 {
-	AddOverlapCount();
-	GetOwner()->CollisionBegin(_other);
+	GetOwner()->BeginOverlap(_other);
+
+	CCollider::BeginOverlap(_other);
 }
 
 void CSquareCollider::EndOverlap(CCollider* _other)
 {
-	SubtractOvelapCount();
-	GetOwner()->CollisionEnd(_other);
+	GetOwner()->EndOverlap(_other);
+
+	CCollider::EndOverlap(_other);
 }
 
 void CSquareCollider::OnOverlap(CCollider* _other)
 {
-	GetOwner()->Colliding(_other);
+	GetOwner()->OnOverlap(_other);
+
+	CCollider::OnOverlap(_other);
 }
 

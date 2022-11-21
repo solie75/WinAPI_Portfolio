@@ -14,6 +14,7 @@
 #include "CTrigger.h"
 #include "CBlind.h"
 #include "CDialog.h"
+#include "CWall.h"
 
 #include "CCameraMgr.h"
 #include "CResourceMgr.h"
@@ -47,7 +48,7 @@ void CGhostStageLevel::LevelInit()
 	CResourceMgr::GetInst()->LoadTexture(L"Ghost_Stage_Layer4", L"texture\\Ghost_Stage_Layer4.bmp");
 
 	// Camera Position
-	CCameraMgr::GetInst()->SetLook(Vec(900.f, 800.f));
+	CCameraMgr::GetInst()->SetLook(Vec(812.f, 934.f));
 
 	// Create BackGround
 	CBackground* Ghost_Stage_Layer1 = new CBackground(L"Ghost_Stage_Layer1"); // create Line Collider here
@@ -65,6 +66,30 @@ void CGhostStageLevel::LevelInit()
 	CForwardground* Ghost_Stage_Layer4 = new CForwardground(L"Ghost_Stage_Layer4");
 	Ghost_Stage_Layer4->SetScale(Vec(12000.f, 3000.f));
 	Instantiate(Ghost_Stage_Layer4, Ghost_Stage_Layer1->GetScale() / 2.f, LAYER::FORWARDGROUND);
+	
+	CWall* Wall_1 = new CWall(L"Wall_1");
+	Wall_1->SetScale(Vec(40.f, 3000.f));
+	Instantiate(Wall_1, Vec(0.f, 1500.f), LAYER::WALL);
+
+	CWall* Wall_test = new CWall(L"Wall_test");
+	Wall_test->SetScale(Vec(40.f, 1000.f));
+	Instantiate(Wall_test, Vec(2000.f, 1400.f), LAYER::WALL);  /// test
+
+	CWall* Wall_2 = new CWall(L"Wall_2");
+	Wall_2->SetScale(Vec(40.f, 810.f));
+	Instantiate(Wall_2, Vec(5330.f, 2130.f), LAYER::WALL);
+
+	CWall* Wall_3 = new CWall(L"Wall_3");
+	Wall_3->SetScale(Vec(40.f, 430.f));
+	Instantiate(Wall_3, Vec(10070.f, 2320.f), LAYER::WALL);
+
+	CWall* Wall_4 = new CWall(L"Wall_4");
+	Wall_4->SetScale(Vec(40.f, 190.f));
+	Instantiate(Wall_4, Vec(10787.f, 2011.f), LAYER::WALL);
+
+	CWall* Wall_5 = new CWall(L"Wall_5");
+	Wall_5->SetScale(Vec(40.f, 1000.f));
+	Instantiate(Wall_5, Vec(12000.f, 1500.f), LAYER::WALL);
 
 
 	// Create BackObject
@@ -78,7 +103,7 @@ void CGhostStageLevel::LevelInit()
 	// Create Monster
 	CGhostWoman* pGhostWoman = new CGhostWoman(L"GhostWoman");
 	pGhostWoman->SetScale(Vec(80.f, 220.f));
-	Instantiate(pGhostWoman, Vec(1000.f, 900.f), LAYER::MONSTER);
+	Instantiate(pGhostWoman, Vec(1300.f, 1000.f), LAYER::MONSTER);
 
 	/*CGhostBook* pGhostBook = new CGhostBook(L"GhostBook");
 	pGhostBook->SetScale(Vec(100.f, 80.f));
@@ -98,12 +123,18 @@ void CGhostStageLevel::LevelInit()
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::MONSTER, LAYER::BACKGROUND);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::MONSTER);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER , LAYER::MONSTER_PROJECTILE);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER , LAYER::WALL);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::PLAYER, LAYER::MONSTER);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER::MONSTER, LAYER::WALL);
+
+
 	
 	
 }
 
 void CGhostStageLevel::LevelTick()
 {
+
 	vector<CObject*> BackgroundLayer = this->GetLayer(LAYER::BACKGROUND);
 	vector<CObject*> PlayerLayer = this->GetLayer(LAYER::PLAYER);
 	vector<CObject*> BackgroundObjectLayer = this->GetLayer(LAYER::BACKGROUNDOBJECT);

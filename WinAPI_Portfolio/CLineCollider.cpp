@@ -59,9 +59,8 @@ void CLineCollider::ComponentRender(HDC _dc)
 
 void CLineCollider::BeginOverlap(CCollider* _other)
 {
-	AddOverlapCount();
-	GetOwner()->CollisionBegin(_other);
-	if (_other->GetColliderType() == (UINT)COLLIDER_TYPE::OBJECT)
+	GetOwner()->BeginOverlap(_other);
+	if (_other->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYER || _other->GetColliderType() == (UINT)COLLIDER_TYPE::GHOSTWOMAN)
 	{
 		if (nullptr == _other->GetOwner())
 		{
@@ -69,22 +68,14 @@ void CLineCollider::BeginOverlap(CCollider* _other)
 		}
 		_other->GetOwner()->GetRigidBody()->SetBoolOnGround(true);
 	}
-	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(_other->GetOwner());
-	//if(nullptr == pPlayer)
-	//{
-	//	return;
-	//}
-	//// 바닥 충돌체와 맞닿은 플레이어의 추락 정지
-	//pPlayer->GetRigidBody()->SetBoolOnGround(true);
 
-
+	CCollider::BeginOverlap(_other);
 }
 
 void CLineCollider::EndOverlap(CCollider* _other)
 {
-	SubtractOvelapCount();
-	GetOwner()->CollisionEnd(_other);
-	if (_other->GetColliderType() == (UINT)COLLIDER_TYPE::OBJECT)
+	GetOwner()->EndOverlap(_other);
+	if (_other->GetColliderType() == (UINT)COLLIDER_TYPE::PLAYER || _other->GetColliderType() == (UINT)COLLIDER_TYPE::GHOSTWOMAN)
 	{
 		if (nullptr == _other->GetOwner())
 		{
@@ -92,17 +83,15 @@ void CLineCollider::EndOverlap(CCollider* _other)
 		}
 		_other->GetOwner()->GetRigidBody()->SetBoolOnGround(false);
 	}
-	/*CPlayer* pPlayer = dynamic_cast<CPlayer*>(_other->GetOwner());
-	if (nullptr == pPlayer)
-	{
-		return;
-	}
-	pPlayer->GetRigidBody()->SetBoolOnGround(false);*/
+
+	CCollider::EndOverlap(_other);
 }
 
 void CLineCollider::OnOverlap(CCollider* _other)
 {
-	GetOwner()->Colliding(_other);
+	GetOwner()->OnOverlap(_other);
+
+	CCollider::OnOverlap(_other);
 }
 
 

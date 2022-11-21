@@ -37,17 +37,17 @@ void CTrigger::ObjectRender(HDC _dc, wstring _pstring)
 	CObject::ObjectRender(_dc, _pstring);
 }
 
-void CTrigger::CollisionBegin(CCollider* _pOther)
+void CTrigger::BeginOverlap(CCollider* _pOther)
 {
 	Trigger = true;
 	SetDead();
 }
 
-void CTrigger::Colliding(CCollider* _pOther)
+void CTrigger::OnOverlap(CCollider* _pOther)
 {
 }
 
-void CTrigger::CollisionEnd(CCollider* _pOther)
+void CTrigger::EndOverlap(CCollider* _pOther)
 {
 
 }

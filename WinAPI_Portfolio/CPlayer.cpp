@@ -89,7 +89,7 @@ CPlayer::CPlayer(wstring _pstring)
 
 	GetColliderVector()[0]->SetColliderOffSetPos(Vec(-5.f, -25.f));
 	GetColliderVector()[0]->SetColliderScale(Vec(80.f, 100.f));
-	GetColliderVector()[0]->SetColliderType((UINT)COLLIDER_TYPE::OBJECT);
+	GetColliderVector()[0]->SetColliderType((UINT)COLLIDER_TYPE::PLAYER);
 
 	//this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK); // Combo 1
 	//this->AddSquareCollider((UINT)COLLIDER_TYPE::PLAYERATTACK); // Combo 1
@@ -210,28 +210,7 @@ void CPlayer::ObjectTick()
 	if (true == GetKeyWorking())
 	{
 		Vec _vCameraLook = CCameraMgr::GetInst()->GetCameraLook();
-		/*if (CCameraMgr::GetInst()->GetCameraWorkRow() || CCameraMgr::GetInst()->GetCameraWorkCol())
-		{
-			if (CCameraMgr::GetInst()->GetRenderPos(vPos).y < (vResolution.y / 2.f) - 50.f)
-			{
-				_vCameraLook.y -= 1400.f * DT;
-			}
-			if (CCameraMgr::GetInst()->GetRenderPos(vPos).y > (vResolution.y / 2.f) + 100.f)
-			{
-				_vCameraLook.y += 1400.f * DT;
-			}
-			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x > (vResolution.x / 2.f) + 100.f)
-			{
-				_vCameraLook.x += m_fSpeed * DT;
-			}
-			if (CCameraMgr::GetInst()->GetRenderPos(vPos).x < (vResolution.x / 2.f) - 100.f)
-			{
-				_vCameraLook.x -= m_fSpeed * DT;
-
-			}
-			
-			CCameraMgr::GetInst()->SetLook(_vCameraLook);
-		}*/
+	
 
 		if (CCameraMgr::GetInst()->GetCameraWorkCol())
 		{
@@ -791,7 +770,7 @@ void CPlayer::ObjectRender(HDC _dc, wstring _pstring)
 	CObject::ObjectRender(_dc, _pstring);
 }
 
-void CPlayer::CollisionBegin(CCollider* _pOther)
+void CPlayer::BeginOverlap(CCollider* _pOther)
 {
 	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
 	{
@@ -799,10 +778,20 @@ void CPlayer::CollisionBegin(CCollider* _pOther)
 		SetObjectSpeed(0.f);
 		GetRigidBody()->AddVelocity(-v);
 		m_bCollidingWall = true;
+
+		if (this->GetObjectSight() == (UINT)SIGHT::RIGHT)
+		{
+			SetPos(Vec(_pOther->GetColliderFinalPos().x - _pOther->GetColliderScale().x / 2.f - this->GetScale().x / 2.f + 41.f, GetPos().y));
+		}
+		else if (this->GetObjectSight() == (UINT)SIGHT::LEFT)
+		{
+			SetPos(Vec(_pOther->GetColliderFinalPos().x + _pOther->GetColliderScale().x / 2.f + this->GetScale().x / 2.f - 31.f, GetPos().y));
+		}
+
 	}
 }
 
-void CPlayer::Colliding(CCollider* _pOther)
+void CPlayer::OnOverlap(CCollider* _pOther)
 {
 	if (_pOther->GetColliderFinalPos().x > this->GetPos().x)
 	{
@@ -820,7 +809,7 @@ void CPlayer::Colliding(CCollider* _pOther)
 	}
 }
 
-void CPlayer::CollisionEnd(CCollider* _pOther)
+void CPlayer::EndOverlap(CCollider* _pOther)
 {
 	SetObjectSpeed(500.f);
 	if (_pOther->GetColliderType() == (UINT)COLLIDER_TYPE::WALL)
@@ -830,18 +819,3 @@ void CPlayer::CollisionEnd(CCollider* _pOther)
 }
 
 
-구현
-1. Ghost Woman 충돌체
-2. Back 벽 세우기
-3. 벽과 Woman 충돌
-4. 벽과 Player 충돌(충돌상태에서 옆 점프나 대쉬 누르면 뚫림)
-5. 플레이어 공격 충돌체와 Ghost Woman 간의 충돌
-6. Ghost Woman이 피격시 애니메이션
-7. Player가 연속적으로 공격하더라도 콤보의 단계가 바뀔 때마다 Ghost Woman이 피격 모션을 취함.
-8. ghost Woman 이 피격 모션을 취할 때 공격의 반대 방향으로 위로 튕기듯이 밀린다.
-9. 플레이어가 벽과 충돌상태에서 옆 점프나 대쉬를 못하도록 구현
-
-문제
-1. 플레이어가 벽과 충돌상태에서 옆 점프나 대쉬를 누르면 뚫린다.(해결)
-2. 플레이어의 공격 충돌체도 벽이 인식해 버린다
-3. 플레이어의 위치가 실시간으로 SetPos되는 것이기 때문에 벽과 충돌하기보다 벽에 박힌다.

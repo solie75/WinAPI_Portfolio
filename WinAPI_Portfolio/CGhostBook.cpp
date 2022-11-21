@@ -53,15 +53,15 @@ void CGhostBook::ObjectRender(HDC _dc, wstring _pstring)
 	CMonster::ObjectRender(_dc, _pstring);
 }
 
-void CGhostBook::CollisionBegin(CCollider* _pOther)
+void CGhostBook::BeginOverlap(CCollider* _pOther)
 {
 }
 
-void CGhostBook::Colliding(CCollider* _pOther)
+void CGhostBook::OnOverlap(CCollider* _pOther)
 {
 }
 
-void CGhostBook::CollisionEnd(CCollider* _pOther)
+void CGhostBook::EndOverlap(CCollider* _pOther)
 {
 }
 

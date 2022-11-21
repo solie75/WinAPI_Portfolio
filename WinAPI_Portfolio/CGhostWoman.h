@@ -7,7 +7,8 @@ enum class GhostWoman_State
 {
     IDLE,
     UTURN,
-    ATTACK,
+    ATTACK_LONG,
+    ATTACK_SHORT,
     HIT,
     NONE
 };
@@ -27,14 +28,16 @@ public:
 
     UINT m_GhostWoman_State;
     bool m_bCollidingWall;
+    float TargetDegree;
+    Vec m_vTarget;
 
 public:
     virtual void ObjectTick() override;
     virtual void ObjectRender(HDC _dc, wstring _pstring) override;
 
-    virtual void CollisionBegin(CCollider* _pOther) override;
-    virtual void Colliding(CCollider* _pOther) override;
-    virtual void CollisionEnd(CCollider* _pOther) override;
+    virtual void BeginOverlap(CCollider* _pOther) override;
+    virtual void OnOverlap(CCollider* _pOther) override;
+    virtual void EndOverlap(CCollider* _pOther) override;
 
 public:
     CGhostWoman(wstring _pstring);
