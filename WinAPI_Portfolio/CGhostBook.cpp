@@ -3,6 +3,7 @@
 #include "CAnimator.h"
 #include "CResourceMgr.h"
 #include "CAnimation.h"
+#include "CCollider.h"
 
 CGhostBook::CGhostBook(wstring _pstring)
 	: m_pGhostBookIdleRight(nullptr)
@@ -18,14 +19,14 @@ CGhostBook::CGhostBook(wstring _pstring)
 	CreateAnimator();
 	CreateSquareCollider();
 
-	m_pGhostBookIdleRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookIdleRight", L"Texture\\");
-	m_pGhostBookIdleLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookIdleLeft", L"Texture\\");
-	m_pGhostBookLeftToRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookLeftToRight", L"Texture\\");
-	m_pGhostBookRightToLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookRightToLeft", L"Texture\\");
-	m_pGhostBookAttackRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookAttackRight", L"Texture\\");
-	m_pGhostBookAttackLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookAttackLeft", L"Texture\\");
-	m_pGhostBookHitRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookHitRight", L"Texture\\");
-	m_pGhostBookHitLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookHitLeft", L"Texture\\");
+	m_pGhostBookIdleRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookIdleRight", L"Texture\\Ghost_Book_Idle_Right.bmp");
+	m_pGhostBookIdleLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookIdleLeft", L"Texture\\GhostBookIdleLeft");
+	m_pGhostBookLeftToRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookLeftToRight", L"Texture\\GhostBookLeftToRight");
+	m_pGhostBookRightToLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookRightToLeft", L"Texture\\GhostBookRightToLeft");
+	m_pGhostBookAttackRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookAttackRight", L"Texture\\GhostBookAttackRight");
+	m_pGhostBookAttackLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookAttackLeft", L"Texture\\GhostBookAttackLeft");
+	m_pGhostBookHitRight = CResourceMgr::GetInst()->LoadTexture(L"GhostBookHitRight", L"Texture\\GhostBookHitRight");
+	m_pGhostBookHitLeft = CResourceMgr::GetInst()->LoadTexture(L"GhostBookHitLeft", L"Texture\\GhostBookHitLeft");
 
 	GetAnimator()->CreateAnimation(L"GhostBookIdleRight", m_pGhostBookIdleRight, Vec(0.f, 0.f), Vec(100.f, 80.f), Vec(0.f, 0.f), 24, 0.04f);
 	GetAnimator()->CreateAnimation(L"GhostBookIdleLeft", m_pGhostBookIdleLeft, Vec(0.f, 0.f), Vec(100.f, 80.f), Vec(0.f, 0.f), 24, 0.04f);
@@ -37,6 +38,8 @@ CGhostBook::CGhostBook(wstring _pstring)
 	GetAnimator()->CreateAnimation(L"GhostBookHitLeft", m_pGhostBookHitLeft, Vec(0.f, 0.f), Vec(100.f, 90.f), Vec(0.f, 0.f), 18, 0.04f);
 
 	GetAnimator()->Play(L"GhostBookIdleRight", true);
+	Vec _CurAnimSize = GetAnimator()->GetCurAnimation()->GetAnimCurSize();
+	GetColliderVector()[0]->SetColliderScale(_CurAnimSize);
 }
 
 CGhostBook::~CGhostBook()

@@ -172,6 +172,8 @@
     <ClInclude Include="CResourceMgr.h" />
     <ClInclude Include="CRigidBody.h" />
     <ClInclude Include="CSoldierStageLevel.h" />
+    <ClInclude Include="CSound.h" />
+    <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CSquareCollider.h" />
     <ClInclude Include="CStartLevel.h" />
     <ClInclude Include="CTexture.h" />
@@ -225,6 +227,8 @@
     <ClCompile Include="CResourceMgr.cpp" />
     <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="CSoldierStageLevel.cpp" />
+    <ClCompile Include="CSound.cpp" />
+    <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CSquareCollider.cpp" />
     <ClCompile Include="CStartLevel.cpp" />
     <ClCompile Include="CTexture.cpp" />

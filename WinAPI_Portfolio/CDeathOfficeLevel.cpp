@@ -22,6 +22,7 @@
 #include "CAnimator.h"
 #include "CAnimation.h"
 #include "CRigidBody.h"
+#include "CSound.h"
 
 
 CDeathOfficeLevel::CDeathOfficeLevel()
@@ -35,6 +36,9 @@ CDeathOfficeLevel::~CDeathOfficeLevel()
 
 void CDeathOfficeLevel::LevelInit()
 {
+	//bgm1->Stop(true);
+	//bgm1->SetVolume(0.f);
+
 	Vec _resolution = CEngine::GetInst()->GetResolution();
 
 	// Image Loading

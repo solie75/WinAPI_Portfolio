@@ -148,6 +148,9 @@
     <Filter Include="Game\04.Object\13.Monster_Projectile">
       <UniqueIdentifier>{d611c1f7-7eb5-4030-bdab-ad235e209663}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\02.Manager\09.SoundMgr">
+      <UniqueIdentifier>{01ada668-6891-4bf3-b4b3-e8b225a23fb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -303,6 +306,12 @@
     <ClInclude Include="pch.h">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>Game\06.Resource\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundMgr.h">
+      <Filter>Game\02.Manager\09.SoundMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPI_Portfolio.rc">
@@ -453,6 +462,12 @@
     </ClCompile>
     <ClCompile Include="CMonsterProjectile.cpp">
       <Filter>Game\04.Object\13.Monster_Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>Game\06.Resource\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundMgr.cpp">
+      <Filter>Game\02.Manager\09.SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

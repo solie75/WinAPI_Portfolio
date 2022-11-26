@@ -2,6 +2,8 @@
 #include "CEntity.h"
 
 class CObject;
+class CSound;
+
 
 class CLevel :
     public CEntity
@@ -18,7 +20,7 @@ public:
     virtual void LevelEnter() = 0; // 레벨에 진입할 때 호출 됨
     virtual void LevelExit() = 0; // 레벨을 벗어날 때 호출 됨
 
-
+    CSound* bgm1;
 
 public:
     void AddObject(CObject* _pObj, LAYER _layer) 

@@ -10,6 +10,8 @@
 #include "CEventMgr.h"
 #include "CCameraMgr.h"
 #include "CCollisionMgr.h"
+#include "CSoundMgr.h"
+#include "CSound.h"
 
 CEngine::CEngine()
 	: m_hMainWnd(nullptr)
@@ -54,6 +56,7 @@ void CEngine::CEngineInit(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	CPathMgr::GetInst()->PathMgrInit();
 	CTimeMgr::GetInst()->TimeMgrInit();
 	CKeyMgr::GetInst()->KeyMgrInit();
+	CSoundMgr::GetInst()->init();
 	CLevelMgr::GetInst()->LevelMgrInit();
 }
 

@@ -73,7 +73,7 @@ void CGhostStageLevel::LevelInit()
 
 	CWall* Wall_test = new CWall(L"Wall_test");
 	Wall_test->SetScale(Vec(40.f, 1000.f));
-	Instantiate(Wall_test, Vec(2000.f, 1400.f), LAYER::WALL);  /// test
+	Instantiate(Wall_test, Vec(2400.f, 1400.f), LAYER::WALL);  /// test
 
 	CWall* Wall_2 = new CWall(L"Wall_2");
 	Wall_2->SetScale(Vec(40.f, 810.f));
@@ -105,9 +105,9 @@ void CGhostStageLevel::LevelInit()
 	pGhostWoman->SetScale(Vec(80.f, 220.f));
 	Instantiate(pGhostWoman, Vec(1300.f, 1000.f), LAYER::MONSTER);
 
-	/*CGhostBook* pGhostBook = new CGhostBook(L"GhostBook");
+	CGhostBook* pGhostBook = new CGhostBook(L"GhostBook");
 	pGhostBook->SetScale(Vec(100.f, 80.f));
-	Instantiate(pGhostBook, Vec(1200.f, 900.f), LAYER::MONSTER);*/
+	Instantiate(pGhostBook, Vec(1200.f, 900.f), LAYER::MONSTER);
 
 
 	// create Playera

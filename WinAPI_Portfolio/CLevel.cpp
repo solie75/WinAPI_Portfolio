@@ -3,6 +3,7 @@
 #include "CObject.h"
 
 CLevel::CLevel()
+	: bgm1(nullptr)
 {
 }
 

@@ -59,6 +59,19 @@ void CBackground::ObjectRender(HDC _dc, wstring _pstring)
 	//Vec vLeftTop = Vec(vPos.x - vScale.x / 2.f, vPos.y - vScale.y / 2.f);
 
 	m_pTexture = CResourceMgr::GetInst()->FindTexture(_pstring);
+	if (CLevelMgr::GetInst()->GetCurLevelType() == (UINT)LEVEL_TYPE::START)
+	{
+		BitBlt(_dc
+			, (int)(vPos.x - m_pTexture->Width() / 2.f)
+			, (int)(vPos.y - m_pTexture->Height() / 2.f)
+			, m_pTexture->Width()
+			, m_pTexture->Height()
+			, m_pTexture->GetDC()
+			, 0
+			, 0
+			, SRCCOPY);
+	}
+
 
 	if(CLevelMgr::GetInst()->GetCurLevelType() == (UINT)LEVEL_TYPE::DEATHOFFICE)
 	{
